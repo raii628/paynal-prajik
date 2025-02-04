@@ -1,0 +1,99 @@
+Folder basis for the project:
+
+client/ - front-end (React TSX Vite)
+server/ - back-end / database (Flask & MySQL)
+
+config files:
+
+.env - environment variables to store and keep privated
+.gitignore - files that don't need to be tracked by git
+package.json - special files that tracks dependencies scripts 
+used / installed (via npm install)
+
+README.md - description of the project (to be read by others, 
+and for extra docu of project)
+
+Instructions to follow in collab works:
+
+1. Always refer here for additional env's to add in your own .env file since .env is not push to GitHub.
+I will update some of the .env's to add and where to use it
+
+2. Always use npm install to install the dependencies in your 
+local machine
+
+3. In your terminal every time you run the project locally, 
+split it first and type these:
+
+front-end : `cd client` -> `npm run dev`
+back-end : `cd server` -> `npm run server (if Express.js) or py app.py (if Flask)`
+
+4. Don't directly clone the original repository (from GioMjds) 
+in order to collab works. Instead, fork the repository and 
+clone the forked repository.
+
+5. If the repo is forked (probably it will go to your repository but being forked in original repo), you should clone it now in your local machine and clone it in your `Desktop`.
+    To Fork:
+    - Go to my GioMjds's GitHub repository
+    - Click Fork
+    - Don't change the name, just click fork repo
+    - Go to your forked repository (in your repository)
+    - Click the Code
+    - In HTTPS, copy the link given
+    - In your Desktop, run Command Prompt 
+    (Make sure your directory is on Desktop)
+    - Type `git clone <link of your forked repo>
+    - You have the folder of the forked repo in your Desktop. 
+    Now run it in your IDE (prefer VSCode)
+
+6. For updating and work (which is code reviewing part), create first an branch
+    Rules for naming your branch base in your assigned part:
+    - In client-side:
+        - Name it regarding on your working part 
+        (e.g., layout/navbar, layout/footer, pages/login, docu, etc..)
+        - When using git add, don't use `git add .` 
+        if your working multiple files. Instead use 
+        `git add <filename>` or `git add <directory/filename>`
+        - When using git commit, the commit message should 
+        be tags-based first before the note / message statement 
+        in order for file context reviewing and readability.
+          Example: you work on footer new layout, 
+            do `git commit -m "(message here)"`.
+                In message, first has tags like `new: `, `bug: `, `update: `, `added: `
+        - When using git push, state it like 
+        `git push origin <your-branch-name>`
+        - It will sent to your forked repository first, 
+        and you can see the `Pull Request`
+
+7. For pull requests, do the following
+    - Go to your forked repository
+    - Do put the tags in the title first, then the changes
+    - In your caption / comment, do explain your changes
+    - In reviewers, always assign GioMjds as an code 
+    reviewer first
+    - In the description, do explain the changes you made
+    - In tags, include some tags for extra review context
+    - If done, do click create pull request
+    - If several commit is done, do commit it as it will see 
+    before the merging (code review success and agree but it 
+    will be on your pull request)
+    - The original repository will notify you if the pull request 
+    is accepted or rejected
+
+8. For updating the repository and see some changes directly 
+in your local machine, the original repository will update you
+if you will be able to merge it
+    - By merging, do `git pull <link of the original repo>
+
+9. Update the code reviewer for pull requests and merging repo
+
+10. For the last, do make sure to update the repository and the 
+code reviewer for pull requests and merging
+    - By updating it, do:
+        - Go to your forked repo
+        - Locate your all branches
+        - Click the sync code
+        - Make sure to match the commit count of original repo to your forked repo
+
+Optional: Updating README.md for extra documentation
+
+******************************************************************************************************************************
