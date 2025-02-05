@@ -4,3 +4,7 @@ Flask-CORS
 jwt
 PyJWT
 python-dotenv
+flask-migrate
+SQLAlchemy
+flask_sqlalchemy
+bcrypt

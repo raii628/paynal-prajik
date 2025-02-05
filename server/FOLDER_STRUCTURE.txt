@@ -1,12 +1,13 @@
 server/
   - app.py - app main entry point to run (using `py app.py`)
   - app/
+    - migrate/ - database models to update 
     - models/ - database models
     - routes/ - API endpoints / routing
     - services/ - server-side other logic
     - utils/ - utility files
     - __init__.py - blueprint initializer
-    - model.py - getting the mysql-connector-python initializer
+    - model.py - getting the SQLALchemy initializer
   - .env - environment variables to be hidden and must not be
   pushed into GitHub repo
   - .gitignore - ignoring an file to be added in
