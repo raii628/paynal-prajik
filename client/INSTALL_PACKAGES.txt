@@ -1,0 +1,10 @@
+Must `npm install <package-name>`
+
+Packages Used:
+
+--save-exact @types/react@^19.0.0 @types/react-dom@^19.0.0
+--save-exact react@^19.0.0 react-dom@^19.0.0
+axios
+tailwindcss @tailwindcss/vite
+framer-motion@latest
+motion@latest
