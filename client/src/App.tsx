@@ -34,6 +34,7 @@ const MainContent = () => {
     <>
       <h1 className='text-3xl'>React TypeScript Flask Starter</h1>
       <h1 className='text-3xl'>{message}</h1>
+      <h1 className='text-3xl'>{praktisMsg}</h1>
     </>
   )
 }
