@@ -92,8 +92,24 @@ code reviewer for pull requests and merging
         - Go to your forked repo
         - Locate your all branches
         - Click the sync code
-        - Make sure to match the commit count of original repo to your forked repo
+        - Make sure to match the commit count of 
+          original repo to your forked repo
+
+11. After your part was finish, you must delete
+your branch you've worked with
+    - To delete a local branch:
+        - `git branch -d <branch-name>` - safe delete (recommended)
+        - `git branch -D <branch-name>` - force delete 
+    - To delete a remote branch:
+        - `git push origin --delete <branch-name>`
+    - In order to list your branches:
+        - `git branch` - for local branches
+        - `git branch -r` - for remote branches
+
+12. If you've working with another specific area, you must
+create an new branch. Name it base on what specific area you're
+working
 
 Optional: Updating README.md for extra documentation
 
-******************************************************************************************************************************
+************************(END OF FILE)******************************
