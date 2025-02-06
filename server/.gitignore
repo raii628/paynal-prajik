@@ -1,3 +1,8 @@
-.env
+*.env
 .venv
 src/__pycache__*
+src/models/__pycache__*
+src/routes/__pycache__*
+src/services/__pycache__*
+src/utils/__pycache__*
+src/migrate/__pycache__*

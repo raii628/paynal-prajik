@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
+import { AuthProvider } from './contexts/AuthContext'
 import { getMessage } from './services/axios'
 import './App.css'
-import { AuthProvider } from './contexts/AuthContext'
 
 // Wrap the app component in the auth provider for global state management
 // Routing must be done in the MainContent component

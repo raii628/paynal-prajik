@@ -8,3 +8,5 @@ flask-migrate
 SQLAlchemy
 flask_sqlalchemy
 bcrypt
+Flask-SQLAlchemy
+Flask-Script

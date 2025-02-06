@@ -12,5 +12,9 @@ def create_app():
     )
     
     # Routing blueprint for the server here
-    
+
+    from src.routes.sample_route import sample_bp
+
+    app.register_blueprint(sample_bp)
+
     return app
