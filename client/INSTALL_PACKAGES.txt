@@ -8,3 +8,5 @@ axios
 tailwindcss @tailwindcss/vite
 framer-motion@latest
 motion@latest
+react-loading-skeleton
+remarkable

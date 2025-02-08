@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState, lazy } from 'react'
 import { AuthProvider } from './contexts/AuthContext'
 import { getMessage } from './services/axios'
 import './App.css'
+
+const SkeletonHydrate = lazy(() => import('./motions/SkeletonHydrate'))
 
 // Wrap the app component in the auth provider for global state management
 // Routing must be done in the MainContent component
@@ -14,7 +16,7 @@ const App = () => {
 }
 
 const MainContent = () => {
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState<string>("");
 
   const fetchMessage = async () => {
     try {
@@ -32,8 +34,9 @@ const MainContent = () => {
 
   return (
     <>
-      <h1 className='text-3xl'>React TypeScript Flask Starter</h1>
-      <h1 className='text-3xl'>{message}</h1>
+      <Suspense fallback={<SkeletonHydrate />}>
+        <h1>{message}</h1>
+      </Suspense>
     </>
   )
 }
