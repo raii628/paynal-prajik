@@ -14,10 +14,10 @@ export const DELETE = (url: string) => API.delete(url);
 
 export const getMessage = async () => {
     try {
-        const response = await GET('/');
-        return response.data;
+        const response = await GET('/users');
+        return response;
     } catch (error: any) {
         console.error(`Error: ${error}`);
         throw error;
     }
-}
+};

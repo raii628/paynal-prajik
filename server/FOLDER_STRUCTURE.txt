@@ -14,3 +14,5 @@ server/
   - requirements.txt - must run using `pip install -r
   requirements.txt` that lists the dependencies needed in your
   Flask app
+  - schema.prisma - ORM special file for migrating the database 
+  (to run using `prisma db push`)

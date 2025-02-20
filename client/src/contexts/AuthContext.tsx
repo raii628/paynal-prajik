@@ -1,7 +1,8 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-/* This context will be used throughout the app for authentication 
+/* 
+    This context will be used throughout the app for authentication 
     Tentative changes may occur here
 */
 
