@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 
 const API = axios.create({
@@ -7,12 +6,4 @@ const API = axios.create({
     withCredentials: true
 });
 
-export const getMessage = async () => {
-    try {
-        const response = await API.get('/users');
-        return response;
-    } catch (error: any) {
-        console.error(`Error: ${error}`);
-        throw error;
-    }
-};
+export default API;

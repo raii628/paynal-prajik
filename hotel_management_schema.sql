@@ -1,5 +1,3 @@
--- Overall reference for the database schema of a hotel management system
-
 -- Guests
 CREATE TABLE guests (
 	id INT PRIMARY KEY AUTO_INCREMENT,
