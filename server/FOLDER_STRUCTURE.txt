@@ -1,18 +1,7 @@
 server/
-  - app.py - app main entry point to run (using `py app.py`)
-  - app/
-    - migrate/ - database models to update 
-    - models/ - database models
-    - routes/ - API endpoints / routing
-    - services/ - server-side other logic
-    - utils/ - utility files
-    - __init__.py - blueprint initializer
-    - model.py - getting the SQLALchemy initializer
-  - .env - environment variables to be hidden and must not be
-  pushed into GitHub repo
-  - .gitignore - ignoring an file to be added in
-  - requirements.txt - must run using `pip install -r
-  requirements.txt` that lists the dependencies needed in your
-  Flask app
-  - schema.prisma - ORM special file for migrating the database 
-  (to run using `prisma db push`)
+  hotel_backend/
+    settings.py - back end stuff configurations
+    urls.py - initial routing for REST API endpoints
+  users/
+    models.py - database models used in the project
+    urls.py - 

@@ -7,14 +7,9 @@ const API = axios.create({
     withCredentials: true
 });
 
-export const GET = (url: string) => API.get(url);
-export const POST = (url: string, data: any) => API.post(url, data);
-export const PUT = (url: string, data: any) => API.put(url, data);
-export const DELETE = (url: string) => API.delete(url);
-
 export const getMessage = async () => {
     try {
-        const response = await GET('/users');
+        const response = await API.get('/users');
         return response;
     } catch (error: any) {
         console.error(`Error: ${error}`);
