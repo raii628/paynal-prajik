@@ -1,7 +1,0 @@
-server/
-  hotel_backend/
-    settings.py - back end stuff configurations
-    urls.py - initial routing for REST API endpoints
-  users/
-    models.py - database models used in the project
-    urls.py - 

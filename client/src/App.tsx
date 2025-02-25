@@ -1,5 +1,5 @@
-import { getMessage } from './services/axios'
-import { useEffect, useState, Suspense, lazy } from 'react'
+import axios from 'axios'
+import { Suspense, lazy, useEffect, useState } from 'react'
 import './App.css'
 
 const SkeletonHydrate = lazy(() => import('./motions/SkeletonHydrate'))
@@ -9,7 +9,7 @@ const App = () => {
 
   const fetchMessage = async () => {
     try {
-      const response = await getMessage();
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/users`);
       console.log(response);
       setMessage(response.data.message);
     } catch (error) {
