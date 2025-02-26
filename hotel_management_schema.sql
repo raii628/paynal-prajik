@@ -87,6 +87,15 @@ CREATE TABLE reservations (
     FOREIGN KEY (area_id) REFERENCES areas(id)
 );
 
+-- Room Type Prices
+CREATE TABLE room_type_prices (
+    room_type_id INT,
+    valid_from DATE,
+    price DECIMAL(10, 2),
+    PRIMARY KEY (room_type_id, valid_from),
+    FOREIGN KEY (room_type_id) REFERENCES room_types(id)
+);
+
 -- Transactions
 CREATE TABLE transactions (
 	id INT PRIMARY KEY AUTO_INCREMENT,
