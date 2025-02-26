@@ -38,6 +38,8 @@ class Bookings(models.Model):
         choices=BOOKING_STATUS_CHOICES,
         default='confirmed',
     )
+    cancellation_date = models.DateTimeField(null=True, blank=True)
+    cancellation_reason = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -87,17 +89,11 @@ class Transactions(models.Model):
         default='pending',
     )
 
-class Cancellations(models.Model):
-    booking = models.ForeignKey(Bookings, on_delete=models.SET_NULL, null=True, blank=True)
-    reservation = models.ForeignKey(Reservations, on_delete=models.SET_NULL, null=True, blank=True)
-    cancellation_date = models.DateTimeField(auto_now_add=True)
-    reason = models.TextField(blank=True)
-
-class Comments(models.Model):
+class Reviews(models.Model):
+    booking = models.ForeignKey(Bookings, on_delete=models.CASCADE)
     guest = models.ForeignKey(Guests, on_delete=models.CASCADE)
-    comment = models.TextField()
+    review_text = models.TextField(blank=True)
     rating = models.IntegerField()
-    created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:
         constraints = [

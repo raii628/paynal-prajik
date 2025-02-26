@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Guests, Bookings, Reservations, Transactions, Cancellations, Comments
+from .models import Guests, Bookings, Reservations, Transactions, Reviews
 
 class GuestSerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,12 +21,7 @@ class TransactionSerializer(serializers.ModelSerializer):
         model = Transactions
         fields = '__all__'
 
-class CancellationSerializer(serializers.ModelSerializer):
+class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Cancellations
-        fields = '__all__'
-
-class CommentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Comments
+        model = Reviews
         fields = '__all__'

@@ -64,6 +64,8 @@ CREATE TABLE bookings (
     check_in_date DATE NOT NULL,
     check_out_date DATE NOT NULL,
     status ENUM('confirmed', 'checked_in', 'checked_out', 'cancelled') DEFAULT 'confirmed',
+    cancellation_date DATETIME NULL,
+	cancellation_reason TEXT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (guest_id) REFERENCES guests(id),
@@ -101,24 +103,14 @@ CREATE TABLE transactions (
     CHECK (booking_id IS NOT NULL OR reservation_id IS NOT NULL)
 );
 
--- Cancellations
-CREATE TABLE cancellations (
+-- Reviews
+CREATE TABLE reviews (
 	id INT PRIMARY KEY AUTO_INCREMENT,
-    booking_id INT,
-    reservation_id INT,
-    cancellation_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    reason TEXT,
-	FOREIGN KEY (booking_id) REFERENCES bookings(id),
-    FOREIGN KEY (reservation_id) REFERENCES reservations(id),
-    CHECK (booking_id IS NOT NULL OR reservation_id IS NOT NULL)
-);
-
--- Comments & Ratings
-CREATE TABLE comments (
-	id INT PRIMARY KEY AUTO_INCREMENT,
+    booking_id INT NOT NULL,
     guest_id INT NOT NULL,
-    comment_text TEXT,
+    review_text TEXT,
     rating INT CHECK (rating BETWEEN 1 AND 5),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (booking_id) REFERENCES bookings(id),
     FOREIGN KEY (guest_id) REFERENCES guests(id)
 );
