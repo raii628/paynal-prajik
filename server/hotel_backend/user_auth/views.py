@@ -1,13 +1,12 @@
-from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import User
 from .serializer import UserSerializer, UserRegisterSerializer
 from rest_framework import status
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer # type: ignore
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView # type: ignore
-
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
@@ -70,6 +69,25 @@ class CustomTokenRefreshView(TokenRefreshView):
         except Exception as e:
             print(e)
             return Response({ "success": False })
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def admin_login(request):
+    username = request.data.get('username')
+    password = request.data.get('password')
+    
+    if username == 'admin' and password == 'admin':
+        serializer = TokenObtainPairSerializer(data={
+            'username': username,
+            'password': password
+        })
+        if serializer.is_valid():
+            tokens = serializer.validated_data
+            return Response(tokens, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response({ "error": "Invalid credentials" }, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

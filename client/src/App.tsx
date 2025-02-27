@@ -1,8 +1,18 @@
 import './App.css'
+import { Route, Routes } from "react-router-dom"
+import Login from './pages/Login'
+import Register from './pages/Register'
+import NotFound from './pages/_NotFound'
+import AdminDashboard from './pages/admin/AdminDashboard'
 
 const App = () => {
   return (
-    <h1>Hello World</h1>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Register />} />
+      <Route path="/admin" element={<AdminDashboard />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   )
 }
 

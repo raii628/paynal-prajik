@@ -8,4 +8,5 @@ urlpatterns = [
     path('token/refresh', CustomTokenRefreshView.as_view(), name='refresh_token'),
     path('register', views.register_user, name='register'),
     path('logout', views.logout, name='logout'),
+    path('admin-login', views.admin_login, name='admin_login'),
 ]
