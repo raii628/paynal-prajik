@@ -11,6 +11,7 @@ from .serializers import UserSerializer
 from django.core import cache
 from .email.email import send_otp_to_email
 from .utils import get_tokens_for_user
+from datetime import timedelta, datetime
 
 # Custom permission classes
 class IsAdminUser(BasePermission):
@@ -25,8 +26,17 @@ class IsGuestUser(BasePermission):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def logout(request):
-    logout(request)
-    return Response({ 'status': 'Log out successfully' }, status=status.HTTP_200_OK)
+    try:
+        response = Response({ 'success': 'Logged out successfully' }, status=status.HTTP_200_OK)
+        
+        response.delete_cookie('admin_token')
+        response.delete_cookie('admin_refresh')
+        response.delete_cookie('access_token')
+        response.delete_cookie('refresh_token')
+        
+        return response
+    except Exception as e:
+        return Response({ 'error': str(e) }, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -55,35 +65,39 @@ def admin_login(request):
                 )
                 admin_user.set_password('admin')
                 admin_user.save()
-            
+
             tokens = get_tokens_for_user(admin_user)
-            return Response({
+            response = Response({
                 'success': 'Admin logged in successfully',
                 'access': tokens['access'],
                 'refresh': tokens['refresh'],
                 'role': 'admin'
             }, status=status.HTTP_200_OK)
-            
-        try:
-            user = User.objects.get(email=email)
-            user = authenticate(email=email, password=password)
-            
-            if user is not None and user.is_staff:
-                tokens = get_tokens_for_user(user)
-                return Response({
-                    'success': 'Admin logged in successfully',
-                    'access': tokens['access'],
-                    'refresh': tokens['refresh'],
-                    'role': 'admin'
-                }, status=status.HTTP_200_OK)
-            else:
-                return Response({ 'error': 'Invalid email or password' }, status=status.HTTP_400_BAD_REQUEST)
-        except User.DoesNotExist:
-            return Response({ 'error': 'Invalid email or password' }, status=status.HTTP_400_BAD_REQUEST)
+
+            expires = datetime.now() + timedelta(days=7)
+            response.set_cookie(
+                'admin_token',
+                tokens['access'],
+                expires=expires,
+                httponly=True,
+                secure=True,
+                samesite='None'
+            )
+            response.set_cookie(
+                'admin_refresh',
+                tokens['refresh'],
+                expires=expires,
+                httponly=True,
+                secure=True,
+                samesite='None'
+            )
+
+            return response
     except Exception as e:
         return Response({ 'error': str(e) }, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def guest_login(request):
     try:
         email = request.data.get('email')
@@ -97,12 +111,34 @@ def guest_login(request):
             
             if user is not None and not user.is_staff:
                 tokens = get_tokens_for_user(user)
-                return Response({
+                
+                response = Response({
                     'success': 'Guest logged in successfully',
-                    'access': tokens['access'],
-                    'refresh': tokens['refresh'],
+                    'access_token': tokens['access_token'],
+                    'refresh_token': tokens['refresh_token'],
                     'role': 'guest'
                 }, status=status.HTTP_200_OK)
+                
+                # Set cookies with access_token and refresh_token
+                expires = datetime.now() + timedelta(days=7)
+                response.set_cookie(
+                    'access_token', 
+                    tokens['access_token'],
+                    expires=expires,
+                    httponly=True,
+                    secure=True,
+                    samesite='None'
+                )
+                response.set_cookie(
+                    'refresh_token', 
+                    tokens['refresh_token'],
+                    expires=expires,
+                    httponly=True,
+                    secure=True,
+                    samesite='None'
+                )
+                
+                return response
             else:
                 return Response({'error': 'Invalid guest credentials'}, status=status.HTTP_400_BAD_REQUEST)
         except User.DoesNotExist:
@@ -135,12 +171,32 @@ def register_guest(request):
         
         tokens = get_tokens_for_user(user)
         
-        return Response({
+        response = Response({
             'success': 'Guest registered successfully',
-            'access': tokens['access'],
-            'refresh': tokens['refresh'],
+            'access_token': tokens['access_token'],
+            'refresh_token': tokens['refresh_token'],
             'role': 'guest'
         }, status=status.HTTP_201_CREATED)
+        
+        expires = datetime.now() + timedelta(days=7)
+        response.set_cookie(
+            'access_token',
+            tokens['access_token'],
+            expires=expires,
+            httponly=True,
+            secure=True,
+            samesite='None'
+        )
+        response.set_cookie(
+            'refresh_token',
+            tokens['refresh_token'],
+            expires=expires,
+            httponly=True,
+            secure=True,
+            samesite='None'
+        )
+        
+        return response
     except Exception as e:
         return Response({ 'error': str(e) }, status=status.HTTP_400_BAD_REQUEST)
 
@@ -216,16 +272,44 @@ def reset_password(request):
 @permission_classes([IsAuthenticated])
 def refresh_token(request):
     try:
-        refresh_token = request.data.get('refresh_token')
+        refresh_token = request.COOKIES.get('refresh_token') or request.data.get('admin_refresh')
+        
+        if not refresh_token:
+            refresh_token = request.data.get('refresh_token')
+        
         if not refresh_token:
             return Response({ 'error': 'Refresh token is required' }, status=status.HTTP_400_BAD_REQUEST)
 
         refresh = RefreshToken(refresh_token)
         access_token = str(refresh.access_token)
         
-        return Response({
+        user_id = refresh.payload.get('user_id')
+        user = User.objects.get(id=user_id)
+        
+        response = Response({
             'access_token': access_token
         }, status=status.HTTP_200_OK)
+        
+        expires = datetime.now() + timedelta(days=7)
+        if user.is_staff:
+            response.set_cookie(
+                'admin_token',
+                access_token,
+                expires=expires,
+                httponly=True,
+                secure=True,
+                samesite='None'
+            )
+        else:
+            response.set_cookie(
+                'access_token',
+                access_token,
+                expires=expires,
+                httponly=True,
+                secure=True,
+                samesite='None'
+            )
+        return response
     except Exception as e:
         return Response({ 'error': str(e) }, status=status.HTTP_400_BAD_REQUEST)
 
@@ -235,7 +319,8 @@ def refresh_token(request):
 def admin_dashboard(request):
     return Response({
         'message': 'Welcome to the admin dashboard',
-        'user': request.user.email
+        'user': request.user.email,
+        'role': 'admin'
     }, status=status.HTTP_200_OK)
 
 # Guest dashboard
