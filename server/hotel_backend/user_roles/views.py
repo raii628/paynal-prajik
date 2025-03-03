@@ -8,6 +8,8 @@ from django.contrib.auth.hashers import make_password
 from rest_framework import status
 from django.contrib.auth.models import User
 from .serializers import UserSerializer
+from django.core import cache
+from .email.email import send_otp_to_email
 
 # Create your views here.
 
@@ -88,6 +90,54 @@ def register_guest(request):
         return Response({ 'success': 'Guest registered successfully' }, status=status.HTTP_201_CREATED)
     except Exception as e:
         return Response({ 'error': str(e) }, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def email_otp(request):
+    try:
+        email = request.data.get('email')
+        cache_key = f"{email}"
+        
+        if cache.get(cache_key):
+            return Response({ 'error': 'Email already exists' }, status=status.HTTP_400_BAD_REQUEST)
+        
+        message = "Your OTP for Moonlight Hotel System"
+        otp_generated = send_otp_to_email(email, message)
+        OTP_EXPIRATION_TIME = 120
+        
+        cache.set(cache_key, otp_generated, OTP_EXPIRATION_TIME)
+        
+        return Response({ 'success': "OTP sent for guest verification" }, status=status.HTTP_200_OK)
+        
+    except Exception as e:
+        print(str(e))
+        return Response({ 'error': "Something went wrong" }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(["POST"])
+def reset_password(request):
+    try:
+        email = request.data.get('email')
+        password = request.data.get('password')
+        confirm_password = request.data.get('confirm')
+
+        if not email or not password or not confirm_password:
+            return Response({"error": "Email, password, and confirmation are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if password != confirm_password:
+            return Response({"error": "Passwords do not match."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return Response({"error": "Invalid email address."}, status=status.HTTP_404_NOT_FOUND)
+
+        user.set_password(password)
+        user.save()
+
+        return Response({"success": "Password has been reset successfully."}, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        print(f"Error: {e}")  
+        return Response({"error": "An unexpected error occurred. Please try again later."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # After the guest have registered, they will proceed to the
 # NewUser.tsx page to create their credentials.

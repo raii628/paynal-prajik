@@ -6,24 +6,24 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
-  const [emailOrUsername, setEmailOrUsername] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [errors, setErrors] = useState<{
-    emailOrUsername?: string;
+    email?: string;
     password?: string;
   }>({});
   const navigate = useNavigate();
 
   const togglePassword = () => setPasswordVisible(!passwordVisible);
 
-  const handleEmailOrUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => setEmailOrUsername(e.target.value);
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
 
-    if (emailOrUsername === 'admin' && password === 'admin') {
+    if (email === 'admin' && password === 'admin') {
       navigate('/admin');
     }
   };
@@ -45,13 +45,13 @@ const Login = () => {
                 whileFocus={{ scale: 1.02 }}
                 type="text"
                 id="email"
-                value={emailOrUsername}
+                value={email}
                 placeholder='name@gmail.com'
-                onChange={handleEmailOrUsernameChange}
+                onChange={handleEmailChange}
                 className="bg-gray-50 border border-gray-300 text-sm text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-800"
                 required
               />
-              {errors.emailOrUsername && <p className='text-red-600 text-sm'>{errors.emailOrUsername}</p>}
+              {errors.email && <p className='text-red-600 text-sm'>{errors.email}</p>}
             </div>
 
             <div className="mb-4 relative">
@@ -81,7 +81,7 @@ const Login = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.95 }}
               type="submit"
-              disabled={!emailOrUsername || !password}
+              disabled={!email || !password}
               className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300"
             >
               Login

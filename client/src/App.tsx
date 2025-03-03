@@ -12,6 +12,7 @@ const App = () => {
       <Route path="/signup" element={<Register />} />
       <Route path="/admin" element={<AdminDashboard />} />
       <Route path="*" element={<NotFound />} />
+      <Route path='/user/:userId' />
     </Routes>
   )
 }
