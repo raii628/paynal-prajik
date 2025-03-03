@@ -10,13 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@tailwindcss/vite": "4.0.9",
-=======
-    "@fortawesome/free-brands-svg-icons": "^6.7.2",
-    "@fortawesome/free-solid-svg-icons": "^6.7.2",
-    "@tailwindcss/vite": "^4.0.7",
->>>>>>> c183d553d8a445886b30ab90dd0392c241e2447d
     "@types/react-router-dom": "^5.3.3",
     "axios": "1.8.1",
     "framer-motion": "12.4.7",
@@ -26,7 +20,6 @@
     "react-fontawesome": "^1.7.1",
     "react-loading-skeleton": "^3.5.0",
     "react-router-dom": "^7.1.5",
-<<<<<<< HEAD
     "tailwindcss": "4.0.9"
   },
   "devDependencies": {
@@ -34,17 +27,6 @@
     "@types/react": "19.0.10",
     "@types/react-dom": "19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
-=======
-    "remarkable": "^2.0.1",
-    "tailwindcss": "^4.0.7"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.17.0",
-    "@fortawesome/react-fontawesome": "^0.2.2",
-    "@types/react": "19.0.8",
-    "@types/react-dom": "19.0.3",
-    "@vitejs/plugin-react": "^1.3.2",
->>>>>>> c183d553d8a445886b30ab90dd0392c241e2447d
     "eslint": "^9.17.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",
