@@ -83,7 +83,7 @@ def admin_login(request):
     except Exception as e:
         return Response({ 'error': str(e) }, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view({'POST'})
+@api_view(['POST'])
 def guest_login(request):
     try:
         email = request.data.get('email')
@@ -166,7 +166,7 @@ def email_otp(request):
         print(str(e))
         return Response({ 'error': "Something went wrong" }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-@api_view('POST')
+@api_view(['POST'])
 def resend_otp(request):
     try:
         email = request.data.get('email')
