@@ -19,7 +19,7 @@ const Login = () => {
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const loginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
 
@@ -36,7 +36,7 @@ const Login = () => {
             Login to <span className='text-blue-600'>Moonlight Hotel</span>
           </h1>
 
-          <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+          <form onSubmit={loginSubmit} className="space-y-4 md:space-y-6">
             <div>
               <label htmlFor="email" className="text-md font-medium text-gray-700">
                 Email
