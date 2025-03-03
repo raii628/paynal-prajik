@@ -13,6 +13,11 @@ from .email.email import send_otp_to_email
 from .utils import get_tokens_for_user
 from datetime import timedelta, datetime
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 # Custom permission classes
 class IsAdminUser(BasePermission):
     def has_permission(self, request, view):
@@ -54,12 +59,12 @@ def admin_login(request):
         email = request.data.get('email')
         password = request.data.get('password')
         
-        if email == 'admin@gmail.com' and password == 'admin':
+        if email == os.getenv('ADMIN_EMAIL') and password == os.getenv('ADMIN_PASS'):
             try:
                 admin_user = User.objects.get(email='admin@gmail.com')
             except User.DoesNotExist:
                 admin_user = User.objects.create(
-                    email='admin@gmail.com',
+                    email=os.getenv('ADMIN_EMAIL'),
                     is_staff=True,
                     is_superuser=True
                 )
