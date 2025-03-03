@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
@@ -20,82 +22,84 @@ const Login = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
-    
-    try {
-      
-    } catch (error) {
-      
-    }
-    
+
     if (emailOrUsername === 'admin' && password === 'admin') {
       navigate('/admin');
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md"
-      >
-        <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-          Login to <span className='text-blue-600'>Moonlight Hotel</span>
-        </h1>
+    <section className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="w-full max-w-md bg-opacity-5 rounded-xl border border-gray-400 dark:border md:mt-0 sm:max-w-md xl:p-0 dark:border-gray-700">
+        <div className='p-6 space-y-4 md:space-y-6 sm:p-8'>
+          <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
+            Login to <span className='text-blue-600'>Moonlight Hotel</span>
+          </h1>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="flex flex-col space-y-2">
-            <label htmlFor="email" className="text-sm font-medium text-gray-700">
-              Email or Username
-            </label>
-            <motion.input
-              whileFocus={{ scale: 1.02 }}
-              type="text"
-              id="email"
-              value={emailOrUsername}
-              onChange={handleEmailOrUsernameChange}
-              className="px-4 py-2 border rounded-lg focus:outline-none"
-              required
-            />
+          <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+            <div>
+              <label htmlFor="email" className="text-md font-medium text-gray-700">
+                Email
+              </label>
+              <motion.input
+                whileFocus={{ scale: 1.02 }}
+                type="text"
+                id="email"
+                value={emailOrUsername}
+                placeholder='name@gmail.com'
+                onChange={handleEmailOrUsernameChange}
+                className="bg-gray-50 border border-gray-300 text-sm text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-800"
+                required
+              />
+              {errors.emailOrUsername && <p className='text-red-600 text-sm'>{errors.emailOrUsername}</p>}
+            </div>
+
+            <div className="mb-4 relative">
+              <label htmlFor="password" className="text-md font-medium text-gray-700">
+                Password
+              </label>
+              <div className="relative flex items-center">
+                <motion.input
+                  whileFocus={{ scale: 1.02 }}
+                  type={passwordVisible ? 'text' : 'password'}
+                  id="password"
+                  value={password}
+                  onChange={handlePasswordChange}
+                  className="bg-gray-50 border border-gray-300 text-sm text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-800"
+                  required
+                />
+                <FontAwesomeIcon
+                  icon={passwordVisible ? faEyeSlash : faEye}
+                  className="absolute right-3 cursor-pointer text-gray-800"
+                  onClick={togglePassword}
+                />
+              </div>
+              {errors.password && <p className='text-red-600 text-sm'>{errors.password}</p>}
+            </div>
+
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.95 }}
+              type="submit"
+              disabled={!emailOrUsername || !password}
+              className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300"
+            >
+              Login
+            </motion.button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <span className="text-gray-600">Don't have an account? </span>
+            <Link
+              to="/signup"
+              className="text-blue-500 font-semibold"
+            >
+              Register here
+            </Link>
           </div>
-
-          <div className="flex flex-col space-y-2">
-            <label htmlFor="password" className="text-sm font-medium text-gray-700">
-              Password
-            </label>
-            <motion.input
-              whileFocus={{ scale: 1.02 }}
-              type="password"
-              id="password"
-              value={password}
-              onChange={handlePasswordChange}
-              className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
-
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors"
-          >
-            Login
-          </motion.button>
-        </form>
-
-        <div className="mt-6 text-center">
-          <span className="text-gray-600">Don't have an account? </span>
-          <Link
-            to="/signup"
-            className="text-blue-500 hover:underline font-medium"
-          >
-            Register here
-          </Link>
         </div>
-      </motion.div>
-    </div>
+      </div>
+    </section>
   );
 };
 
