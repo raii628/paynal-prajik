@@ -1,30 +1,62 @@
-/* eslint-disable react-refresh/only-export-components */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useState, useContext, ReactNode, FC } from "react";
 
-/* This context will be used throughout the app for authentication 
-    Tentative changes may occur here
-*/
+interface UserDetails {
+    username: string;
+    email: string;
+    profileImage?: string;
+}
 
-import { createContext, FC, ReactNode, useContext, useState } from "react";
+interface UserSignUp {
+    username: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+}
 
-const AuthContext = createContext<any>(null);
+interface UserContextType {
+    isAuthenticated: boolean;
+    userDetails: UserDetails | null;
+    userSignUp: UserSignUp;
+    sessionExpired: boolean;
+    setIsAuthenticated: (value: boolean) => void;
+    setUserDetails: (value: UserDetails) => void;
+    setUserSignUp: (value: UserSignUp) => void;
+    setSessionExpired: (value: boolean) => void;
+}
 
-export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
+const UserContext = createContext<UserContextType | any>(null);
+
+export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-    const [session, setSession] = useState<boolean>(false);
+    const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
+    const [sessionExpired, setSessionExpired] = useState<boolean>(false);
+    const [userSignUp, setUserSignUp] = useState<UserSignUp>({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+    });
+
+    const contextValue: UserContextType = {
+        isAuthenticated,
+        userDetails,
+        userSignUp,
+        sessionExpired,
+        setIsAuthenticated,
+        setUserDetails,
+        setUserSignUp,
+        setSessionExpired
+    }
 
     return (
-        <AuthContext.Provider
-            value={{
-                isAuthenticated,
-                setIsAuthenticated,
-                session,
-                setSession
-            }}
-        >
+        <UserContext.Provider value={contextValue}>
             {children}
-        </AuthContext.Provider>
+        </UserContext.Provider>
     )
-};
+}
 
-export const useAuthContext = () => useContext(AuthContext);
+export const useUserContext = () => {
+    return useContext(UserContext);
+}
