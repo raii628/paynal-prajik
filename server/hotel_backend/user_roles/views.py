@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny, BasePermission
 from rest_framework_simplejwt.tokens import RefreshToken # type: ignore
-from django.contrib.auth import authenticate, logout
+from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
 from django.contrib.auth.models import User
@@ -12,6 +12,8 @@ from django.core import cache
 from .email.email import send_otp_to_email
 from .utils import get_tokens_for_user
 from datetime import timedelta, datetime
+from .validation.validation import validate_strict_email, validate_password_django
+from django.core.exceptions import ValidationError
 
 import os
 from dotenv import load_dotenv
@@ -29,15 +31,15 @@ class IsGuestUser(BasePermission):
 
 # Create your views here.
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def logout(request):
     try:
         response = Response({ 'success': 'Logged out successfully' }, status=status.HTTP_200_OK)
         
-        response.delete_cookie('admin_token')
-        response.delete_cookie('admin_refresh')
-        response.delete_cookie('access_token')
-        response.delete_cookie('refresh_token')
+        response.delete_cookie('admin_token', path='/', samesite='None')
+        response.delete_cookie('admin_refresh', path='/', samesite='None')
+        response.delete_cookie('access_token', path='/', samesite='None')
+        response.delete_cookie('refresh_token', path='/', samesite='None')
         
         return response
     except Exception as e:
@@ -61,7 +63,7 @@ def admin_login(request):
         
         if email == os.getenv('ADMIN_EMAIL') and password == os.getenv('ADMIN_PASS'):
             try:
-                admin_user = User.objects.get(email='admin@gmail.com')
+                admin_user = User.objects.get(email=os.getenv('ADMIN_EMAIL'))
             except User.DoesNotExist:
                 admin_user = User.objects.create(
                     email=os.getenv('ADMIN_EMAIL'),
@@ -96,8 +98,11 @@ def admin_login(request):
                 secure=True,
                 samesite='None'
             )
-
             return response
+        else:
+            return Response({
+                'error': 'Invalid credentials'
+            }, status=status.HTTP_401_UNAUTHORIZED)
     except Exception as e:
         return Response({ 'error': str(e) }, status=status.HTTP_400_BAD_REQUEST)
 
@@ -112,7 +117,7 @@ def guest_login(request):
             # Find user by email first
             user = User.objects.get(email=email)
             # Then authenticate with username and password
-            user = authenticate(username=user.username, password=password)
+            user = authenticate(email=user.email, password=password)
             
             if user is not None and not user.is_staff:
                 tokens = get_tokens_for_user(user)
@@ -152,6 +157,7 @@ def guest_login(request):
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def register_guest(request):
     try:
         email = request.data.get('email')
@@ -160,6 +166,16 @@ def register_guest(request):
 
         if not email or not password or not confirm_password:
             return Response({ 'error': 'Please fill out all fields' }, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            validate_strict_email(email)
+        except ValidationError as e:
+            return Response({ 'error': str(e) }, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            validate_password_django(password, confirm_password)
+        except ValidationError as e:
+            return Response({ 'error': str(e) }, status=status.HTTP_400_BAD_REQUEST)
         
         if User.objects.filter(email=email).exists():
             return Response({ 'error': 'Email already exists' }, status=status.HTTP_400_BAD_REQUEST)
