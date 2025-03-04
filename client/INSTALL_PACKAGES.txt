@@ -13,3 +13,5 @@ remarkable
 @fortawesome/free-solid-svg-icons
 @fortawesome/free-brands-svg-icons
 @fortawesome
+@tanstack/react-query
+jwt-decode
