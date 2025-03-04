@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { adminLogin, guestLogin } from '../services/Auth';
 
 const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
@@ -14,17 +16,47 @@ const Login = () => {
   }>({});
   const navigate = useNavigate();
 
+  const emailCredential = import.meta.env.ADMIN_EMAIL;
+  const passwordCredential = import.meta.env.ADMIN_PASS;
+
   const togglePassword = () => setPasswordVisible(!passwordVisible);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
 
-  const loginSubmit = (e: React.FormEvent) => {
+  const loginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
 
-    if (email === 'admin' && password === 'admin') {
-      navigate('/admin');
+    try {
+      if (!emailCredential || !passwordCredential) {
+        const response = await adminLogin(email, password);
+        if (response.status === 200) {
+          localStorage.setItem('admin_token', response.data.access);
+          localStorage.setItem('admin_refresh', response.data.refresh);
+          navigate('/admin');
+        }
+      } else {
+        const response = await guestLogin(email, password);
+        if (response.status === 200) {
+          navigate('/guest')
+        }
+      }
+    } catch (error: any) {
+      const data = error.response?.data;
+      if (data) {
+        if (data?.email) {
+          setErrors((prev) => ({
+            ...prev,
+            email: data.email
+          }));
+        } else if (data?.password) {
+          setErrors((prev) => ({
+            ...prev,
+            password: data.password
+          }));
+        }
+      }
     }
   };
 
