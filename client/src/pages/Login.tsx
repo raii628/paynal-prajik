@@ -5,6 +5,14 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { adminLogin, guestLogin } from '../services/Auth';
+import { jwtDecode } from 'jwt-decode';
+import Cookies from 'universal-cookie'
+
+interface DecodedToken {
+  user_id: number;
+  role: string;
+  expires: number;
+}
 
 const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
@@ -14,7 +22,9 @@ const Login = () => {
     email?: string;
     password?: string;
   }>({});
+
   const navigate = useNavigate();
+  const cookies = new Cookies();
 
   const emailCredential = import.meta.env.ADMIN_EMAIL;
   const passwordCredential = import.meta.env.ADMIN_PASS;
@@ -29,34 +39,42 @@ const Login = () => {
     setErrors({});
 
     try {
-      if (!emailCredential || !passwordCredential) {
-        const response = await adminLogin(email, password);
-        if (response.status === 200) {
-          localStorage.setItem('admin_token', response.data.access);
-          localStorage.setItem('admin_refresh', response.data.refresh);
-          navigate('/admin');
-        }
-      } else {
-        const response = await guestLogin(email, password);
-        if (response.status === 200) {
-          navigate('/guest')
-        }
+      const loginMethod = email === emailCredential && password === passwordCredential
+        ? guestLogin
+        : adminLogin;
+
+      const { data, status } = await loginMethod(email, password);
+
+      if (status === 200) {
+        const { access, refresh, role } = data;
+
+        const { expires: expires } = jwtDecode<DecodedToken>(access);
+        const expirationDate = new Date(expires * 1000);
+
+        ['admin_token', 'admin_refresh'].forEach((cookieName, index) => {
+          cookies.set(cookieName, index === 0 ? access : refresh, {
+            path: '/',
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+            expires: expirationDate
+          });
+        });
+
+        localStorage.setItem('user_role', role);
+        navigate(role === 'admin' ? '/admin' : '/');
       }
     } catch (error: any) {
-      const data = error.response?.data;
-      if (data) {
-        if (data?.email) {
-          setErrors((prev) => ({
+      // Centralized error handling for login
+      const errorFields = ['email', 'password'];
+      errorFields.forEach(field => {
+        if (error.response?.data?.[field]) {
+          setErrors(prev => ({
             ...prev,
-            email: data.email
-          }));
-        } else if (data?.password) {
-          setErrors((prev) => ({
-            ...prev,
-            password: data.password
+            [field]: error.response.data[field]
           }));
         }
-      }
+      });
     }
   };
 
@@ -102,7 +120,7 @@ const Login = () => {
                 />
                 <FontAwesomeIcon
                   icon={passwordVisible ? faEyeSlash : faEye}
-                  className="absolute right-3 cursor-pointer text-gray-800"
+                  className="absolute p-3 right-1 cursor-pointer text-gray-800"
                   onClick={togglePassword}
                 />
               </div>
