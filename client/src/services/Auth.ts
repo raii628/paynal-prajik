@@ -41,9 +41,7 @@ export const adminLogin = async (email: string, password: string) => {
             email: email,
             password: password
         }, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            withCredentials: true
         });
         console.log(`Admin Access Token: ${response.data.access}`);
         console.log(`Admin Refresh Token: ${response.data.refresh}`);
