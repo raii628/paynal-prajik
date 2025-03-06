@@ -1,10 +1,22 @@
-import { Navigate, Outlet } from "react-router-dom";
-import { useState } from "react";
+import { FC, ReactNode } from "react";
+import { Navigate } from "react-router-dom";
 
-const ProtectedRoute = () => {
-  const [user] = useState<null | boolean>(null);
+interface ProtectedRouteProps {
+  role: string | null;
+  requiredRole: string;
+  children: ReactNode;
+}
 
-  return user ? <Outlet /> : <Navigate to="/login" />;
+const ProtectedRoute: FC<ProtectedRouteProps> = ({ role, requiredRole, children }) => {
+  if (!localStorage.getItem('access_token') || role !== requiredRole) {
+    return <Navigate to="/" />
+  }
+  
+  return (
+    <>
+      {children}
+    </>
+  )
 }
 
 export default ProtectedRoute;
