@@ -19,7 +19,7 @@ export const guestLogin = async (email: string, password: string) => {
 
 export const guestSignup = async (email: string, password: string, confirmPassword: string) => {
     try {
-        const response = await API.post('/api/signup', {
+        const response = await API.post('/api/guest/signup', {
             email: email,
             password: password,
             confirmPassword: confirmPassword,
@@ -58,10 +58,16 @@ export const logout = async () => {
         const response = await API.post('/api/auth/logout', {}, {
             headers: {
                 'Authorization': `Bearer ${localStorage.removeItem('access_token')}`
-            }
+            },
+            withCredentials: true
         });
         console.log(`Admin Access Token: ${response.data.access}`);
         console.log(`Admin Refresh Token: ${response.data.refresh}`);
+        
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('role');
+
         return response;
     } catch (error) {
         console.error(`Failed to logout: ${error}`);
