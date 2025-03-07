@@ -1,30 +1,21 @@
-import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import { useEffect } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { useUserContext } from "./contexts/AuthContext";
+import ProtectedRoute from "./contexts/ProtectedRoutes";
+import useTokenHandler from './hooks/useTokenHandler';
 import NotFound from "./pages/_NotFound";
 import AdminDashboard from "./pages/admin/AdminDashboard";
-import ProtectedRoute from "./contexts/ProtectedRoutes";
 import GuestDashboard from "./pages/guests/GuestDashboard";
-import Footer from "./layout/Footer";
-import Navbar from "./layout/Navbar";
 import Homepage from "./pages/Homepage";
-import './App.css'
-import { Route, Routes } from "react-router-dom"
-import Login from './pages/Login'
-import Register from './pages/Register'
-import NotFound from './pages/_NotFound'
-import AdminDashboard from './pages/admin/AdminDashboard'
-import ProtectedRoute from "./contexts/ProtectedRoutes"
-import GuestDashboard from "./pages/guests/GuestDashboard"
-import Homepage from "./pages/Homepage"
-import { useUserContext } from "./contexts/AuthContext"
-import { useEffect } from "react"
-import useTokenHandler from './hooks/useTokenHandler'
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 const App = () => {
-  const { setIsAuthenticated } = useUserContext();
+  const { isAuthenticated, setIsAuthenticated } = useUserContext();
   useTokenHandler();
+
+  const role = localStorage.getItem("role");
 
   useEffect(() => {
     const session = localStorage.getItem("access_token");
@@ -38,18 +29,49 @@ const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Register />} />
+        <Route
+          path="/"
+          element={
+            isAuthenticated
+              ? role === 'admin'
+                ? <Navigate to='/admin' replace />
+                : <Navigate to='/guest' replace />
+              : <Homepage />
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            isAuthenticated
+              ? role === "admin"
+                ? <Navigate to="/admin" replace />
+                : <Navigate to="/guest" replace />
+              : <Login />
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            isAuthenticated
+              ? role === "admin"
+                ? <Navigate to="/admin" replace />
+                : <Navigate to="/guest" replace />
+              : <Register />
+          }
+        />
+
+        {/* Role: Guest Routing (Protected) */}
         <Route element={<ProtectedRoute requiredRole="guest" />}>
           <Route path="/guest" element={<GuestDashboard />} />
         </Route>
+
+        {/* Role: Admin Routing (Protected) */}
         <Route element={<ProtectedRoute requiredRole="admin" />}>
           <Route path="/admin" element={<AdminDashboard />} />
         </Route>
+
         <Route path="*" element={<NotFound />} />
       </Routes>
-      <Footer />
     </>
   );
 };
