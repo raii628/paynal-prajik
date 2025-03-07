@@ -1,13 +1,13 @@
-import API from "./_axios";
+import { API } from "./_axios";
 
-export const guestLogin = async (email: string, password: string) => {
+export const login = async (email: string, password: string) => {
     try {
-        const response = await API.post('/api/guest/login', {
+        const response = await API.post('/auth/login', {
             email: email,
             password: password
         }, {
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             }
         });
         return response;
@@ -19,14 +19,10 @@ export const guestLogin = async (email: string, password: string) => {
 
 export const guestSignup = async (email: string, password: string, confirmPassword: string) => {
     try {
-        const response = await API.post('/api/guest/signup', {
+        const response = await API.post('/auth/signup', {
             email: email,
             password: password,
             confirmPassword: confirmPassword,
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-            }
         });
         return response;
     } catch (error) {
@@ -35,31 +31,15 @@ export const guestSignup = async (email: string, password: string, confirmPasswo
     }
 };
 
-export const adminLogin = async (email: string, password: string) => {
-    try {
-        const response = await API.post('/api/admin/login', {
-            email: email,
-            password: password
-        }, {
-            withCredentials: true
-        });
-        console.log(`Admin Access Token: ${response.data.access}`);
-        console.log(`Admin Refresh Token: ${response.data.refresh}`);
-        console.log(`Role: ${response.data.role}`);
-        return response;
-    } catch (error) {
-        console.error(`Failed to login: ${error}`);
-        throw error;
-    }
-};
-
 export const logout = async () => {
     try {
-        const response = await API.post('/api/auth/logout', {}, {
-            headers: {
-                'Authorization': `Bearer ${localStorage.removeItem('access_token')}`
-            },
-            withCredentials: true
+        const access_token = localStorage.getItem('access_token');
+        const refresh_token = localStorage.getItem('refresh_token');
+
+        if (!access_token) throw new Error('Access token not found');
+
+        const response = await API.post('/auth/logout', {
+            refresh: refresh_token
         });
         console.log(`Admin Access Token: ${response.data.access}`);
         console.log(`Admin Refresh Token: ${response.data.refresh}`);
@@ -77,12 +57,8 @@ export const logout = async () => {
 
 export const sendEmailOtp = async (email: string) => {
     try {
-        const response = await API.post('/api/email/otp', {
+        const response = await API.post('/email/otp', {
             email: email
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-            }
         });
         return response;
     } catch (error) {
@@ -93,12 +69,8 @@ export const sendEmailOtp = async (email: string) => {
 
 export const resendEmailOtp = async (email: string) => {
     try {
-        const response = await API.post('/api/otp-resend', {
+        const response = await API.post('/otp-resend', {
             email: email
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-            }
         });
         return response;
     } catch (error) {

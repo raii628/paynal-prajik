@@ -12,7 +12,7 @@ from django.contrib.auth.hashers import make_password
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def logout(request):
+def auth_logout(request):
     try:
         refresh_token = request.data.get('refresh_token')
         
@@ -79,6 +79,40 @@ def verify_otp(request):
         return Response({"error": "An error occurred during registration. Please try again later."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['POST'])
+def user_login(request):
+    try:
+        email = request.data.get('email')
+        password = request.data.get('password')
+        
+        if not email or not password:
+            return Response({'error': 'Email and password are required'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        user = CustomUsers.objects.filter(email=email).first()
+        if not user:
+            return Response({'error': 'User does not exist'}, status=status.HTTP_404_NOT_FOUND)
+            
+        auth_user = authenticate(request, username=email, password=password)
+        
+        if auth_user is None:
+            return Response({'error': 'Your password is incorrect'}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        role = 'admin' if user.is_admin else 'guest'
+        
+        token = RefreshToken.for_user(auth_user)
+        
+        return Response({
+            'message': f'{role.capitalize()} logged in successfully!',
+            'user': {
+                'email': auth_user.email,
+                'role': role
+            },
+            'access_token': str(token.access_token),
+            'refresh_token': str(token)
+        }, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
 def guest_register(request):
     try:
         email = request.data.get('email')
@@ -97,7 +131,7 @@ def guest_register(request):
         user = CustomUsers.objects.create_user(
             username=email,
             email=email,
-            password=make_password(password),
+            password=password,
             is_admin=False
         )
         
@@ -112,68 +146,6 @@ def guest_register(request):
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-@api_view(['POST'])
-def guest_login(request):
-    try:
-        email = request.data.get('email')
-        password = request.data.get('password')
-        
-        if not email or not password:
-            return Response({'error': 'Email and password are required'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        user = authenticate(request, email=email, password=password)
-        
-        if user is None:
-            return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        if user.is_admin:
-            return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        get_token = RefreshToken.for_user(user)
-        
-        return Response({
-            'message': 'User logged in successfully',
-            'user': {
-                'email': user.email,
-                'role': user.is_admin
-            },
-            'access_token': str(get_token.access_token),
-            'refresh_token': str(get_token)
-        }, status=status.HTTP_200_OK)
-    except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(['POST'])
-def admin_login(request):
-    try:
-        email = request.data.get('email')
-        password = request.data.get('password')
-        
-        if not email or not password:
-            return Response({'error': 'Email and password are required'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        user = authenticate(request, email=email, password=password)
-        
-        if user is None:
-            return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        if user.is_admin != True:
-            return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        refresh = RefreshToken.for_user(user)
-        
-        return Response({
-            'message': 'User logged in successfully',
-            'user': {
-                'email': user.email,
-                'role': user.is_admin
-            },
-            'access_token': str(refresh.access_token),
-            'refresh_token': str(refresh)
-        }, status=status.HTTP_200_OK)
-    except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-    
 @api_view(['GET'])
 def user_details(request):
     try:

@@ -1,22 +1,21 @@
 import { FC, ReactNode } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
+import { useUserContext } from "./AuthContext";
 
 interface ProtectedRouteProps {
-  role: string | null;
   requiredRole: string;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
-const ProtectedRoute: FC<ProtectedRouteProps> = ({ role, requiredRole, children }) => {
-  if (!localStorage.getItem('access_token') || role !== requiredRole) {
-    return <Navigate to="/" />
+const ProtectedRoute: FC<ProtectedRouteProps> = ({ requiredRole, children }) => {
+  const { isAuthenticated } = useUserContext();
+  const role = localStorage.getItem("role");
+
+  if (!isAuthenticated || role !== requiredRole) {
+    return <Navigate to="/" replace />;
   }
-  
-  return (
-    <>
-      {children}
-    </>
-  )
+
+  return children ? <>{children}</> : <Outlet />;
 }
 
 export default ProtectedRoute;

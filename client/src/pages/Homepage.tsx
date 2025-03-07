@@ -1,9 +1,14 @@
+import { Link } from "react-router-dom"
+import Footer from "../layout/Footer"
+import Navbar from "../layout/Navbar"
 
 const Homepage = () => {
   return (
-    <section>
-      
-    </section>
+    <>
+      <Navbar />
+      <Link to="/login" className="text-2xl underline">Login</Link>
+      <Footer />
+    </>
   )
 }
 
