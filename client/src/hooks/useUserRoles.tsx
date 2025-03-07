@@ -1,8 +1,18 @@
+import { useCallback } from "react";
+import { useUserContext } from "../contexts/AuthContext";
 
-const useUserRoles = () => {
-  return (
-    <div>useUserRoles</div>
-  )
-}
+const useUserRole = () => {
+  const { role, setRole } = useUserContext();
 
-export default useUserRoles
+  const changeRole = useCallback(() => {
+    const newRole = role === "admin" ? "guest" : "admin";
+    setRole(newRole);
+    localStorage.setItem("role", newRole);
+  }, [role, setRole]);
+
+  const changeRoleFromRegister = () => setRole("guest");
+
+  return { role, changeRole, changeRoleFromRegister };
+};
+
+export default useUserRole;

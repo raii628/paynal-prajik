@@ -19,7 +19,7 @@ const AdminDashboard = () => {
   
   return (
     <>
-      <div>AdminDashboard</div>
+      <div>Hello Admin!</div>
       <button onClick={handleLogout} className="bg-blue-500 p-4 border-2 border-gray-600 text-white rounded-md">Log Out</button>
     </>
   )

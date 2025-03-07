@@ -4,15 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { adminLogin, guestLogin } from '../services/Auth';
-import { jwtDecode } from 'jwt-decode';
-import Cookies from 'universal-cookie'
-
-interface DecodedToken {
-  user_id: number;
-  role: string;
-  expires: number;
-}
+import { login } from '../services/Auth';
+import { useUserContext } from '../contexts/AuthContext';
 
 const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
@@ -24,10 +17,7 @@ const Login = () => {
   }>({});
 
   const navigate = useNavigate();
-  const cookies = new Cookies();
-
-  const emailCredential = import.meta.env.ADMIN_EMAIL;
-  const passwordCredential = import.meta.env.ADMIN_PASS;
+  const { setIsAuthenticated } = useUserContext();
 
   const togglePassword = () => setPasswordVisible(!passwordVisible);
 
@@ -39,42 +29,23 @@ const Login = () => {
     setErrors({});
 
     try {
-      const loginMethod = email === emailCredential && password === passwordCredential
-        ? guestLogin
-        : adminLogin;
-
-      const { data, status } = await loginMethod(email, password);
-
-      if (status === 200) {
-        const { access, refresh, role } = data;
-
-        const { expires: expires } = jwtDecode<DecodedToken>(access);
-        const expirationDate = new Date(expires * 1000);
-
-        ['admin_token', 'admin_refresh'].forEach((cookieName, index) => {
-          cookies.set(cookieName, index === 0 ? access : refresh, {
-            path: '/',
-            httpOnly: true,
-            secure: true,
-            sameSite: 'none',
-            expires: expirationDate
-          });
-        });
-
-        localStorage.setItem('user_role', role);
-        navigate(role === 'admin' ? '/admin' : '/');
+      const response = await login(email, password);
+      if (response.status === 200) {
+        const { access_token, refresh_token, user } = response.data;
+        localStorage.setItem('role', user.role);
+        localStorage.setItem('access_token', access_token);
+        localStorage.setItem('refresh_token', refresh_token);
+        
+        setIsAuthenticated(true);
+        if (user.role === 'admin') {
+          navigate('/admin');
+        } else {
+          navigate('/guest');
+        }
       }
     } catch (error: any) {
-      // Centralized error handling for login
-      const errorFields = ['email', 'password'];
-      errorFields.forEach(field => {
-        if (error.response?.data?.[field]) {
-          setErrors(prev => ({
-            ...prev,
-            [field]: error.response.data[field]
-          }));
-        }
-      });
+      console.error(`Failed to login: ${error}`);
+      setErrors(error.response?.data || {});
     }
   };
 
@@ -83,7 +54,7 @@ const Login = () => {
       <div className="w-full max-w-md bg-opacity-5 rounded-xl border border-gray-400 dark:border md:mt-0 sm:max-w-md xl:p-0 dark:border-gray-700">
         <div className='p-6 space-y-4 md:space-y-6 sm:p-8'>
           <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-            Login to <span className='text-blue-600'>Moonlight Hotel</span>
+            Login to <span className='text-blue-600'>Azurea</span>
           </h1>
 
           <form onSubmit={loginSubmit} className="space-y-4 md:space-y-6">
