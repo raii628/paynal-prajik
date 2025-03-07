@@ -1,17 +1,21 @@
-import { Route, Routes } from "react-router-dom"
-import './App.css'
-import Login from './pages/Login'
-import Register from './pages/Register'
-import NotFound from './pages/_NotFound'
-import AdminDashboard from './pages/admin/AdminDashboard'
-import ProtectedRoute from "./contexts/ProtectedRoutes"
-import GuestDashboard from "./pages/guests/GuestDashboard"
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import NotFound from "./pages/_NotFound";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import ProtectedRoute from "./contexts/ProtectedRoutes";
+import GuestDashboard from "./pages/guests/GuestDashboard";
+import Footer from "./layout/Footer";
+import Navbar from "./layout/Navbar";
+import Homepage from "./pages/Homepage";
 
 const App = () => {
   return (
     <>
+      <Homepage />
       <Routes>
-        <Route path="/login" element={<Login />} />
+        {/* <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Register />} />
         <Route path="/guest" element={
           <ProtectedRoute role={localStorage.getItem("role")} requiredRole="guest">
@@ -23,10 +27,11 @@ const App = () => {
             <Route path="/" element={<AdminDashboard />} />
           </ProtectedRoute>
         } />
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<NotFound />} /> */}
       </Routes>
+      <Footer />
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
