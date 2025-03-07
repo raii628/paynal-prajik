@@ -1,7 +1,7 @@
 
 const GuestDashboard = () => {
   return (
-    <div>GuestDashboard</div>
+    <div>Hello Guest</div>
   )
 }
 

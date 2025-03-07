@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useState, useContext, ReactNode, FC } from "react";
+import { createContext, useState, useContext, ReactNode, FC, useEffect } from "react";
 
 interface UserDetails {
     username: string;
@@ -14,6 +14,7 @@ interface UserContextType {
     setIsAuthenticated: (value: boolean) => void;
     setUserDetails: (value: UserDetails) => void;
     setSessionExpired: (value: boolean) => void;
+    setRole: (value: string) => void;
 }
 
 const UserContext = createContext<UserContextType | any>(null);
@@ -25,14 +26,22 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
         email: ''
     });
     const [sessionExpired, setSessionExpired] = useState<boolean>(false);
+    const [role, setRole] = useState(() => {
+        return localStorage.getItem("role") || "guest";
+    });
 
+    useEffect(() => {
+        localStorage.setItem("role", role);
+    }, [role]);
+    
     const contextValue: UserContextType = {
         isAuthenticated,
         userDetails,
         sessionExpired,
         setIsAuthenticated,
         setUserDetails,
-        setSessionExpired
+        setSessionExpired,
+        setRole,
     }
 
     return (
