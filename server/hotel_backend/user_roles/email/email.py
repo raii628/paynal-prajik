@@ -1,7 +1,6 @@
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.conf import settings
 import random, os
-from datetime import datetime
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -9,7 +8,7 @@ load_dotenv()
 def send_otp_to_email(email, message):
     try:
         otp = random.randint(100000, 999999)
-        subject = f"Azurea Hotel Register OTP"
+        subject = f"Azurea Hotel OTP for Account Verification"
         otp_message = f"""
         <!DOCTYPE html>
         <html lang="en">
