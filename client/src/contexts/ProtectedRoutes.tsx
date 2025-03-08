@@ -14,14 +14,14 @@ const ProtectedRoute: FC<ProtectedRouteProps> = ({ requiredRole, children }) => 
   const refreshToken = localStorage.getItem("refresh_token");
   const role = localStorage.getItem("role")?.toLowerCase();
 
-  // If the user is not authenticated, redirect to login
+  // If the user is not authenticated, redirect to homepage
   if (!isAuthenticated || !accessToken || !refreshToken) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
   // If the user's role does not match, redirect them to their dashboard
   if (role !== requiredRole.toLowerCase()) {
-    return <Navigate to={role === 'admin' ? '/admin' : '/guest'} replace />;
+    return <Navigate to={role === 'admin' ? '/admin' : ''} replace />;
   }
 
   return children ? <>{children}</> : <Outlet />;

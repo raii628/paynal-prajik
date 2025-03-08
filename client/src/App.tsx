@@ -6,10 +6,7 @@ import ProtectedRoute from "./contexts/ProtectedRoutes";
 import useTokenHandler from "./hooks/useTokenHandler";
 import NotFound from "./pages/_NotFound";
 import AdminDashboard from "./pages/admin/AdminDashboard";
-import GuestDashboard from "./pages/guests/GuestDashboard";
 import Homepage from "./pages/Homepage";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
 import OTP from "./pages/OTP";
 
 const App = () => {
@@ -36,38 +33,10 @@ const App = () => {
               role === "admin" ? (
                 <Navigate to="/admin" replace />
               ) : (
-                <Navigate to="/guest" replace />
+                <Navigate to="/" replace />
               )
             ) : (
               <Homepage />
-            )
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            isAuthenticated ? (
-              role === "admin" ? (
-                <Navigate to="/admin" replace />
-              ) : (
-                <Navigate to="/guest" replace />
-              )
-            ) : (
-              <Login />
-            )
-          }
-        />
-        <Route
-          path="/signup"
-          element={
-            isAuthenticated ? (
-              role === "admin" ? (
-                <Navigate to="/admin" replace />
-              ) : (
-                <Navigate to="/guest" replace />
-              )
-            ) : (
-              <Register />
             )
           }
         />
@@ -76,7 +45,7 @@ const App = () => {
 
         {/* Role: Guest Routing (Protected) */}
         <Route element={<ProtectedRoute requiredRole="guest" />}>
-          <Route path="/guest" element={<GuestDashboard />} />
+          <Route path="/" element={<Homepage />} />
         </Route>
 
         {/* Role: Admin Routing (Protected) */}

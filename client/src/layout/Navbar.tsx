@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 import { Link } from "react-router-dom";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
-import { authButtons, navLinks } from "../constants/Navbar";
+import LoginModal from "../components/LoginModal";
+import SignupModal from "../components/SignupModal";
 
-const Navbar = () => {
+const Navbar: FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [loginModal, setLoginModal] = useState(false);
   const [registerModal, setRegisterModal] = useState(false);
@@ -36,7 +35,6 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Navbar */}
       <nav
         className={`sticky top-0 left-0 w-full py-2 px-10 flex justify-between items-center z-40 transition-all duration-75 ${
           isScrolled
@@ -85,12 +83,18 @@ const Navbar = () => {
 
       {loginModal && (
         <div className="fixed inset-0 bg-black/50 bg-opacity-50 z-50">
-          <Login toggleLoginModal={toggleLoginModal} />
+          <LoginModal 
+            toggleLoginModal={toggleLoginModal} 
+            openSignupModal={toggleRegisterModal}
+          />
         </div>
       )}
       {registerModal && (
         <div className="fixed inset-0 bg-black/50 bg-opacity-50 z-50">
-          <Register toggleRegisterModal={toggleRegisterModal} />
+          <SignupModal 
+            toggleRegisterModal={toggleRegisterModal} 
+            openLoginModal={toggleLoginModal}
+          />
         </div>
       )}
     </>
