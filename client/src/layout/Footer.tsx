@@ -72,16 +72,12 @@ const Footer = () => {
         <div className="flex gap-5">
           <i className="fa-brands fa-instagram text-xl transition-all duration-300 border border-grey-800 p-2 rounded-full hover:bg-gradient-to-r from-[#feda75] via-[#fa7e1e] via-[#d62976] via-[#962fbf] to-[#4f5bd5] hover:bg-clip-text hover:text-transparent"></i>
 
-          {/* Facebook */}
           <i className="fa-brands fa-facebook text-xl transition-all duration-300 border border-black p-2 rounded-full hover:text-blue-500 hover:bg-white"></i>
 
-          {/* X (Twitter) */}
           <i className="fa-brands fa-x-twitter text-xl transition-all duration-300 border border-black p-2 rounded-full hover:text-white hover:bg-black"></i>
 
-          {/* TikTok */}
           <i className="fa-brands fa-tiktok text-xl transition-all duration-300 border border-black p-2 rounded-full hover:text-white hover:bg-black"></i>
 
-          {/* LinkedIn */}
           <i className="fa-brands fa-linkedin text-xl transition-all duration-300 border border-black p-2 rounded-full hover:text-[#0077b5] hover:bg-white"></i>
         </div>
       </section>
