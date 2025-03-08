@@ -8,6 +8,7 @@ from .models import CustomUsers
 from .serializers import CustomUserSerializer
 from .email.email import send_otp_to_email
 from django.core.cache import cache
+from .validation.validation import RegistrationForm
 from django.contrib.auth.hashers import make_password
 
 @api_view(['POST'])
@@ -28,18 +29,43 @@ def auth_logout(request):
 def send_register_otp(request):
     try:     
         email = request.data.get("email")
+        password = request.data.get("password")
+        confirm_password = request.data.get("confirm_password")
+        
+        if not email or not password or not confirm_password:
+            return Response({"error": "Please fill out the fields"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        form = RegistrationForm({
+            'email': email,
+            'password': password,
+            'confirm_password': confirm_password
+        })
+        
+        if not form.is_valid():
+            return Response({"error": form.errors}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if CustomUsers.objects.filter(email=email).exists():
+            return Response({"error": "User already exists"}, status=status.HTTP_400_BAD_REQUEST)
+        
         purpose = "account_verification"
         cache_key = f"{email}_{purpose}"
         
         if cache.get(cache_key):
-            return Response({"error": "OTP already sent for account verification. Please wait for it to expire."}, status=400)
+            return Response({"error": "OTP already sent for account verification. Please wait for it to expire."}, status=status.HTTP_400_BAD_REQUEST)
         
         message = "Your OTP for account verification"
         otp_generated = send_otp_to_email(email, message)
+        
+        if otp_generated is None:
+            return Response({"error": "Failed to send OTP. Please try again later."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
         OTP_EXPIRATION_TIME = 120
         cache.set(cache_key, otp_generated, OTP_EXPIRATION_TIME)
         
-        return Response({"success": "OTP sent for account verification"}, status=status.HTTP_200_OK)
+        return Response({
+            "success": "OTP sent for account verification",
+            'otp': otp_generated
+        }, status=status.HTTP_200_OK)
     except Exception as e:
         print(f"{e}")
         return Response({"error": "Something went wrong"}, status=500)
@@ -50,32 +76,39 @@ def verify_otp(request):
         email = request.data.get("email")
         password = request.data.get("password")
         received_otp = request.data.get("otp")
+        
+        if not email or not password or not received_otp:
+            return Response({"error": "Email, password, and OTP are required"}, status=status.HTTP_400_BAD_REQUEST)
 
-        cache_key = f"{email}_account_verification"
+        purpose = "account_verification"
+        cache_key = f"{email}_{purpose}"
         cached_otp = cache.get(cache_key)
 
         if cached_otp is None:
             return Response({"error": "OTP expired. Please request a new one."}, status=status.HTTP_404_NOT_FOUND)
 
-        if str(cached_otp) == str(received_otp):
-            user = CustomUsers.objects.create(
-                email=email,
-                password=make_password(password)  
-            )
-            user.save()
-            
-            refresh = RefreshToken.for_user(user)
-            
-            return Response({
-                "success": "User registered successfully.",
-                "access": str(refresh.access_token),
-                "refresh": str(refresh),
-            }, status=status.HTTP_200_OK)
-        else:
-            return Response({"error": "Incorrect OTP code. Please try again."}, status=status.HTTP_400_BAD_REQUEST)
+        if str(cached_otp) != str(received_otp):
+            return Response({"error": "Incorrect OPT code. Please try again"}, status=status.HTTP_400_BAD_REQUEST)
     
+        user = CustomUsers.objects.create_user(
+            username=email,
+            email=email,
+            password=make_password(password),
+            is_admin=False
+        )
+        user.save()
+        
+        cache.delete(cache_key)
+        
+        refresh = RefreshToken.for_user(user)
+        
+        return Response({
+            'success': 'User registered successfully',
+            'access_token': str(refresh.access_token),
+            'refresh_token': str(refresh)
+        }, status=status.HTTP_201_CREATED)
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"OTP Error: {e}")
         return Response({"error": "An error occurred during registration. Please try again later."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['POST'])
