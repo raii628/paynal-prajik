@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useUserContext } from "./contexts/AuthContext";
 import ProtectedRoute from "./contexts/ProtectedRoutes";
-import useTokenHandler from './hooks/useTokenHandler';
+import useTokenHandler from "./hooks/useTokenHandler";
 import NotFound from "./pages/_NotFound";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import GuestDashboard from "./pages/guests/GuestDashboard";
@@ -26,42 +26,53 @@ const App = () => {
     }
   }, [setIsAuthenticated]);
 
-
   return (
     <>
       <Routes>
         <Route
           path="/"
           element={
-            isAuthenticated
-              ? role === 'admin'
-                ? <Navigate to='/admin' replace />
-                : <Navigate to='/guest' replace />
-              : <Homepage />
+            isAuthenticated ? (
+              role === "admin" ? (
+                <Navigate to="/admin" replace />
+              ) : (
+                <Navigate to="/guest" replace />
+              )
+            ) : (
+              <Homepage />
+            )
           }
         />
         <Route
           path="/login"
           element={
-            isAuthenticated
-              ? role === "admin"
-                ? <Navigate to="/admin" replace />
-                : <Navigate to="/guest" replace />
-              : <Login />
+            isAuthenticated ? (
+              role === "admin" ? (
+                <Navigate to="/admin" replace />
+              ) : (
+                <Navigate to="/guest" replace />
+              )
+            ) : (
+              <Login />
+            )
           }
         />
         <Route
           path="/signup"
           element={
-            isAuthenticated
-              ? role === "admin"
-                ? <Navigate to="/admin" replace />
-                : <Navigate to="/guest" replace />
-              : <Register />
+            isAuthenticated ? (
+              role === "admin" ? (
+                <Navigate to="/admin" replace />
+              ) : (
+                <Navigate to="/guest" replace />
+              )
+            ) : (
+              <Register />
+            )
           }
         />
 
-        <Route path="/otp" element={<OTP /> } />
+        <Route path="/otp" element={<OTP />} />
 
         {/* Role: Guest Routing (Protected) */}
         <Route element={<ProtectedRoute requiredRole="guest" />}>
