@@ -17,6 +17,38 @@ export const login = async (email: string, password: string) => {
     }
 };
 
+export const sendRegisterOtp = async (email: string, password: string, confirmPassword: string) => {
+    try {
+        const response = await API.post('/auth/register', {
+            email: email,
+            password: password,
+            confirm_password: confirmPassword
+        }, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        return response;
+    } catch (error) {
+        console.error(`Failed to send register OTP: ${error}`);
+        throw error;
+    }
+};
+
+export const verifyOtp = async (email: string, password: string, otp: string) => {
+    try {
+        const response = await API.post('/auth/verify', {
+            email: email,
+            password: password,
+            otp: otp
+        });
+        return response;
+    } catch (error) {
+        console.error(`Failed to verify OTP: ${error}`);
+        throw error;
+    }
+}
+
 export const guestSignup = async (email: string, password: string, confirmPassword: string) => {
     try {
         const response = await API.post('/auth/signup', {
@@ -51,30 +83,6 @@ export const logout = async () => {
         return response;
     } catch (error) {
         console.error(`Failed to logout: ${error}`);
-        throw error;
-    }
-};
-
-export const sendEmailOtp = async (email: string) => {
-    try {
-        const response = await API.post('/email/otp', {
-            email: email
-        });
-        return response;
-    } catch (error) {
-        console.error(`Failed to send OTP: ${error}`);
-        throw error;
-    }
-};
-
-export const resendEmailOtp = async (email: string) => {
-    try {
-        const response = await API.post('/otp-resend', {
-            email: email
-        });
-        return response;
-    } catch (error) {
-        console.error(`Failed to resend OTP: ${error}`);
         throw error;
     }
 };

@@ -10,6 +10,7 @@ import GuestDashboard from "./pages/guests/GuestDashboard";
 import Homepage from "./pages/Homepage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import OTP from "./pages/OTP";
 
 const App = () => {
   const { isAuthenticated, setIsAuthenticated } = useUserContext();
@@ -59,6 +60,8 @@ const App = () => {
               : <Register />
           }
         />
+
+        <Route path="/otp" element={<OTP /> } />
 
         {/* Role: Guest Routing (Protected) */}
         <Route element={<ProtectedRoute requiredRole="guest" />}>

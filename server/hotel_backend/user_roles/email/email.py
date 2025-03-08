@@ -1,13 +1,16 @@
 from django.core.mail import send_mail
 from django.conf import settings
-import random
+import random, os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def send_otp_to_email(email, message):
     try:
         otp = random.randint(100000, 999999)
         subject = f"Moonlight Hotel Register OTP"
         otp_message = f"{message} is: {otp}"
-        email_from = settings.EMAIL_HOST
+        email_from = os.getenv('EMAIL_HOST_USER')
         send_mail(subject, otp_message, email_from, [email])
         return otp
     except Exception as e:
@@ -19,7 +22,7 @@ def send_reset_password(email):
         otp = random.randint(100000, 999999)
         subject = f"Moonlight Hotel Reset Password"
         message = f"Your OTP to reset password is: {otp}"
-        email_from = settings.EMAIL_HOST
+        email_from = settings.EMAIL_HOST_USER
         send_mail(subject, message, email_from, [email])
         return otp
     except Exception as e:
