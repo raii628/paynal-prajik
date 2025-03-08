@@ -6,21 +6,10 @@ import NotFound from "./pages/_NotFound";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ProtectedRoute from "./contexts/ProtectedRoutes";
 import GuestDashboard from "./pages/guests/GuestDashboard";
-import Footer from "./layout/Footer";
-import Navbar from "./layout/Navbar";
 import Homepage from "./pages/Homepage";
-import './App.css'
-import { Route, Routes } from "react-router-dom"
-import Login from './pages/Login'
-import Register from './pages/Register'
-import NotFound from './pages/_NotFound'
-import AdminDashboard from './pages/admin/AdminDashboard'
-import ProtectedRoute from "./contexts/ProtectedRoutes"
-import GuestDashboard from "./pages/guests/GuestDashboard"
-import Homepage from "./pages/Homepage"
-import { useUserContext } from "./contexts/AuthContext"
-import { useEffect } from "react"
-import useTokenHandler from './hooks/useTokenHandler'
+import { useUserContext } from "./contexts/AuthContext";
+import { useEffect } from "react";
+import useTokenHandler from "./hooks/useTokenHandler";
 
 const App = () => {
   const { setIsAuthenticated } = useUserContext();
@@ -33,7 +22,6 @@ const App = () => {
       setIsAuthenticated(true);
     }
   }, [setIsAuthenticated]);
-
 
   return (
     <>
@@ -49,7 +37,6 @@ const App = () => {
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
-      <Footer />
     </>
   );
 };
