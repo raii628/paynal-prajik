@@ -12,7 +12,6 @@ from .validation.validation import RegistrationForm
 from django.contrib.auth.hashers import make_password
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
 def auth_logout(request):
     try:
         refresh_token = request.data.get('refresh_token')

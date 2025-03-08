@@ -47,7 +47,7 @@ export const verifyOtp = async (email: string, password: string, otp: string) =>
         console.error(`Failed to verify OTP: ${error}`);
         throw error;
     }
-}
+};
 
 export const guestSignup = async (email: string, password: string, confirmPassword: string) => {
     try {
@@ -72,10 +72,12 @@ export const logout = async () => {
 
         const response = await API.post('/auth/logout', {
             refresh: refresh_token
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
         });
-        console.log(`Admin Access Token: ${response.data.access}`);
-        console.log(`Admin Refresh Token: ${response.data.refresh}`);
-        
+
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('role');
