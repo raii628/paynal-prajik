@@ -9,10 +9,19 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: FC<ProtectedRouteProps> = ({ requiredRole, children }) => {
   const { isAuthenticated } = useUserContext();
-  const role = localStorage.getItem("role");
 
-  if (!isAuthenticated || role !== requiredRole) {
-    return <Navigate to="/" replace />;
+  const accessToken = localStorage.getItem("access_token");
+  const refreshToken = localStorage.getItem("refresh_token");
+  const role = localStorage.getItem("role")?.toLowerCase();
+
+  // If the user is not authenticated, redirect to login
+  if (!isAuthenticated || !accessToken || !refreshToken) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // If the user's role does not match, redirect them to their dashboard
+  if (role !== requiredRole.toLowerCase()) {
+    return <Navigate to={role === 'admin' ? '/admin' : '/guest'} replace />;
   }
 
   return children ? <>{children}</> : <Outlet />;

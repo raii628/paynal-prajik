@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import { authButtons, navLinks } from "../constants/Navbar";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);

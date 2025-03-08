@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { sendRegisterOtp } from "../services/Auth";
 
 const Register = ({ toggleRegisterModal }) => {
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
@@ -32,22 +34,35 @@ const Register = ({ toggleRegisterModal }) => {
     e: React.ChangeEvent<HTMLInputElement>
   ) => setConfirmPassword(e.target.value);
 
-  const handleRegisterSubmit = (e: React.FormEvent) => {
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
 
-    if (password !== confirmPassword) {
+    try {
+      const response = await sendRegisterOtp(email, password, confirmPassword);
+      if (response.status === 200) {
+        navigate("/otp", { state: { email, password } });
+      }
+    } catch (error: any) {
+      console.error(`Failed to register: ${error}`);
+      if (!error.response) {
+        setErrors({ general: "Something went wrong. Please try again later." });
+        return;
+      }
+      const { data, status } = error.response;
+
+      if (status === 500) {
+        setErrors({ general: "Something went wrong. Please try again later." });
+        return;
+      }
+
       setErrors((prevErrors) => ({
         ...prevErrors,
-        confirmPassword: "Passwords do not match",
+        email: data.email || "",
+        password: data.password || "",
+        general: data.message || "",
       }));
-      return;
     }
-
-    // Simulate successful registration and redirect to OTP page
-    // In a real scenario, you'd call an API to register the user and handle responses
-    console.log("Registration details:", { email, password });
-    navigate("/guest/otp");
   };
 
   return (

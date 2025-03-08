@@ -40,7 +40,7 @@ const Footer = () => {
       <h1 className="text-2xl text-blue-700 mb-2">Azurea Haven</h1>
       <i className="fa-solid fa-location-dot text-violet-600"></i>
       <h6 className="inline-block ml-1 text-sm italic mb-5">
-        Brgy.Bubukal Sta. Cruz, Laguna
+        Brgy. Bubukal Sta. Cruz, Laguna
       </h6>
       <section className="flex justify-between py-2">
         {footerSections.map((section, index) => (
@@ -66,13 +66,14 @@ const Footer = () => {
           <span className="border-r-2 border-gray-500 pr-2 mr-2">
             Privacy Policy
           </span>
-          &copy; Copyrights 2025 Azurea. All rights reserved.
+          &copy; Copyright {new Date().getFullYear()} Azurea. All rights
+          reserved.
         </h1>
         <div className="flex gap-5">
           <i className="fa-brands fa-instagram text-xl transition-all duration-300 border border-grey-800 p-2 rounded-full hover:bg-gradient-to-r from-[#feda75] via-[#fa7e1e] via-[#d62976] via-[#962fbf] to-[#4f5bd5] hover:bg-clip-text hover:text-transparent"></i>
 
           {/* Facebook */}
-          <i className="fa-brands fa-facebook text-xl transition-all duration-300 border   border-black p-2 rounded-full hover:text-blue-500 hover:bg-white"></i>
+          <i className="fa-brands fa-facebook text-xl transition-all duration-300 border border-black p-2 rounded-full hover:text-blue-500 hover:bg-white"></i>
 
           {/* X (Twitter) */}
           <i className="fa-brands fa-x-twitter text-xl transition-all duration-300 border border-black p-2 rounded-full hover:text-white hover:bg-black"></i>
