@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { authButtons, navLinks } from "../constants/Navbar";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -12,9 +14,6 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navLinks = ["Home", "About", "Rooms", "Services", "Promo"];
-  const authButtons = ["Login", "Sign Up"];
-
   return (
     <nav
       className={`sticky top-0 left-0 w-full py-4 px-10 flex justify-between items-center z-50 transition-all duration-75 ${
@@ -23,7 +22,7 @@ const Navbar = () => {
           : "bg-transparent text-white py-4"
       }`}
     >
-      <div className="flex justify-between items-center gap-12">
+      <div className="px-4 md:px-10 flex justify-between items-center">
         <div>
           <h1 className="text-xl bg-gradient-to-r from-[#7300FF] to-[#08D3FC] bg-clip-text text-transparent cursor-pointer">
             <i className="fa-solid fa-moon text-5xl mr-2"></i>
@@ -35,22 +34,24 @@ const Navbar = () => {
       </div>
       <ul className="flex items-center gap-5">
         {navLinks.map((link, index) => (
-          <li
+          <Link
             key={index}
+            to={link.link}
             className="text-sm font-bold cursor-pointer hover:text-[#3C69FF] transition-all duration-300 p-3"
           >
-            {link}
-          </li>
+            {link.text}
+          </Link>
         ))}
       </ul>
       <div className="flex items-center gap-5">
         {authButtons.map((button, index) => (
-          <button
+          <Link
             key={index}
+            to={button.link}
             className="text-sm font-bold rounded-md border-2 px-5 py-1 cursor-pointer hover:bg-gradient-to-r from-[#7300FF] to-[#08D3FC] transition-all duration-300"
           >
-            {button}
-          </button>
+            {button.text}
+          </Link>
         ))}
       </div>
     </nav>

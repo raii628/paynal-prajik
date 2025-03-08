@@ -22,7 +22,7 @@ const Footer = () => {
       </section>
       <section className="text-center py-5">
         <h1 className="text-xs border-t-2 border-gray-200 pt-5">
-          &copy; 2025 Azurea. All rights reserved. Azurea and its logo are
+          &copy; {new Date().getFullYear()} Azurea. All rights reserved. Azurea and its logo are
           trademarks of Azurea, Inc.
         </h1>
       </section>
