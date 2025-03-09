@@ -120,6 +120,9 @@ users subfolders, etc>`
 5. Run `py manage.py migrate <name of the app, e.g., users 
 subfolders, etc>`
 
+13. (MOST IMPORTANT) - Always pull the latest and recent changes
+in main branch before working
+
 Optional: Updating README.md for extra documentation
 
 ************************(END OF FILE)******************************

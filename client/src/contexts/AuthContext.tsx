@@ -5,25 +5,17 @@ import { createContext, useState, useContext, ReactNode, FC } from "react";
 interface UserDetails {
     username: string;
     email: string;
-    profileImage?: string;
-}
-
-interface UserSignUp {
-    username: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
 }
 
 interface UserContextType {
     isAuthenticated: boolean;
     userDetails: UserDetails | null;
-    userSignUp: UserSignUp;
     sessionExpired: boolean;
+    role?: string;
     setIsAuthenticated: (value: boolean) => void;
     setUserDetails: (value: UserDetails) => void;
-    setUserSignUp: (value: UserSignUp) => void;
     setSessionExpired: (value: boolean) => void;
+    setRole: (value: string) => void;
 }
 
 const UserContext = createContext<UserContextType | any>(null);
@@ -32,22 +24,17 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
     const [sessionExpired, setSessionExpired] = useState<boolean>(false);
-    const [userSignUp, setUserSignUp] = useState<UserSignUp>({
-        username: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-    });
-
+    const [role, setRole] = useState<string>("");
+    
     const contextValue: UserContextType = {
         isAuthenticated,
         userDetails,
-        userSignUp,
         sessionExpired,
+        role,
         setIsAuthenticated,
         setUserDetails,
-        setUserSignUp,
-        setSessionExpired
+        setSessionExpired,
+        setRole,
     }
 
     return (

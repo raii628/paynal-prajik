@@ -181,7 +181,7 @@ def validate_password_django(password, confirm):
     # 3. At least one number
     # 4. No spaces
     # 5. Minimum length of 6 characters
-    password_regex = r"/^(?=.*[A-Z])(?=.*[@$!%*?&])(?=.*\d)(?!.*\s).{6,}$/"
+    password_regex = r"^(?=.*[A-Z])(?=.*[@$!%*?&])(?=.*\d)(?!.*\s).{6,}$"
     password_validator = RegexValidator(
         regex=password_regex,
         message="Password must contain at least one uppercase letter, one special character, one number, and no spaces.",
