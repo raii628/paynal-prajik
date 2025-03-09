@@ -6,12 +6,16 @@ import useTokenHandler from "./hooks/useTokenHandler";
 import NotFound from "./pages/_NotFound";
 import Homepage from "./pages/Homepage";
 import OTP from "./pages/OTP";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import LoadingHydrate from "./motions/LoadingHydrate";
+import { Suspense } from "react";
+
 const App = () => {
   const { isAuthenticated, role } = useUserContext();
   useTokenHandler();
 
   return (
-    <>
+    <Suspense fallback={<LoadingHydrate />}>
       <Routes>
         <Route
           path="/"
@@ -27,14 +31,17 @@ const App = () => {
             )
           }
         />
+        
         <Route path="/otp" element={<OTP />} />
-        Role: Admin Routing (Protected)
+
+        {/* Admin Routes: Protected */}
         <Route element={<ProtectedRoute requiredRole="admin" />}>
           <Route path="/admin" element={<AdminDashboard />} />
         </Route>
+
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </>
+    </Suspense>
   );
 };
 
