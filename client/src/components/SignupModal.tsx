@@ -95,11 +95,11 @@ const SignupModal: FC<SignupModalProps> = ({ toggleRegisterModal, openLoginModal
           onClick={toggleRegisterModal}
         ></i>
         <div className="p-7 space-y-4 md:space-y-6 sm:p-9">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2 tracking-wide">
+          <h1 className="text-4xl text-center font-bold text-gray-800 mb-2 tracking-wide">
             Register to <span className="text-blue-600">Azurea</span>
           </h1>
-          <h3 className="text-normal text-gray-500 tracking-wide mb-4">
-            Azurea Hotel Management <br /> System
+          <h3 className="text-normal text-center text-gray-500 tracking-wide mb-4">
+            Azurea Hotel Management System
           </h3>
 
           <div className="border-b-2 border-gray-300 mb-4"></div>

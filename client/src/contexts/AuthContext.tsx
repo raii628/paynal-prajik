@@ -27,11 +27,15 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
     });
     const [sessionExpired, setSessionExpired] = useState<boolean>(false);
     const [role, setRole] = useState(() => {
-        return localStorage.getItem("role") || "guest";
+        return localStorage.getItem("role") || "";
     });
 
     useEffect(() => {
-        localStorage.setItem("role", role);
+        if (role) {
+            localStorage.setItem("role", role);
+        } else {
+            localStorage.removeItem("role");
+        }
     }, [role]);
     
     const contextValue: UserContextType = {

@@ -33,7 +33,7 @@ const App = () => {
               role === "admin" ? (
                 <Navigate to="/admin" replace />
               ) : (
-                <Navigate to="/" replace />
+                <Homepage />
               )
             ) : (
               <Homepage />
@@ -44,11 +44,13 @@ const App = () => {
         <Route path="/otp" element={<OTP />} />
 
         {/* Role: Guest Routing (Protected) */}
-        <Route element={<ProtectedRoute requiredRole="guest" />}>
+        
+        {/* <Route element={<ProtectedRoute requiredRole="guest" />}>
           <Route path="/" element={<Homepage />} />
-        </Route>
+        </Route> */}
 
         {/* Role: Admin Routing (Protected) */}
+        
         <Route element={<ProtectedRoute requiredRole="admin" />}>
           <Route path="/admin" element={<AdminDashboard />} />
         </Route>

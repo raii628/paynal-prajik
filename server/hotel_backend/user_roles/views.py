@@ -144,40 +144,6 @@ def user_login(request):
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-@api_view(['POST'])
-def guest_register(request):
-    try:
-        email = request.data.get('email')
-        password = request.data.get('password')
-        confirm_password = request.data.get('confirm_password')
-        
-        if not email or not password or not confirm_password:
-            return Response({'error': 'Please fill out the fields'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        if CustomUsers.objects.filter(email=email).exists():
-            return Response({'error': 'User already exists'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        if password != confirm_password:
-            return Response({'error': 'Passwords do not match'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        user = CustomUsers.objects.create_user(
-            username=email,
-            email=email,
-            password=password,
-            is_admin=False
-        )
-        
-        return Response({
-            'message': 'User registered successfully',
-            'user': {
-                'email': user.email,
-                'role': user.is_admin
-            }
-        }, status=status.HTTP_201_CREATED)
-        
-    except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 @api_view(['GET'])
 def user_details(request):
     try:

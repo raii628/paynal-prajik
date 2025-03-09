@@ -2,10 +2,12 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../../services/Auth"
 import { useState } from "react";
 import Modal from "../../components/Modal";
+import { useUserContext } from "../../contexts/AuthContext";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const { setIsAuthenticated, setRole } = useUserContext();
 
   const modalCancel = () => setIsModalOpen(!isModalOpen);
 
@@ -15,12 +17,15 @@ const AdminDashboard = () => {
       if (response.status === 200) {
         localStorage.removeItem('admin_token');
         localStorage.removeItem('admin_refresh');
+        localStorage.removeItem('role');
+        setIsAuthenticated(false);
+        setRole('');
+        navigate('/');
       }
-      navigate('/');
     } catch (error) {
       console.error(`Failed to logout: ${error}`);
     }
-  }
+  };
   
   return (
     <>
