@@ -1,7 +1,6 @@
 import { footerSections } from "../constants/Footer";
 
 const Footer = () => {
-
   return (
     <footer className="relative bg-[#eff3f7] px-15 py-5">
       <h1 className="text-2xl text-blue-700 mb-2">Azurea Hotel</h1>
@@ -37,15 +36,15 @@ const Footer = () => {
           reserved.
         </h1>
         <div className="flex gap-5">
-          <i className="fa-brands fa-instagram text-xl transition-all duration-300 border border-grey-800 p-2 rounded-full hover:bg-gradient-to-r from-[#feda75] via-[#fa7e1e] via-[#d62976] via-[#962fbf] to-[#4f5bd5] hover:bg-clip-text hover:text-transparent"></i>
+          <i className="fa-brands fa-instagram text-xl transition-all duration-300 border border-gray-800 p-2 rounded-full hover:bg-black hover:text-white"></i>
 
-          <i className="fa-brands fa-facebook text-xl transition-all duration-300 border border-black p-2 rounded-full hover:text-blue-500 hover:bg-white"></i>
+          <i className="fa-brands fa-facebook-f text-xl transition-all duration-300 border border-black p-2 px-3 rounded-full hover:text-white hover:bg-blue-500"></i>
 
           <i className="fa-brands fa-x-twitter text-xl transition-all duration-300 border border-black p-2 rounded-full hover:text-white hover:bg-black"></i>
 
           <i className="fa-brands fa-tiktok text-xl transition-all duration-300 border border-black p-2 rounded-full hover:text-white hover:bg-black"></i>
 
-          <i className="fa-brands fa-linkedin text-xl transition-all duration-300 border border-black p-2 rounded-full hover:text-[#0077b5] hover:bg-white"></i>
+          <i className="fa-brands fa-linkedin-in text-xl transition-all duration-300 border border-black p-2 rounded-full hover:bg-[#0077b5] hover:text-white"></i>
         </div>
       </section>
     </footer>
