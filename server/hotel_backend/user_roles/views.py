@@ -12,15 +12,50 @@ from .validation.validation import RegistrationForm
 from django.contrib.auth.hashers import make_password
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def auth_logout(request):
     try:
-        refresh_token = request.data.get('refresh_token')
+        # refresh_token = request.data.get('refresh_token')
         
-        if refresh_token:
-            token = RefreshToken(refresh_token)
-            token.blacklist()
+        # if refresh_token:
+        #     token = RefreshToken(refresh_token)
+        #     token.blacklist()
         logout(request)
-        return Response({'message': 'User logged out successfully'}, status=status.HTTP_200_OK)
+        
+        response = Response({'message': 'User logged out successfully'}, status=status.HTTP_200_OK)
+        
+        response.delete_cookie('access_token')
+        response.delete_cookie('refresh_token')
+        
+        return response
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def change_password(request):
+    try:
+        user = request.user
+        
+        old_password = request.data.get('old_password')
+        new_password = request.data.get('new_password')
+        confirm_new_password = request.data.get('confirm_new_password')
+        
+        if not old_password or not new_password or not confirm_new_password:
+            return Response({'error': 'Old password, new password, and confirm new password are required'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if new_password != confirm_new_password:
+            return Response({'error': 'New password and confirm new password do not match'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if not user.check_password(old_password):
+            return Response({'error': 'Old password is incorrect'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        user.set_password(new_password)
+        user.save()
+        
+        return Response({
+            'message': 'Password changed successfully'
+        }, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -132,7 +167,7 @@ def user_login(request):
         
         token = RefreshToken.for_user(auth_user)
         
-        return Response({
+        response = Response({
             'message': f'{role.capitalize()} logged in successfully!',
             'user': {
                 'email': auth_user.email,
@@ -141,6 +176,26 @@ def user_login(request):
             'access_token': str(token.access_token),
             'refresh_token': str(token)
         }, status=status.HTTP_200_OK)
+        
+        response.set_cookie(
+            key="access_token",
+            value=str(token.access_token),
+            httponly=True,
+            secure=False,
+            samesite='Lax',
+            max_age=3600
+        )
+        
+        response.set_cookie(
+            key="refresh_token",
+            value=str(token),
+            httponly=True,
+            secure=False,
+            samesite='Lax',
+            max_age=86400
+        )
+        
+        return response
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

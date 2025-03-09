@@ -7,8 +7,9 @@ export const login = async (email: string, password: string) => {
             password: password
         }, {
             headers: {
-                'Content-Type': 'application/json'
-            }
+                'Content-Type': 'application/json',
+            },
+            withCredentials: true
         });
         return response;
     } catch (error) {
@@ -75,7 +76,9 @@ export const logout = async () => {
         }, {
             headers: {
                 'Content-Type': 'application/json',
-            }
+                'Authorization': `Bearer ${access_token}`
+            },
+            withCredentials: true
         });
 
         localStorage.removeItem('access_token');
