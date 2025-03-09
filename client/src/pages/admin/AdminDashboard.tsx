@@ -42,7 +42,7 @@ const AdminDashboard = () => {
           </h1>
 
           <div></div>
-          {/* <div>Hello Admin!</div>
+          <div>Hello Admin!</div>
           <button
             onClick={() => setIsModalOpen(true)}
             className="bg-blue-500 p-4 border-2 border-gray-600 text-white rounded-md"
@@ -59,7 +59,7 @@ const AdminDashboard = () => {
             onConfirm={handleLogout}
             confirmText="Log Out"
             cancelText="Cancel"
-          /> */}
+          />
         </div>
       </div>
     </>

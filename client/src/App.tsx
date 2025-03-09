@@ -14,7 +14,7 @@ const App = () => {
   return (
     <>
       <AdminDashboard />
-      {/* <Routes>
+      <Routes>
         <Route
           path="/"
           element={
@@ -35,7 +35,7 @@ const App = () => {
           <Route path="/admin" element={<AdminDashboard />} />
         </Route>
         <Route path="*" element={<NotFound />} />
-      </Routes> */}
+      </Routes>
     </>
   );
 };
