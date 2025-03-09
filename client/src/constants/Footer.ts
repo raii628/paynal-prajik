@@ -1,49 +1,35 @@
 export const footerSections = [
   {
-    title: "Company",
-    links: [
-      "About",
-      "Jobs",
-      "List Your Property",
-      "Partnerships",
-      "Newsroom",
-      "Investor Relations",
-      "Advertising",
-      "Affiliate Marketing",
-      "Feedback",
-    ],
+    title: "Navigation",
+    links: ["Home", "Rooms", "Booking", "Services", "Contact"],
   },
   {
-    title: "Explore",
+    title: "Reservations",
     links: [
-      "Travel Guide",
-      "Hotels",
-      "Vacation Rentals",
-      "Vacation Packages",
-      "Domestic Flights",
-      "Car Rentals",
-      "All Accommodation Types",
-      "Loyalty Program",
-    ],
-  },
-  {
-    title: "Policies",
-    links: [
-      "Privacy Policy",
-      "Cookie Policy",
-      "Terms of Use",
-      "Accessibility",
-      "Your Privacy Choices",
-      "Content Guidelines",
-    ],
-  },
-  {
-    title: "Help",
-    links: [
-      "Support",
+      "Book a Room",
+      "Special Offers",
       "Cancel Booking",
-      "Refund Information",
-      "Travel Documents",
+      "Modify Reservation",
+      "Group Reservations",
+    ],
+  },
+  {
+    title: "Support",
+    links: [
+      "FAQs",
+      "Customer Support",
+      "Refund Policies",
+      "Privacy Policy",
+      "Terms & Conditions",
+    ],
+  },
+  {
+    title: "Contact",
+    links: [
+      "Hotel Address",
+      "Phone: 098-765-4321",
+      "Email: support@azureahotel.com",
+      "Social Media",
     ],
   },
 ];

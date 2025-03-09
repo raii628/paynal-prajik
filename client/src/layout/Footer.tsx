@@ -1,43 +1,10 @@
+import { footerSections } from "../constants/Footer";
+
 const Footer = () => {
-  const footerSections = [
-    {
-      title: "Navigation",
-      links: ["Home", "Rooms", "Booking", "Services", "Contact"],
-    },
-    {
-      title: "Reservations",
-      links: [
-        "Book a Room",
-        "Special Offers",
-        "Cancel Booking",
-        "Modify Reservation",
-        "Group Reservations",
-      ],
-    },
-    {
-      title: "Support",
-      links: [
-        "FAQs",
-        "Customer Support",
-        "Refund Policies",
-        "Privacy Policy",
-        "Terms & Conditions",
-      ],
-    },
-    {
-      title: "Contact",
-      links: [
-        "Hotel Address",
-        "Phone: 098-765-4321",
-        "Email: support@azureahotel.com",
-        "Social Media",
-      ],
-    },
-  ];
 
   return (
     <footer className="relative bg-[#eff3f7] px-15 py-5">
-      <h1 className="text-2xl text-blue-700 mb-2">Azurea Haven</h1>
+      <h1 className="text-2xl text-blue-700 mb-2">Azurea Hotel</h1>
       <i className="fa-solid fa-location-dot text-violet-600"></i>
       <h6 className="inline-block ml-1 text-sm italic mb-5">
         Brgy. Bubukal Sta. Cruz, Laguna
