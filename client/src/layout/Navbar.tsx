@@ -12,24 +12,27 @@ const Navbar: FC = () => {
   const [loginModal, setLoginModal] = useState(false);
   const [registerModal, setRegisterModal] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
   const { isAuthenticated, setIsAuthenticated, setRole } = useUserContext();
 
   const handleLogout = async () => {
-      try {
-        const response = await logout();
-        if (response.status === 200) {
-          setIsAuthenticated(false);
-          setRole('');
-          setIsModalOpen(false);
-          navigate('/', { replace: true });
-        }
-      } catch (error) {
-        console.error(`Failed to logout: ${error}`);
+    setLoading(true);
+    try {
+      const response = await logout();
+      if (response.status === 200) {
+        setIsAuthenticated(false);
+        setRole('');
+        setIsModalOpen(false);
+        navigate('/', { replace: true });
       }
-    };
+      setLoading(false);
+    } catch (error) {
+      console.error(`Failed to logout: ${error}`);
+    }
+  };
 
   const toggleLoginModal = () => setLoginModal(!loginModal);
   const toggleRegisterModal = () => setRegisterModal(!registerModal);
@@ -63,7 +66,7 @@ const Navbar: FC = () => {
             <Link to="/">
               <h1 className="text-xl bg-gradient-to-r from-[#7300FF] to-[#08D3FC] bg-clip-text text-transparent cursor-pointer">
                 <i className="fa-solid fa-moon text-5xl mr-2"></i>
-                Azurea 
+                Azurea
               </h1>
             </Link>
           </div>
@@ -82,7 +85,6 @@ const Navbar: FC = () => {
 
         <div className="flex items-center gap-5">
           {!isAuthenticated ? (
-
             <>
               <button
                 className="text-sm font-bold rounded-md border-2 px-5 py-1 cursor-pointer hover:bg-gradient-to-r from-[#7300FF] to-[#08D3FC] transition-all duration-300"
@@ -125,14 +127,15 @@ const Navbar: FC = () => {
           />
         </div>
       )}
-      <Modal 
+      <Modal
         isOpen={isModalOpen}
         icon={null}
         title="Log Out"
         description="Are you sure you want to log out?"
         cancel={() => setIsModalOpen(!isModalOpen)}
         onConfirm={handleLogout}
-        confirmText="Log Out"
+        className={`bg-purple-600 text-white active:bg-purple-700 font-bold uppercase text-sm px-6 py-3 rounded-md shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 ${loading} ? 'opacity-50 cursor-not-allowed' : ''`}
+        confirmText={loading ? "Logging out..." : "Log Out"}
         cancelText="Cancel"
       />
     </>
