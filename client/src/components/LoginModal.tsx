@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import { FC, useState } from "react";
@@ -16,6 +16,7 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<{
     email?: string;
     password?: string;
@@ -35,6 +36,7 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
   const loginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
+    setLoading(true);
 
     try {
       const response = await login(email, password);
@@ -47,6 +49,7 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
         } else {
           navigate("/");
         }
+        setLoading(false);
       }
     } catch (error: any) {
       console.error(`Failed to login: ${error}`);
@@ -143,9 +146,15 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
               whileTap={{ scale: 0.95 }}
               type="submit"
               disabled={!email || !password}
-              className="w-full bg-blue-700 text-white py-2 rounded-sm hover:bg-blue-800 transition-colors duration-300"
+              className={`w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800 transition-colors duration-300 flex items-center justify-center ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
-              Login
+              {loading ? (
+                <>
+                  <FontAwesomeIcon icon={faSpinner} spin className="mr-2" /> Logging in...
+                </>
+              ) : (
+                "Login"
+              )}
             </motion.button>
           </form>
 
