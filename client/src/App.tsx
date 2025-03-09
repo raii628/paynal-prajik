@@ -4,7 +4,6 @@ import { useUserContext } from "./contexts/AuthContext";
 import ProtectedRoute from "./contexts/ProtectedRoutes";
 import useTokenHandler from "./hooks/useTokenHandler";
 import NotFound from "./pages/_NotFound";
-import AdminDashboard from "./pages/admin/AdminDashboard";
 import Homepage from "./pages/Homepage";
 import OTP from "./pages/OTP";
 const App = () => {
@@ -13,7 +12,6 @@ const App = () => {
 
   return (
     <>
-      <AdminDashboard />
       <Routes>
         <Route
           path="/"
