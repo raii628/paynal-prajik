@@ -11,5 +11,4 @@ urlpatterns = [
     path('auth/verify', views.verify_otp, name='verify_otp'),
     path('auth/change_password', views.change_password, name='change_password'),
     path('auth/user', views.user_details, name='user_details'),
-    path('auth/delete', views.delete_account, name='delete_account'),
 ]
