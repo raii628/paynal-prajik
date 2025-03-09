@@ -4,18 +4,15 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import NotFound from './pages/_NotFound'
 import AdminDashboard from './pages/admin/AdminDashboard'
-import ProtectedRoute from './contexts/ProtectedRoutes'
+import Homepage from './pages/Homepage'
 
 const App = () => {
   return (
     <Routes>
+      <Route path='/' element={<Homepage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Register />} />
-      <Route element={<ProtectedRoute />}>
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path='/user/:userId' />
-        <Route path="*" element={<NotFound />} />
-      </Route>
+      <Route path="/admin" element={<AdminDashboard />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   )
