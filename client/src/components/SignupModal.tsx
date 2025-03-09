@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import { FC, useState } from "react";
@@ -18,6 +18,7 @@ const SignupModal: FC<SignupModalProps> = ({ toggleRegisterModal, openLoginModal
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<{
     email?: string;
     password?: string;
@@ -42,6 +43,7 @@ const SignupModal: FC<SignupModalProps> = ({ toggleRegisterModal, openLoginModal
   const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
+    setLoading(true);
 
     if (!email || !password || !confirmPassword) {
       setErrors({
@@ -49,14 +51,15 @@ const SignupModal: FC<SignupModalProps> = ({ toggleRegisterModal, openLoginModal
         password: !password ? "Password is required" : "",
         confirmPassword: !confirmPassword ? "Confirm password is required" : "",
       });
+      setLoading(false);
       return;
     }
 
     if (password !== confirmPassword) {
       setErrors({ confirmPassword: "Passwords do not match" });
+      setLoading(false);
       return;
     }
-
     try {
       const response = await sendRegisterOtp(email, password, confirmPassword);
       if (response.status === 200) {
@@ -70,20 +73,21 @@ const SignupModal: FC<SignupModalProps> = ({ toggleRegisterModal, openLoginModal
       if (!error.response) {
         setErrors({ general: "Something went wrong. Please try again later." });
         return;
+      } else {
+        const { data, status } = error.response;
+        if (status === 500) {
+          setErrors({ general: "Something went wrong. Please try again later." });
+        } else {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            email: data.email || "",
+            password: data.password || "",
+            general: data.message || "",
+          }));
+        }
       }
-      const { data, status } = error.response;
-
-      if (status === 500) {
-        setErrors({ general: "Something went wrong. Please try again later." });
-        return;
-      }
-
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        email: data.email || "",
-        password: data.password || "",
-        general: data.message || "",
-      }));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -197,9 +201,15 @@ const SignupModal: FC<SignupModalProps> = ({ toggleRegisterModal, openLoginModal
               whileTap={{ scale: 0.95 }}
               type="submit"
               disabled={!email || !password || !confirmPassword}
-              className="w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800 transition-colors duration-300"
+              className={`w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800 transition-colors duration-300 flex items-center justify-center ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
-              Register
+              {loading ? (
+                <>
+                  <FontAwesomeIcon icon={faSpinner} spin className="mr-2" /> Registering...
+                </>
+              ) : (
+                "Register"
+              )}
             </motion.button>
           </form>
 

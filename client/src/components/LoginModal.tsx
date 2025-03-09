@@ -19,6 +19,7 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
   const [errors, setErrors] = useState<{
     email?: string;
     password?: string;
+    general?: string;
   }>({});
 
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
       }
     } catch (error: any) {
       console.error(`Failed to login: ${error}`);
-      setErrors(error.response?.data || {});
+      setErrors(error.response?.data || { general: "An error occurred" });
     }
   };
 
@@ -70,6 +71,13 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
 
           <div className="border-b-2 border-gray-300 mb-4"></div>
 
+          {/* Display a general error message if present */}
+          {errors.general && (
+            <div className="bg-red-100 text-red-700 p-2 mb-4 text-center rounded">
+              {errors.general}
+            </div>
+          )}
+
           <form onSubmit={loginSubmit} className="space-y-4 md:space-y-6">
             <div className="mb-2">
               <label
@@ -81,7 +89,6 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
               <div className="relative">
                 <i className="fa-solid fa-user absolute left-3 top-3 z-20 text-gray-600"></i>
                 <motion.input
-                  // whileFocus={{ scale: 1.02 }}
                   type="text"
                   id="email"
                   value={email}
@@ -107,7 +114,6 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
                 <i className="fa-solid fa-lock absolute left-3 top-4 z-20 text-gray-600"></i>
                 <motion.input
                   placeholder="Enter your password"
-                  // whileFocus={{ scale: 1.02 }}
                   type={passwordVisible ? "text" : "password"}
                   id="password"
                   value={password}
@@ -124,7 +130,7 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
               {errors.password && (
                 <p className="text-red-600 text-sm">{errors.password}</p>
               )}
-              <Link 
+              <Link
                 to='/forgot-password'
                 className="text-xs font-semibold text-blue-500 underline tracking-tighter"
               >

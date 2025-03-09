@@ -119,17 +119,6 @@ DATABASES = {
     }
 }
 
-ADMIN_USER_NAME=os.getenv("ADMIN_USER_NAME", default="Admin user")
-ADMIN_USER_EMAIL=os.getenv("ADMIN_USER_EMAIL", default=None)
-
-MANAGERS=[]
-ADMINS=[]
-if all([ADMIN_USER_NAME, ADMIN_USER_EMAIL]):
-    ADMINS +=[
-        (f'{ADMIN_USER_NAME}', f'{ADMIN_USER_EMAIL}')
-    ]
-    MANAGERS=ADMINS
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587

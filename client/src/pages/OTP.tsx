@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FC, useState, useEffect, KeyboardEvent, FormEvent } from "react"
 import { motion } from "framer-motion"
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useUserContext } from "../contexts/AuthContext";
 import { verifyOtp } from "../services/Auth";
 
@@ -13,10 +13,17 @@ const OTP: FC = () => {
   const [isVerifying, setIsVerifying] = useState<boolean>(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
   const { setIsAuthenticated } = useUserContext();
 
-  const email = sessionStorage.getItem('email');
-  const password = sessionStorage.getItem('password');
+  const { email, password } = (location.state as { email: string; password: string }) || {};
+
+  useEffect(() => {
+    if (!email || !password) {
+      navigate('/login');
+    }
+  }, [email, password, navigate]);
+
 
   const handleChange = (value: string, index: number) => {
     const newOtp = [...otp];
@@ -58,33 +65,30 @@ const OTP: FC = () => {
       try {
         const response = await verifyOtp(email, password, otpCode);
         if (response.status === 201) {
-          const { access_token, refresh_token } = response.data;
-          localStorage.setItem("access_token", access_token);
-          localStorage.setItem("refresh_token", refresh_token);
-          localStorage.setItem("role", response.data.user.role)
           setIsAuthenticated(true);
-          sessionStorage.removeItem('email');
-          sessionStorage.removeItem('password');
           navigate('/');
         }
       } catch (error: any) {
-        const { data, status } = error.response;
-        switch (status) {
-          case 400:
-          case 404:
-          case 500:
-            setOtpError(data.error);
-            break;
-          default:
-            setOtpError("Something went wrong. Please try again later.");
-            break;
+        if (error.response) {
+          const { data, status } = error.response;
+          switch (status) {
+            case 400:
+            case 404:
+            case 500:
+              setOtpError(data.error || "Something went wrong. Please try again later.");
+              break;
+            default:
+              setOtpError("Something went wrong. Please try again later.");
+              break;
+          }
+        } else {
+          setOtpError("Something went wrong. Please try again later.");
         }
       } finally {
         setIsVerifying(false);
       }
     } else {
       setOtpError("Please enter a valid OTP");
-      return;
     }
   };
 
@@ -141,14 +145,12 @@ const OTP: FC = () => {
           </p>
         </div>
 
-        {/* Error message */}
         {otpError && (
           <div className="bg-red-100 text-red-700 p-2 mb-4 text-center rounded">
             {otpError}
           </div>
         )}
 
-        {/* OTP Form */}
         <form onSubmit={handleSubmit}>
           <div className="flex justify-center gap-2 mb-4">
             {otp.map((digit, index) => (
@@ -166,10 +168,7 @@ const OTP: FC = () => {
           </div>
 
           <div className="text-center mb-4">
-            <a
-              href="#"
-              className="text-sm text-orange-500 hover:underline mr-2"
-            >
+            <a href="#" className="text-sm text-orange-500 hover:underline mr-2">
               Change Email
             </a>
             |
@@ -181,25 +180,23 @@ const OTP: FC = () => {
                   resendOTP();
                 }
               }}
-              className={`text-sm ml-2 ${resendDisabled ? 'text-gray-400 cursor-not-allowed' : 'text-orange-500 hover:underline'
+              className={`text-sm ml-2 ${resendDisabled ? "text-gray-400 cursor-not-allowed" : "text-orange-500 hover:underline"
                 }`}
             >
               Resend Code
             </a>
             {resendDisabled && (
-              <span className="text-xs text-gray-500 ml-2">
-                ({timer}s)
-              </span>
+              <span className="text-xs text-gray-500 ml-2">({timer}s)</span>
             )}
           </div>
 
           <button
             type="submit"
             disabled={isVerifying}
-            className={`w-full bg-orange-500 text-white py-2 rounded-md hover:bg-orange-600 transition-colors ${isVerifying ? 'opacity-50 cursor-not-allowed' : ''
+            className={`w-full bg-orange-500 text-white py-2 rounded-md hover:bg-orange-600 transition-colors ${isVerifying ? "opacity-50 cursor-not-allowed" : ""
               }`}
           >
-            {isVerifying ? 'Verifying...' : 'Verify Email'}
+            {isVerifying ? "Verifying..." : "Verify Email"}
           </button>
         </form>
       </motion.div>

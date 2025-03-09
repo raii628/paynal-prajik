@@ -1,8 +1,8 @@
 from django.contrib.auth import authenticate, logout
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken # type: ignore
 from .models import CustomUsers
 from .serializers import CustomUserSerializer
@@ -55,6 +55,8 @@ def change_password(request):
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['POST'])
+@authentication_classes([])
+@permission_classes([AllowAny])
 def send_register_otp(request):
     try:     
         email = request.data.get("email")
@@ -91,6 +93,8 @@ def send_register_otp(request):
         OTP_EXPIRATION_TIME = 120
         cache.set(cache_key, otp_generated, OTP_EXPIRATION_TIME)
         
+        print(form.errors)
+        
         return Response({
             "success": "OTP sent for account verification",
             'otp': otp_generated
@@ -98,8 +102,10 @@ def send_register_otp(request):
     except Exception as e:
         print(f"{e}")
         return Response({"error": "Something went wrong"}, status=500)
-    
+
 @api_view(['POST'])
+@authentication_classes([])
+@permission_classes([AllowAny])
 def verify_otp(request):
     try:
         email = request.data.get("email")
@@ -117,12 +123,12 @@ def verify_otp(request):
             return Response({"error": "OTP expired. Please request a new one."}, status=status.HTTP_404_NOT_FOUND)
 
         if str(cached_otp) != str(received_otp):
-            return Response({"error": "Incorrect OPT code. Please try again"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "Incorrect OTP code. Please try again"}, status=status.HTTP_400_BAD_REQUEST)
     
         user = CustomUsers.objects.create_user(
             username=email,
             email=email,
-            password=make_password(password),
+            password=password,
             is_admin=False
         )
         user.save()
@@ -131,16 +137,42 @@ def verify_otp(request):
         
         refresh = RefreshToken.for_user(user)
         
-        return Response({
+        response = Response({
             'success': 'User registered successfully',
+            'user': {
+                'email': user.email,
+                'role': 'guest'
+            },
             'access_token': str(refresh.access_token),
             'refresh_token': str(refresh)
         }, status=status.HTTP_201_CREATED)
+        
+        response.set_cookie(
+            key="access_token",
+            value=str(refresh.access_token),
+            httponly=True,
+            secure=False,
+            samesite='Lax',
+            max_age=3600
+        )
+        
+        response.set_cookie(
+            key="refresh_token",
+            value=str(refresh),
+            httponly=True,
+            secure=False,
+            samesite='Lax',
+            max_age=604800
+        )
+        
+        return response
     except Exception as e:
         print(f"OTP Error: {e}")
         return Response({"error": "An error occurred during registration. Please try again later."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['POST'])
+@authentication_classes([])
+@permission_classes([AllowAny])
 def user_login(request):
     try:
         email = request.data.get('email')

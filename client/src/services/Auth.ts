@@ -21,8 +21,8 @@ export const login = async (email: string, password: string) => {
 export const sendRegisterOtp = async (email: string, password: string, confirmPassword: string) => {
     try {
         const response = await API.post('/auth/register', {
-            email: email,
-            password: password,
+            email,
+            password,
             confirm_password: confirmPassword
         }, {
             headers: {
@@ -42,6 +42,8 @@ export const verifyOtp = async (email: string, password: string, otp: string) =>
             email: email,
             password: password,
             otp: otp
+        }, {
+            withCredentials: true,
         });
         return response;
     } catch (error) {
