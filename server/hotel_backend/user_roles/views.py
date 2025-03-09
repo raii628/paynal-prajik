@@ -15,11 +15,6 @@ from django.contrib.auth.hashers import make_password
 @permission_classes([IsAuthenticated])
 def auth_logout(request):
     try:
-        # refresh_token = request.data.get('refresh_token')
-        
-        # if refresh_token:
-        #     token = RefreshToken(refresh_token)
-        #     token.blacklist()
         logout(request)
         
         response = Response({'message': 'User logged out successfully'}, status=status.HTTP_200_OK)
@@ -192,7 +187,7 @@ def user_login(request):
             httponly=True,
             secure=False,
             samesite='Lax',
-            max_age=86400
+            max_age=604800
         )
         
         return response
@@ -200,9 +195,14 @@ def user_login(request):
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def user_details(request):
     try:
         user = request.user
+        
+        if not user or not user.is_authenticated:
+            return Response({'error': 'User is not authenticated'}, status=status.HTTP_401_UNAUTHORIZED)
+        
         serializer = CustomUserSerializer(user)
         
         return Response({'user': serializer.data}, status=status.HTTP_200_OK)

@@ -66,25 +66,12 @@ export const guestSignup = async (email: string, password: string, confirmPasswo
 
 export const logout = async () => {
     try {
-        const access_token = localStorage.getItem('access_token');
-        const refresh_token = localStorage.getItem('refresh_token');
-
-        if (!access_token) throw new Error('Access token not found');
-
-        const response = await API.post('/auth/logout', {
-            refresh: refresh_token
-        }, {
+        const response = await API.post('/auth/logout', {}, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${access_token}`
             },
             withCredentials: true
         });
-
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
-        localStorage.removeItem('role');
-
         return response;
     } catch (error) {
         console.error(`Failed to logout: ${error}`);

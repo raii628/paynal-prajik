@@ -1,5 +1,4 @@
 import "./App.css";
-import { useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useUserContext } from "./contexts/AuthContext";
 import ProtectedRoute from "./contexts/ProtectedRoutes";
@@ -10,18 +9,8 @@ import Homepage from "./pages/Homepage";
 import OTP from "./pages/OTP";
 
 const App = () => {
-  const { isAuthenticated, setIsAuthenticated } = useUserContext();
+  const { isAuthenticated, role } = useUserContext();
   useTokenHandler();
-
-  const role = localStorage.getItem("role");
-
-  useEffect(() => {
-    const session = localStorage.getItem("access_token");
-
-    if (session) {
-      setIsAuthenticated(true);
-    }
-  }, [setIsAuthenticated]);
 
   return (
     <>
@@ -42,12 +31,6 @@ const App = () => {
         />
 
         <Route path="/otp" element={<OTP />} />
-
-        {/* Role: Guest Routing (Protected) */}
-        
-        {/* <Route element={<ProtectedRoute requiredRole="guest" />}>
-          <Route path="/" element={<Homepage />} />
-        </Route> */}
 
         {/* Role: Admin Routing (Protected) */}
         

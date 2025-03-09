@@ -22,7 +22,7 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
   }>({});
 
   const navigate = useNavigate();
-  const { setIsAuthenticated } = useUserContext();
+  const { setIsAuthenticated, setRole } = useUserContext();
 
   const togglePassword = () => setPasswordVisible(!passwordVisible);
 
@@ -38,12 +38,9 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
     try {
       const response = await login(email, password);
       if (response.status === 200) {
-        const { access_token, refresh_token, user } = response.data;
-        localStorage.setItem("role", user.role);
-        localStorage.setItem("access_token", access_token);
-        localStorage.setItem("refresh_token", refresh_token);
-
+        const { user } = response.data;
         setIsAuthenticated(true);
+        setRole(user.role);
         if (user.role === "admin") {
           navigate("/admin");
         } else {

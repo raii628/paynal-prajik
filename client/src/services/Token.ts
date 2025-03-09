@@ -1,5 +1,6 @@
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import { API } from "./_axios";
 
 export const isTokenExpired = (token: string): boolean => {
     const decoded : { exp: number } = jwtDecode(token);
@@ -35,18 +36,13 @@ export const refreshUserToken = async () => {
 };
 
 export const userAuth = async (): Promise<boolean> => {
-    const accessToken = localStorage.getItem("access_token");
-
-    if (!accessToken) {
-        console.log("No access token found");
+    try {
+        const response = await API.get('/auth/user', {
+            withCredentials: true
+        });
+        return response.status === 200;
+    } catch (error) {
+        console.error(`Failed to authenticate user: ${error}`);
         return false;
     }
-
-    if (isTokenExpired(accessToken)) {
-        const response = await refreshUserToken();
-        return response ?? false;
-    }
-
-    console.log("Token expiry checked.");
-    return true;
-}
+};

@@ -21,9 +21,6 @@ const Navbar: FC = () => {
       try {
         const response = await logout();
         if (response.status === 200) {
-          localStorage.removeItem('admin_token');
-          localStorage.removeItem('admin_refresh');
-          localStorage.removeItem('role');
           setIsAuthenticated(false);
           setRole('');
           setIsModalOpen(false);

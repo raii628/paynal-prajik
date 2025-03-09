@@ -7,7 +7,6 @@ const useUserRole = () => {
   const changeRole = useCallback(() => {
     const newRole = role === "admin" ? "guest" : "admin";
     setRole(newRole);
-    localStorage.setItem("role", newRole);
   }, [role, setRole]);
 
   const changeRoleFromRegister = () => setRole("guest");

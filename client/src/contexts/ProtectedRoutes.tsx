@@ -8,19 +8,15 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: FC<ProtectedRouteProps> = ({ requiredRole, children }) => {
-  const { isAuthenticated } = useUserContext();
-
-  const accessToken = localStorage.getItem("access_token");
-  const refreshToken = localStorage.getItem("refresh_token");
-  const role = localStorage.getItem("role")?.toLowerCase();
+  const { isAuthenticated, role } = useUserContext();
 
   // If the user is not authenticated, redirect to homepage
-  if (!isAuthenticated || !accessToken || !refreshToken) {
+  if (!isAuthenticated) {
     return <Navigate to="/" replace />;
   }
 
   // If the user's role does not match, redirect them to their dashboard
-  if (role !== requiredRole.toLowerCase()) {
+  if (role.toLowerCase() !== requiredRole.toLowerCase()) {
     return <Navigate to={role === 'admin' ? '/admin' : '/'} replace />;
   }
 
