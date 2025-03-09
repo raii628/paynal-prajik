@@ -7,14 +7,14 @@ import NotFound from "./pages/_NotFound";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import Homepage from "./pages/Homepage";
 import OTP from "./pages/OTP";
-
 const App = () => {
   const { isAuthenticated, role } = useUserContext();
   useTokenHandler();
 
   return (
     <>
-      <Routes>
+      <AdminDashboard />
+      {/* <Routes>
         <Route
           path="/"
           element={
@@ -29,17 +29,13 @@ const App = () => {
             )
           }
         />
-
         <Route path="/otp" element={<OTP />} />
-
-        {/* Role: Admin Routing (Protected) */}
-        
+        Role: Admin Routing (Protected)
         <Route element={<ProtectedRoute requiredRole="admin" />}>
           <Route path="/admin" element={<AdminDashboard />} />
         </Route>
-
         <Route path="*" element={<NotFound />} />
-      </Routes>
+      </Routes> */}
     </>
   );
 };
