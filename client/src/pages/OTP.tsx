@@ -46,7 +46,6 @@ const OTP: FC = () => {
   const resendOTP = async () => {
     setResendDisabled(true);
     setTimer(120);
-
     try {
       await resendOtp(email);
       setOTP(['', '', '', '', '', '']);
@@ -193,7 +192,7 @@ const OTP: FC = () => {
           <button
             type="submit"
             disabled={isVerifying}
-            className={`w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors ${isVerifying ? "opacity-50 cursor-not-allowed" : ""
+            className={`w-full bg-blue-500 text-white py-2 rounded-md cursor-pointer hover:bg-blue-600 transition-colors ${isVerifying ? "opacity-50 cursor-not-allowed" : ""
               }`}
           >
             {isVerifying ? "Verifying..." : "Verify Email"}

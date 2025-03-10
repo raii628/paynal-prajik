@@ -6,7 +6,7 @@ import { useUserContext } from "../contexts/AuthContext";
 import { navLinks } from "../constants/Navbar";
 import { logout } from "../services/Auth";
 import Modal from "../components/Modal";
-import hotelLogo from "../assets/hotel_logo.png";  
+import hotelLogo from "../assets/hotel_logo.png";
 
 const Navbar: FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -25,9 +25,9 @@ const Navbar: FC = () => {
       const response = await logout();
       if (response.status === 200) {
         setIsAuthenticated(false);
-        setRole('');
+        setRole("");
         setIsModalOpen(false);
-        navigate('/', { replace: true });
+        navigate("/", { replace: true });
       }
       setLoading(false);
     } catch (error) {
@@ -53,7 +53,7 @@ const Navbar: FC = () => {
         if (loginModal) setLoginModal(false);
         if (registerModal) setRegisterModal(false);
       }
-    }
+    };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [loginModal, registerModal]);
@@ -73,23 +73,16 @@ const Navbar: FC = () => {
             : "bg-transparent text-white"
           }`}
       >
-        <div className="flex justify-between items-center gap-12">
-          <div>
-            <Link to="/">
-            <img src={hotelLogo} alt="Hotel Logo" className="h-12 w-auto cursor-pointer" />
-            </Link>
-          </div>
-        {/* Logo */}
         <div className="flex items-center">
           <Link to="/">
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-[#7300FF] to-[#08D3FC] bg-clip-text text-transparent cursor-pointer">
-              <i className="fa-solid fa-moon text-4xl mr-2"></i>
-              Azurea
-            </h1>
+            <img
+              src={hotelLogo}
+              alt="Hotel Logo"
+              className="h-12 w-auto cursor-pointer mr-4"
+            />
           </Link>
         </div>
 
-        {/* Navigation Links */}
         <ul className="flex items-center space-x-6">
           {navLinks.map((link, index) => (
             <li
@@ -101,7 +94,6 @@ const Navbar: FC = () => {
           ))}
         </ul>
 
-        {/* Auth Buttons */}
         <div className="flex items-center space-x-4">
           {!isAuthenticated ? (
             <>

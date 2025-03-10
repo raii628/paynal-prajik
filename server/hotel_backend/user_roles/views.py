@@ -200,28 +200,136 @@ def verify_otp(request):
 def resend_otp(request):
     try:
         email = request.data.get("email")
-        
         if not email:
             return Response({
-                'error': 'Email is required'
+                "error": "Email is required"
             }, status=status.HTTP_400_BAD_REQUEST)
             
-        new_otp = send_otp_to_email(email, "Your OTP for account verification")
-        if new_otp is None:
-            return Response({
-                'error': 'An error occurred while resending the OTP. Please try again later.'
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-            
-        request.session['otp'] = new_otp
-        request.session.modified = True
+        purpose = "account_verification"
+        cache_key = f"{email}_{purpose}"
         
+        cached_otp = cache.get(cache_key)
+        if cached_otp:
+            otp_to_send = cached_otp
+        else:
+            otp_to_send = send_otp_to_email(email, "Your OTP for account verification")
+            if otp_to_send is None:
+                return Response({
+                    "error": "An error occurred while resending the OTP. Please try again later."
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            cache.set(cache_key, otp_to_send, timeout=120)
+            
         return Response({
-            'message': 'OTP resent successfully'
+            "message": "OTP resent successfully",
         }, status=status.HTTP_200_OK)
     except Exception as e:
-        print(f"Resend OTP Error: {e}")
         return Response({
-            "error": "An error occurred while resending the OTP. Please try again later."
+            'error': 'An error occurred while resending the OTP. Please try again later.'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+@authentication_classes([])
+@permission_classes([AllowAny])
+def forgot_password(request):
+    try:
+        email = request.data.get('email')
+        if not email:
+            return Response({"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            user = CustomUsers.objects.get(email=email)
+        except CustomUsers.DoesNotExist:
+            return Response({"error": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+        otp = send_register_otp(email)
+        if otp is None:
+            return Response({
+                "error": "An error occurred while sending the OTP. Please try again later."
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        purpose = "reset_password"
+        cache_key = f"{email}_{purpose}"
+        cache.set(cache_key, otp, timeout=120)
+        
+        return Response({
+            "message": "OTP sent successfully",
+        }, status.status.HTTP_200_OK)
+    except Exception as e:
+        return Response({
+            'error': 'An error occurred while sending the OTP. Please try again later.'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+@authentication_classes([])
+@permission_classes([AllowAny])
+def verify_reset_otp(request):
+    try:
+        email = request.data.get('email')
+        received_otp = request.data.get('otp')
+        
+        if not email or not received_otp:
+            return Response({
+                "error": "Email and OTP are required"
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        purpose = "reset_password"
+        cache_key = f"{email}_{purpose}"
+        cached_otp = cache.get(cache_key)
+        
+        if cached_otp is None:
+            return Response({
+                "error": "OTP expired. Please request a new one."
+            }, status=status.HTTP_404_NOT_FOUND)
+            
+        if str(cached_otp) != str(received_otp):
+            return Response({
+                "error": "Incorrect OTP code. Please try again."
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        cache.delete(cache_key)
+        
+        return Response({
+            "message": "OTP verified successfully"
+        }, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({
+            "error": "An error occurred while verifying the OTP. Please try again later."
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+@authentication_classes([])
+@permission_classes([AllowAny])
+def reset_password(request):
+    try:
+        email = request.data.get('email')
+        new_password = request.data.get('new_password')
+        confirm_password = request.data.get('confirm_password')
+        
+        if not email or not new_password or not confirm_password:
+            return Response({
+                "error": "Email, new password, and confirm password are required"
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        if new_password != confirm_password:
+            return Response({
+                "error": "New password and confirm password do not match"
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            user = CustomUsers.objects.get(email=email)
+        except CustomUsers.DoesNotExist:
+            return Response({
+                "error": "User does not exist"
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        user.set_password(new_password)
+        user.save()
+        
+        return Response({
+            "message": "Password reset successfully"
+        }, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({
+            "error": "An error occurred while resetting the password. Please try again later."
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['POST'])
