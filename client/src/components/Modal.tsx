@@ -62,7 +62,7 @@ const Modal: FC<ModalProps> = ({
               <button
                 type="button"
                 onClick={cancel}
-                className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md uppercase font-bold hover:bg-gray-300 transition-all duration-300"
+                className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md uppercase font-bold hover:bg-gray-300 transition-all duration-300 cursor-pointer"
               >
                 {cancelText}
               </button>
