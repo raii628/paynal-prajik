@@ -3,7 +3,7 @@ import { FC, useState, useEffect, KeyboardEvent, FormEvent } from "react"
 import { motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useUserContext } from "../contexts/AuthContext";
-import { verifyOtp } from "../services/Auth";
+import { resendOtp, verifyOtp } from "../services/Auth";
 
 const OTP: FC = () => {
   const [otp, setOTP] = useState(['', '', '', '', '', '']);
@@ -48,7 +48,7 @@ const OTP: FC = () => {
     setTimer(120);
 
     try {
-      // Call resend OTP API
+      await resendOtp(email);
       setOTP(['', '', '', '', '', '']);
     } catch (error) {
       console.error(`Failed to resend OTP: ${error}`);

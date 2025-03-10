@@ -197,6 +197,36 @@ def verify_otp(request):
 @api_view(['POST'])
 @authentication_classes([])
 @permission_classes([AllowAny])
+def resend_otp(request):
+    try:
+        email = request.data.get("email")
+        
+        if not email:
+            return Response({
+                'error': 'Email is required'
+            }, status=status.HTTP_400_BAD_REQUEST)
+            
+        new_otp = send_otp_to_email(email, "Your OTP for account verification")
+        if new_otp is None:
+            return Response({
+                'error': 'An error occurred while resending the OTP. Please try again later.'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
+        request.session['otp'] = new_otp
+        request.session.modified = True
+        
+        return Response({
+            'message': 'OTP resent successfully'
+        }, status=status.HTTP_200_OK)
+    except Exception as e:
+        print(f"Resend OTP Error: {e}")
+        return Response({
+            "error": "An error occurred while resending the OTP. Please try again later."
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+@authentication_classes([])
+@permission_classes([AllowAny])
 def user_login(request):
     try:
         email = request.data.get('email')

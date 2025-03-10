@@ -55,7 +55,6 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
       const errData = error.response?.data;
       if (errData && errData.error) {
         const message = errData.error;
-        // Map known error messages to specific fields
         if (message.toLowerCase().includes("user does not exist")) {
           setErrors({ email: message });
         } else if (message.toLowerCase().includes("password")) {

@@ -64,6 +64,20 @@ export const verifyOtp = async (email: string, password: string, otp: string) =>
     }
 };
 
+export const resendOtp = async (email: string) => {
+    try {
+        const response = await API.post('/auth/resend_otp', {
+            email: email
+        }, {
+            withCredentials: true
+        });
+        return response;
+    } catch (error) {
+        console.error(`Failed to resend OTP: ${error}`);
+        throw error;
+    }
+};
+
 export const guestSignup = async (email: string, password: string, confirmPassword: string) => {
     try {
         const response = await API.post('/auth/signup', {
