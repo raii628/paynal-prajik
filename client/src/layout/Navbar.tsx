@@ -7,6 +7,7 @@ import { navLinks } from "../constants/Navbar";
 import { logout } from "../services/Auth";
 import Modal from "../components/Modal";
 import hotelLogo from "../assets/hotel_logo.png";
+import Notification from "../components/Notification";
 
 const Navbar: FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -15,6 +16,11 @@ const Navbar: FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [notification, setNotification] = useState<{
+    message: string;
+    type: "success" | "error" | "info" | "warning";
+    icon: string;
+  } | null>(null);
 
   const navigate = useNavigate();
 
@@ -27,6 +33,11 @@ const Navbar: FC = () => {
       if (response.status === 200) {
         setIsAuthenticated(false);
         setRole("");
+        setNotification({
+          message: "Logged out successfully",
+          type: "success",
+          icon: "fas fa-check-circle",
+        })
         setIsModalOpen(false);
         navigate("/", { replace: true });
       }
@@ -68,12 +79,16 @@ const Navbar: FC = () => {
 
   return (
     <>
+      {notification && (
+        <Notification 
+          icon={notification.icon}
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
+        />
+      )}
       <nav
-        className={` sticky top-0 left-0 w-full px-10 py-4 flex items-center justify-between z-40 transition-all duration-75 ${
-          isScrolled
-            ? "bg-gray-200 shadow-lg text-black"
-            : "bg-transparent text-white"
-        }`}
+        className={`sticky top-0 left-0 w-full px-10 py-4 flex items-center justify-between z-40 transition-all duration-75 ${isScrolled ? "bg-gray-200 shadow-lg text-black" : "bg-transparent text-white"}`}
       >
         <div className="flex items-center">
           <Link to="/">

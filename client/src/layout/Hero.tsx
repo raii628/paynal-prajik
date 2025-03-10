@@ -9,10 +9,7 @@ const Hero = () => {
     >
       <Navbar />
       <div
-        className="relative z-10 h-full flex flex-col justify-start mt-30
-   sm:mt-28 md:mt-26 lg:mt-22 xl:mt-19 2xl:mt-16 
-  px-5 sm:px-10 md:px-16 lg:px-24 xl:px-32 2xl:px-40"
-      >
+        className="relative z-10 h-full flex flex-col justify-start mt-30 sm:mt-28 md:mt-26 lg:mt-22 xl:mt-19 2xl:mt-16 px-5 sm:px-10 md:px-16 lg:px-24 xl:px-32 2xl:px-40">
         <h3 className="text-[clamp(1.5rem,3vw,3rem)] text-white mb-4 tracking-wider">
           Azurea Hotel
         </h3>

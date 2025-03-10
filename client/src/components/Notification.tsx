@@ -1,5 +1,5 @@
-import { FC } from "react"
-import { motion } from "framer-motion"
+import { FC, useEffect } from "react"
+import { AnimatePresence, motion } from "framer-motion"
 
 interface NotificationProps {
   icon?: string;
@@ -22,35 +22,36 @@ const typeStyles: Record<string, string> = {
 };
 
 const Notification: FC<NotificationProps> = ({ icon, message, type, onClose }) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose();
+    }, 4000);
+    return () => clearTimeout(timer);
+  }, [onClose]);
+
   return (
-    <motion.div
-      className={`fixed top-4 right-4 w-full max-w-sm p-4 rounded-lg shadow-lg ${typeStyles[type || 'info']}`}
-      initial="hidden"
-      animate="visible"
-      exit="exit"
-      variants={notificationVariants}
-      transition={{ duration: 0.3 }}
-    >
-      <div className="flex items-start">
-        {icon && (
-          <div className="mr-2 flex-shrink-0">
-            <i className={`${icon} text-xl`}></i>
+    <AnimatePresence mode="wait">
+      <motion.div
+        className={`fixed bottom-4 right-4 z-[9999] w-full max-w-sm p-4 rounded-lg shadow-lg ${typeStyles[type || 'info']}`}
+        variants={notificationVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        transition={{ duration: 0.3 }}
+      >
+        <div className="flex items-start">
+          {icon && (
+            <div className="mr-2 flex-shrink-0">
+              <i className={`${icon} text-xl`}></i>
+            </div>
+          )}
+          <div className="flex-1">
+            <p className="text-sm">{message}</p>
           </div>
-        )}
-        <div className="flex-1">
-          <p className="text-sm">{message}</p>
         </div>
-        {onClose && (
-          <button
-            onClick={onClose}
-            className="ml-4 text-xl leading-none focus:outline-none"
-            aria-label="Close notification"
-          >
-            &times;
-          </button>
-        )}
-      </div>
-    </motion.div>
+      </motion.div>
+    </AnimatePresence>
+
   )
 }
 
