@@ -1,8 +1,8 @@
-import { FC, ReactNode } from "react";
+import { FC } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface ModalProps {
-  icon?: ReactNode;
+  icon?: string;
   title: string;
   description?: string;
   cancel: () => void;
@@ -28,53 +28,51 @@ const Modal: FC<ModalProps> = ({
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden outline-none focus:outline-none bg-black/65"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/65"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.2 }}
         >
           <motion.div
-            className="relative w-auto max-w-md mx-auto my-6"
-            initial={{ y: 50, opacity: 0 }}
+            className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4"
+            initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 50, opacity: 0 }}
-            transition={{ duration: 0.3, delay: 0.1 }}
+            exit={{ y: 20, opacity: 0 }}
+            transition={{ duration: 0.3 }}
           >
-            <div className="border-0 rounded-2xl shadow-xl relative flex flex-col w-full bg-white outline-none focus:outline-none">
-              <div className="flex flex-col items-center justify-center p-8 border-b border-solid border-blueGray-200 rounded-t-2xl">
-                <div className="flex items-center justify-center w-16 h-16 rounded-full mb-4">
-                  {icon}
-                </div>
-                <h3 className="text-2xl font-semibold text-gray-800 text-center">
+            <div className="p-6">
+              <div className="flex flex-col items-center">
+                {icon && (
+                  <div className="w-16 h-16 flex items-center justify-center text-3xl bg-gray-100 rounded-full mb-4">
+                    <i className={icon}></i>
+                  </div>
+                )}
+                <h3 className="text-xl font-semibold text-gray-800 text-center">
                   {title}
                 </h3>
-              </div>
-              <div className="relative p-8 flex-auto">
                 {description && (
-                  <p className="my-4 text-md text-gray-600 leading-relaxed text-center">
+                  <p className="mt-2 text-gray-600 text-center">
                     {description}
                   </p>
                 )}
               </div>
-              <div className="flex items-center justify-end p-6 rounded-b-2xl">
-                <button
-                  className="bg-white text-gray-700 border border-gray-300 font-bold uppercase px-6 py-3 rounded-md text-sm outline-none focus:outline-none mr-2 mb-1 ease-linear transition-all duration-150"
-                  type="button"
-                  onClick={cancel}
-                >
-                  {cancelText}
-                </button>
-                {onConfirm && (
-                  <button
-                    className={className}
-                    type="button"
-                    onClick={onConfirm}
-                  >
-                    {confirmText}
-                  </button>
-                )}
-              </div>
+            </div>
+            <div className="flex justify-evenly p-4 space-x-2 border-t border-gray-200">
+              <button
+                type="button"
+                onClick={cancel}
+                className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md uppercase font-bold hover:bg-gray-300 transition-all duration-300"
+              >
+                {cancelText}
+              </button>
+              <button
+                type="button"
+                onClick={onConfirm}
+                className={className}
+              >
+                {confirmText}
+              </button>
             </div>
           </motion.div>
         </motion.div>

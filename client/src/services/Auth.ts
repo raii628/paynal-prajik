@@ -30,12 +30,12 @@ export const login = async (email: string, password: string) => {
     }
 };
 
-export const sendRegisterOtp = async (email: string, password: string, confirmPassword: string) => {
+export const sendRegisterOtp = async (email: string, password: string, confirm_password: string) => {
     try {
         const response = await API.post('/auth/register', {
-            email,
-            password,
-            confirm_password: confirmPassword
+            email: email,
+            password: password,
+            confirm_password: confirm_password
         }, {
             headers: {
                 'Content-Type': 'application/json'

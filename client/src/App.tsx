@@ -11,8 +11,10 @@ import LoadingHydrate from "./motions/LoadingHydrate";
 import { Suspense } from "react";
 
 const App = () => {
-  const { isAuthenticated, role } = useUserContext();
+  const { isAuthenticated, role, loading } = useUserContext();
   useTokenHandler();
+
+  if (loading) return <LoadingHydrate />
 
   return (
     <Suspense fallback={<LoadingHydrate />}>
@@ -31,7 +33,7 @@ const App = () => {
             )
           }
         />
-        
+
         <Route path="/otp" element={<OTP />} />
 
         {/* Admin Routes: Protected */}
