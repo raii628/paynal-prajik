@@ -6,6 +6,7 @@ import { useUserContext } from "../contexts/AuthContext";
 import { navLinks } from "../constants/Navbar";
 import { logout } from "../services/Auth";
 import Modal from "../components/Modal";
+import hotelLogo from "../assets/hotel_logo.png";
 
 const Navbar: FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -75,10 +76,7 @@ const Navbar: FC = () => {
         {/* Logo */}
         <div className="flex items-center">
           <Link to="/">
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-[#7300FF] to-[#08D3FC] bg-clip-text text-transparent cursor-pointer">
-              <i className="fa-solid fa-moon text-4xl mr-2"></i>
-              Azurea
-            </h1>
+          <img src={hotelLogo} alt="Hotel Logo" className="h-12 w-auto cursor-pointer" />
           </Link>
         </div>
 
