@@ -85,7 +85,6 @@ const Navbar: FC = () => {
           </Link>
         </div>
 
-<<<<<<< HEAD
         <div className="block lg:hidden">
           {/* Hamburger icon */}
           {!menuOpen && (
@@ -98,7 +97,7 @@ const Navbar: FC = () => {
           {/* Overlay Menu */}
           <div className="h-full">
             <ul
-              className={`fixed top-0 right-0 w-full md:w-1/2 sm:w-3/5 max-w[] h-screen bg-white shadow-md text-black flex flex-col items-center gap-4 font-bold text-lg z-50 transition-all duration-300 ease-in-out ${
+              className={`fixed top-0 right-0 w-full md:w-1/2 sm:w-3/5 h-screen bg-white shadow-md text-black flex flex-col items-center gap-4 font-bold text-lg z-50 transition-all duration-300 ease-in-out ${
                 menuOpen
                   ? "opacity-100 pointer-events-auto translate-x-0"
                   : "opacity-0 pointer-events-none translate-x-full"
@@ -113,29 +112,19 @@ const Navbar: FC = () => {
               </li>
 
               {/* Menu Links */}
-              <li className="w-full text-center py-3 hover:bg-violet-400 hover:text-white cursor-pointer">
-                Home
-              </li>
-              <li className="w-full text-center py-3 hover:bg-violet-400 hover:text-white cursor-pointer">
-                About
-              </li>
-              <li className="w-full text-center py-3 hover:bg-violet-400 hover:text-white cursor-pointer">
-                Rooms
-              </li>
-              <li className="w-full text-center py-3 hover:bg-violet-400 hover:text-white cursor-pointer">
-                Services
-              </li>
-              <li className="w-full text-center py-3 hover:bg-violet-400 hover:text-white cursor-pointer">
-                Promo
-              </li>
+              {navLinks.map((link, index) => (
+                <li
+                  key={index}
+                  className="w-full text-center py-3 hover:bg-violet-400 hover:text-white cursor-pointer"
+                >
+                  <Link to={link.link} onClick={() => setMenuOpen(false)}>{link.text}</Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
 
-        <ul className=" hidden lg:flex items-center space-x-6">
-=======
-        <ul className="flex items-center space-x-6">
->>>>>>> upstream/main
+        <ul className="hidden lg:flex items-center space-x-6">
           {navLinks.map((link, index) => (
             <li
               key={index}
@@ -146,11 +135,7 @@ const Navbar: FC = () => {
           ))}
         </ul>
 
-<<<<<<< HEAD
         <div className="hidden lg:flex items-center space-x-4">
-=======
-        <div className="flex items-center space-x-4">
->>>>>>> upstream/main
           {!isAuthenticated ? (
             <>
               <button
