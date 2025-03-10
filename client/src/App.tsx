@@ -11,13 +11,18 @@ import LoadingHydrate from "./motions/LoadingHydrate";
 import { Suspense } from "react";
 import Reservation from "./pages/admin/Reservation";
 import ManageRooms from "./pages/ManageRooms";
-import StaffSection from "./pages/admin/StaffSection";
 import AdminLayout from "./layout/admin/AdminLayout";
 import ForgotPassword from "./pages/ForgotPassword";
 import About from "./pages/About";
 import Rooms from "./pages/Rooms";
 import Services from "./pages/Services";
 import Promo from "./pages/Promo";
+import ManageUsers from "./pages/admin/ManageUsers";
+import UserStats from "./pages/admin/UserStats";
+import AreaReservations from "./pages/admin/AreaReservations";
+import ManageAmenities from "./pages/admin/ManageAmenities";
+import Comments from "./pages/admin/Comments";
+import Reports from "./pages/admin/Reports";
 
 const App = () => {
   const { isAuthenticated, role, loading } = useUserContext();
@@ -54,9 +59,15 @@ const App = () => {
         <Route element={<ProtectedRoute requiredRole="admin" />}>
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
-            <Route path="reservation" element={<Reservation />} />
+            <Route path="reservations" element={<Reservation />} />
             <Route path="rooms" element={<ManageRooms />} />
-            <Route path="manager" element={<StaffSection />} />
+            <Route path="areas" element={<AreaReservations />} />
+            <Route path="amenities" element={<ManageAmenities />} />
+            <Route path="comments" element={<Comments />} />
+            <Route path="reports" element={<Reports />} />
+            <Route path="users" element={<ManageUsers /> }>
+              <Route path=":id" element={<UserStats />} />
+            </Route>
           </Route>
         </Route>
 
