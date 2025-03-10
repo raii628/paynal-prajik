@@ -6,8 +6,6 @@ import useTokenHandler from "./hooks/useTokenHandler";
 import NotFound from "./pages/_NotFound";
 import Homepage from "./pages/Homepage";
 import OTP from "./pages/OTP";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import LoadingHydrate from "./motions/LoadingHydrate";
 import { Suspense } from "react";
@@ -33,9 +31,7 @@ const App = () => {
             )
           }
         />
-
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Register />} />
+        
         <Route path="/otp" element={<OTP />} />
 
         {/* Admin Routes: Protected */}
