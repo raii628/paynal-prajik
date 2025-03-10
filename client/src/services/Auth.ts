@@ -64,9 +64,23 @@ export const verifyOtp = async (email: string, password: string, otp: string) =>
     }
 };
 
+export const resendOtp = async (email: string) => {
+    try {
+        const response = await API.post('/auth/resend_otp', {
+            email: email
+        }, {
+            withCredentials: true
+        });
+        return response;
+    } catch (error) {
+        console.error(`Failed to resend OTP: ${error}`);
+        throw error;
+    }
+};
+
 export const guestSignup = async (email: string, password: string, confirmPassword: string) => {
     try {
-        const response = await API.post('/auth/signup', {
+        const response = await API.post('/auth/register', {
             email: email,
             password: password,
             confirmPassword: confirmPassword,
@@ -89,6 +103,66 @@ export const logout = async () => {
         return response;
     } catch (error) {
         console.error(`Failed to logout: ${error}`);
+        throw error;
+    }
+};
+
+export const changePassword = async (oldPassword: string, newPassword: string, confirmPassword: string) => {
+    try {
+        const response = await API.post('/auth/change_password', {
+            old_password: oldPassword,
+            new_password: newPassword,
+            confirm_password: confirmPassword
+        }, {
+            withCredentials: true
+        });
+        return response;
+    } catch (error) {
+        console.error(`Failed to change password: ${error}`);
+        throw error;
+    }
+};
+
+export const resetPassword = async (email: string) => {
+    try {
+        const response = await API.post('/auth/reset_password', {
+            email: email
+        });
+        return response;
+    } catch (error) {
+        console.error(`Failed to reset password: ${error}`);
+        throw error;
+    }
+};
+
+export const forgotPassword = async (email: string, otp: string, password: string, confirmPassword: string) => {
+    try {
+        const response = await API.post('/auth/forgot_password', {
+            email: email,
+            otp: otp,
+            password: password,
+            confirmPassword: confirmPassword
+        }, {
+            withCredentials: true
+        });
+        return response;
+    } catch (error) {
+        console.error(`Failed to reset password: ${error}`);
+        throw error;
+    }
+};
+
+export const verifyResetOtp = async (email: string, otp: string) => {
+    try {
+        const response = await API.post('/auth/verify_reset_otp', {
+            email: email,
+            otp: otp
+        }, {
+            withCredentials: true
+        });
+        return response;
+    } catch (error) {
+        console.error(`Failed to verify reset OTP: ${error}`);
         throw error;
     }
 };

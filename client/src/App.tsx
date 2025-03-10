@@ -13,6 +13,7 @@ import Reservation from "./pages/admin/Reservation";
 import ManageRooms from "./pages/ManageRooms";
 import StaffSection from "./pages/admin/StaffSection";
 import AdminLayout from "./layout/admin/AdminLayout";
+import ForgotPassword from "./pages/ForgotPassword";
 
 const App = () => {
   const { isAuthenticated, role, loading } = useUserContext();
@@ -39,6 +40,7 @@ const App = () => {
         />
 
         <Route path="/otp" element={<OTP />} />
+        <Route path="forgot-password" element={<ForgotPassword />} />
 
         {/* Protected admin routes */}
         <Route element={<ProtectedRoute requiredRole="admin" />}>

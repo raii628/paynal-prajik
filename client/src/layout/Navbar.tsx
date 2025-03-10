@@ -6,6 +6,7 @@ import { useUserContext } from "../contexts/AuthContext";
 import { navLinks } from "../constants/Navbar";
 import { logout } from "../services/Auth";
 import Modal from "../components/Modal";
+import hotelLogo from "../assets/hotel_logo.png";
 
 const Navbar: FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -74,16 +75,17 @@ const Navbar: FC = () => {
             : "bg-transparent text-white"
         }`}
       >
-        {/* Logo */}
         <div className="flex items-center">
           <Link to="/">
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-[#7300FF] to-[#08D3FC] bg-clip-text text-transparent cursor-pointer">
-              <i className="fa-solid fa-moon text-4xl mr-2"></i>
-              Azurea
-            </h1>
+            <img
+              src={hotelLogo}
+              alt="Hotel Logo"
+              className="h-12 w-auto cursor-pointer mr-4"
+            />
           </Link>
         </div>
 
+<<<<<<< HEAD
         <div className="block lg:hidden">
           {/* Hamburger icon */}
           {!menuOpen && (
@@ -131,6 +133,9 @@ const Navbar: FC = () => {
         </div>
 
         <ul className=" hidden lg:flex items-center space-x-6">
+=======
+        <ul className="flex items-center space-x-6">
+>>>>>>> upstream/main
           {navLinks.map((link, index) => (
             <li
               key={index}
@@ -141,7 +146,11 @@ const Navbar: FC = () => {
           ))}
         </ul>
 
+<<<<<<< HEAD
         <div className="hidden lg:flex items-center space-x-4">
+=======
+        <div className="flex items-center space-x-4">
+>>>>>>> upstream/main
           {!isAuthenticated ? (
             <>
               <button
