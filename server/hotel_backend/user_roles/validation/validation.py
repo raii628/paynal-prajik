@@ -200,6 +200,9 @@ class RegistrationForm(forms.Form):
         confirm_password = cleaned_data.get("confirm_password")
         
         if password and confirm_password:
-            validate_password_django(password, confirm_password)
+            try:
+                validate_password_django(password, confirm_password)
+            except ValidationError as e:
+                self.errors['password'] = self.error_class(e.messages)
         
         return cleaned_data

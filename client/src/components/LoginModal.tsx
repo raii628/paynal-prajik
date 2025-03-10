@@ -49,11 +49,25 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
         } else {
           navigate("/");
         }
-        setLoading(false);
       }
     } catch (error: any) {
       console.error(`Failed to login: ${error}`);
-      setErrors(error.response?.data || { general: "An error occurred" });
+      const errData = error.response?.data;
+      if (errData && errData.error) {
+        const message = errData.error;
+        // Map known error messages to specific fields
+        if (message.toLowerCase().includes("user does not exist")) {
+          setErrors({ email: message });
+        } else if (message.toLowerCase().includes("password")) {
+          setErrors({ password: message });
+        } else {
+          setErrors({ general: message });
+        }
+      } else {
+        setErrors({ general: "An error occurred" });
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -74,13 +88,6 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
 
           <div className="border-b-2 border-gray-300 mb-4"></div>
 
-          {/* Display a general error message if present */}
-          {errors.general && (
-            <div className="bg-red-100 text-red-700 p-2 mb-4 text-center rounded">
-              {errors.general}
-            </div>
-          )}
-
           <form onSubmit={loginSubmit} className="space-y-4 md:space-y-6">
             <div className="mb-2">
               <label
@@ -97,7 +104,7 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
                   value={email}
                   placeholder="Email@gmail.com"
                   onChange={handleEmailChange}
-                  className="z-10 border-1 border-gray-50 text-sm text-gray-900 rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 pl-9 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-800 mt-1"
+                  className="z-10 border border-gray-50 text-sm text-gray-900 rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 pl-9 mt-1"
                   required
                 />
                 {errors.email && (
@@ -121,7 +128,7 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
                   id="password"
                   value={password}
                   onChange={handlePasswordChange}
-                  className="bg-gray-50 border border-gray-100 text-sm text-gray-900 rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 pl-9 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-800 mt-1"
+                  className="bg-gray-50 border border-gray-100 text-sm text-gray-900 rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 pl-9 mt-1"
                   required
                 />
                 <FontAwesomeIcon
@@ -134,7 +141,7 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
                 <p className="text-red-600 text-sm">{errors.password}</p>
               )}
               <Link
-                to='/forgot-password'
+                to="/forgot-password"
                 className="text-xs font-semibold text-blue-500 underline tracking-tighter"
               >
                 Forgot password?
@@ -145,8 +152,9 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.95 }}
               type="submit"
-              disabled={!email || !password}
-              className={`w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800 transition-colors duration-300 flex items-center justify-center ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+              disabled={!email || !password || loading}
+              className={`w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800 transition-colors duration-300 flex items-center justify-center ${loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
             >
               {loading ? (
                 <>
