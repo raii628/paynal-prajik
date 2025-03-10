@@ -63,7 +63,11 @@ def send_register_otp(request):
         confirm_password = request.data.get("confirm_password")
         
         if not email or not password or not confirm_password:
-            return Response({"error": "Please fill out the fields"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                "error": {
+                    "general": "Please fill out the fields"
+                }
+            }, status=status.HTTP_400_BAD_REQUEST)
         
         form = RegistrationForm({
             'email': email,
@@ -72,22 +76,39 @@ def send_register_otp(request):
         })
         
         if not form.is_valid():
-            return Response({"error": form.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                "error": {
+                    "general": "Invalid data",
+                    "details": form.errors
+                }
+            }, status=status.HTTP_400_BAD_REQUEST)
         
         if CustomUsers.objects.filter(email=email).exists():
-            return Response({"error": "User already exists"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                "error": {
+                    "email": "Email already exists"
+                }
+            }, status=status.HTTP_400_BAD_REQUEST)
         
         purpose = "account_verification"
         cache_key = f"{email}_{purpose}"
         
         if cache.get(cache_key):
-            return Response({"error": "OTP already sent for account verification. Please wait for it to expire."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                "error": {
+                    "general": "An OTP has already been sent to your email. Please check your inbox."
+                }
+            }, status=status.HTTP_400_BAD_REQUEST)
         
         message = "Your OTP for account verification"
         otp_generated = send_otp_to_email(email, message)
         
         if otp_generated is None:
-            return Response({"error": "Failed to send OTP. Please try again later."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({
+                "error": {
+                    "general": "An error occurred while sending the OTP. Please try again later."
+                }
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         OTP_EXPIRATION_TIME = 120
         cache.set(cache_key, otp_generated, OTP_EXPIRATION_TIME)
@@ -100,7 +121,11 @@ def send_register_otp(request):
         }, status=status.HTTP_200_OK)
     except Exception as e:
         print(f"{e}")
-        return Response({"error": "Something went wrong"}, status=500)
+        return Response({
+            "error": {
+                "general": "An error occurred while sending the OTP. Please try again later."
+            }
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['POST'])
 @authentication_classes([])
