@@ -6,7 +6,6 @@ import { useUserContext } from "../contexts/AuthContext";
 import { navLinks } from "../constants/Navbar";
 import { logout } from "../services/Auth";
 import Modal from "../components/Modal";
-import hotelLogo from "../assets/hotel_logo.png";  
 
 const Navbar: FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -73,12 +72,7 @@ const Navbar: FC = () => {
             : "bg-transparent text-white"
           }`}
       >
-        <div className="flex justify-between items-center gap-12">
-          <div>
-            <Link to="/">
-            <img src={hotelLogo} alt="Hotel Logo" className="h-12 w-auto cursor-pointer" />
-            </Link>
-          </div>
+<<<<<<<<< Temporary merge branch 1
         {/* Logo */}
         <div className="flex items-center">
           <Link to="/">
@@ -87,6 +81,14 @@ const Navbar: FC = () => {
               Azurea
             </h1>
           </Link>
+=========
+        <div className="flex justify-between items-center gap-12">
+          <div>
+            <Link to="/">
+            <img src={hotelLogo} alt="Hotel Logo" className="h-12 w-auto cursor-pointer" />
+            </Link>
+          </div>
+>>>>>>>>> Temporary merge branch 2
         </div>
 
         {/* Navigation Links */}
