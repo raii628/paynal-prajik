@@ -72,15 +72,23 @@ const Navbar: FC = () => {
             : "bg-transparent text-white"
           }`}
       >
+<<<<<<<<< Temporary merge branch 1
+        {/* Logo */}
+        <div className="flex items-center">
+          <Link to="/">
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-[#7300FF] to-[#08D3FC] bg-clip-text text-transparent cursor-pointer">
+              <i className="fa-solid fa-moon text-4xl mr-2"></i>
+              Azurea
+            </h1>
+          </Link>
+=========
         <div className="flex justify-between items-center gap-12">
           <div>
             <Link to="/">
-              <h1 className="text-xl bg-gradient-to-r from-[#7300FF] to-[#08D3FC] bg-clip-text text-transparent cursor-pointer">
-                <i className="fa-solid fa-moon text-5xl mr-2"></i>
-                Azurea
-              </h1>
+            <img src={hotelLogo} alt="Hotel Logo" className="h-12 w-auto cursor-pointer" />
             </Link>
           </div>
+>>>>>>>>> Temporary merge branch 2
         </div>
 
         {/* Navigation Links */}
