@@ -1,5 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { faEye, faEyeSlash, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEye,
+  faEyeSlash,
+  faSpinner,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import { FC, useState } from "react";
@@ -11,7 +15,10 @@ interface SignupModalProps {
   openLoginModal: () => void;
 }
 
-const SignupModal: FC<SignupModalProps> = ({ toggleRegisterModal, openLoginModal }) => {
+const SignupModal: FC<SignupModalProps> = ({
+  toggleRegisterModal,
+  openLoginModal,
+}) => {
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] =
     useState<boolean>(false);
@@ -76,7 +83,9 @@ const SignupModal: FC<SignupModalProps> = ({ toggleRegisterModal, openLoginModal
       } else {
         const { data, status } = error.response;
         if (status === 500) {
-          setErrors({ general: "Something went wrong. Please try again later." });
+          setErrors({
+            general: "Something went wrong. Please try again later.",
+          });
         } else {
           setErrors((prevErrors) => ({
             ...prevErrors,
@@ -108,7 +117,8 @@ const SignupModal: FC<SignupModalProps> = ({ toggleRegisterModal, openLoginModal
 
           <div className="border-b-2 border-gray-300 mb-4"></div>
 
-          <form onSubmit={handleRegisterSubmit}
+          <form
+            onSubmit={handleRegisterSubmit}
             className="space-y-4 md:space-y-6"
           >
             <div className="mb-3">
@@ -201,11 +211,14 @@ const SignupModal: FC<SignupModalProps> = ({ toggleRegisterModal, openLoginModal
               whileTap={{ scale: 0.95 }}
               type="submit"
               disabled={!email || !password || !confirmPassword}
-              className={`w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800 transition-colors duration-300 flex items-center justify-center ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800 transition-colors duration-300 flex items-center justify-center ${
+                loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
               {loading ? (
                 <>
-                  <FontAwesomeIcon icon={faSpinner} spin className="mr-2" /> Registering...
+                  <FontAwesomeIcon icon={faSpinner} spin className="mr-2" />{" "}
+                  Registering...
                 </>
               ) : (
                 "Register"
