@@ -121,7 +121,7 @@ const SignupModal: FC<SignupModalProps> = ({
             onSubmit={handleRegisterSubmit}
             className="space-y-4 md:space-y-6"
           >
-            <div className="mb-3">
+            <div className="mb-2">
               <label
                 htmlFor="email"
                 className="text-md font-semibold text-gray-700 tracking-tighter"
@@ -137,7 +137,7 @@ const SignupModal: FC<SignupModalProps> = ({
                   value={email}
                   placeholder="Email@gmail.com"
                   onChange={handleEmailChange}
-                  className="bg-gray-50 border border-gray-300 text-sm text-gray-900 rounded-sm mt-1 focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 pl-9 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-800"
+                  className="z-10 bg-gray-50 border border-gray-300 text-sm text-gray-900 rounded-sm mt-1 focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 pl-9"
                   required
                 />
                 {errors.email && (
@@ -162,7 +162,7 @@ const SignupModal: FC<SignupModalProps> = ({
                   id="password"
                   value={password}
                   onChange={handlePasswordChange}
-                  className="bg-gray-50 border border-gray-300 text-sm text-gray-900 rounded-sm mt-1 focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 pl-9 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-800"
+                  className="z-10 bg-gray-50 border border-gray-300 text-sm text-gray-900 rounded-sm mt-1 focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 pl-9"
                   required
                 />
                 <FontAwesomeIcon
@@ -192,7 +192,7 @@ const SignupModal: FC<SignupModalProps> = ({
                   id="confirmPassword"
                   value={confirmPassword}
                   onChange={handleConfirmPasswordChange}
-                  className="bg-gray-50 border border-gray-300 text-sm text-gray-900 rounded-md mt-1 focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 pl-9 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-800"
+                  className="z-10 bg-gray-50 border border-gray-300 text-sm text-gray-900 rounded-sm mt-1 focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 pl-9"
                   required
                 />
                 <FontAwesomeIcon
