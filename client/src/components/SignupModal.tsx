@@ -42,7 +42,7 @@ const SignupModal: FC<SignupModalProps> = ({ toggleRegisterModal, openLoginModal
       return { general: "Something went wrong. Please try again later." };
     }
     if (data.error && typeof data.error === "object") {
-      const details = data.error.details || {};
+      const details = data.error.details ? data.error.details : data.error;
       return {
         email: details.email,
         password: details.password,
