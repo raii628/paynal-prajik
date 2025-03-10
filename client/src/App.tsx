@@ -31,7 +31,7 @@ const App = () => {
             )
           }
         />
-        
+
         <Route path="/otp" element={<OTP />} />
 
         {/* Admin Routes: Protected */}
