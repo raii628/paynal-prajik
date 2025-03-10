@@ -10,5 +10,5 @@ urlpatterns = [
     path('auth/register', views.send_register_otp, name='send_register_otp'),
     path('auth/verify', views.verify_otp, name='verify_otp'),
     path('auth/change_password', views.change_password, name='change_password'),
-    path('auth/user', views.user_details, name='user_details'),
+    path('auth/user', views.user_auth, name='user_auth'),
 ]

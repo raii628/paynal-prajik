@@ -1,26 +1,31 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { userAuth } from "../services/Token";
 import { useUserContext } from "../contexts/AuthContext";
+import { authenticateUser } from "../services/Auth";
 
 const useTokenHandler = () => {
-  const { setIsAuthenticated } = useUserContext();
-  const navigate = useNavigate();
+  const { setIsAuthenticated, setLoading, setRole, setUserDetails } = useUserContext();
 
   useEffect(() => {
     const validateToken = async () => {
       try {
-        const authStatus = await userAuth();
-        setIsAuthenticated(authStatus);
+        const response = await authenticateUser();
+        if (response.data.isAuthenticated) {
+          setIsAuthenticated(true);
+          setRole(response.data.role);
+          setUserDetails(response.data.user);
+        } else {
+          setIsAuthenticated(false);
+        }
       } catch (error) {
         console.error(`Failed to validate token: ${error}`);
-        navigate('/');
         setIsAuthenticated(false);
+      } finally {
+        setLoading(false);
       }
     }
 
     validateToken();
-  }, [setIsAuthenticated, navigate]);
+  }, [setIsAuthenticated, setLoading, setRole, setUserDetails]);
 }
 
 export default useTokenHandler;

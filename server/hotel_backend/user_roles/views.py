@@ -9,13 +9,12 @@ from .serializers import CustomUserSerializer
 from .email.email import send_otp_to_email
 from django.core.cache import cache
 from .validation.validation import RegistrationForm
-from django.contrib.auth.hashers import make_password
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def auth_logout(request):
     try:
-        logout(request)
+        # logout(request)
         
         response = Response({'message': 'User logged out successfully'}, status=status.HTTP_200_OK)
         
@@ -225,6 +224,20 @@ def user_login(request):
         return response
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_auth(request):
+    user = request.user
+    role = 'admin' if user.is_admin else 'guest'
+    return Response({
+        'isAuthenticated': True,
+        'role': role,
+        'user': {
+            'email': user.email,
+            'role': role
+        }
+    }, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
