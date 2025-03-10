@@ -14,6 +14,10 @@ import ManageRooms from "./pages/ManageRooms";
 import StaffSection from "./pages/admin/StaffSection";
 import AdminLayout from "./layout/admin/AdminLayout";
 import ForgotPassword from "./pages/ForgotPassword";
+import About from "./pages/About";
+import Rooms from "./pages/Rooms";
+import Services from "./pages/Services";
+import Promo from "./pages/Promo";
 
 const App = () => {
   const { isAuthenticated, role, loading } = useUserContext();
@@ -40,6 +44,10 @@ const App = () => {
         />
 
         <Route path="/otp" element={<OTP />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/rooms" element={<Rooms />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/promo" element={<Promo />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
 
         {/* Protected admin routes */}

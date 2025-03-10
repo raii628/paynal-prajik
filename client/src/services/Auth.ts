@@ -123,10 +123,14 @@ export const changePassword = async (oldPassword: string, newPassword: string, c
     }
 };
 
-export const resetPassword = async (email: string) => {
+export const resetPassword = async (email: string, newPassword: string, confirmPassword: string) => {
     try {
         const response = await API.post('/auth/reset_password', {
-            email: email
+            email: email,
+            new_password: newPassword,
+            confirm_password: confirmPassword
+        }, {
+            withCredentials: true
         });
         return response;
     } catch (error) {
@@ -135,13 +139,10 @@ export const resetPassword = async (email: string) => {
     }
 };
 
-export const forgotPassword = async (email: string, otp: string, password: string, confirmPassword: string) => {
+export const forgotPassword = async (email: string) => {
     try {
         const response = await API.post('/auth/forgot_password', {
             email: email,
-            otp: otp,
-            password: password,
-            confirmPassword: confirmPassword
         }, {
             withCredentials: true
         });

@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, logout
+from django.contrib.auth import authenticate, logout, login
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken # type: ignore
 from .models import CustomUsers
 from .serializers import CustomUserSerializer
-from .email.email import send_otp_to_email
+from .email.email import send_otp_to_email, send_reset_password
 from django.core.cache import cache
 from .validation.validation import RegistrationForm
 
@@ -14,7 +14,7 @@ from .validation.validation import RegistrationForm
 @permission_classes([IsAuthenticated])
 def auth_logout(request):
     try:
-        # logout(request)
+        logout(request)
         
         response = Response({'message': 'User logged out successfully'}, status=status.HTTP_200_OK)
         
@@ -235,12 +235,14 @@ def forgot_password(request):
         email = request.data.get('email')
         if not email:
             return Response({"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
-        try:
-            user = CustomUsers.objects.get(email=email)
-        except CustomUsers.DoesNotExist:
-            return Response({"error": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)
-
-        otp = send_register_otp(email)
+        
+        user = CustomUsers.objects.filter(email=email).first()
+        if not user:
+            return Response({
+                "error": "User does not exist"
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        otp = send_reset_password(email)
         if otp is None:
             return Response({
                 "error": "An error occurred while sending the OTP. Please try again later."
@@ -252,8 +254,9 @@ def forgot_password(request):
         
         return Response({
             "message": "OTP sent successfully",
-        }, status.status.HTTP_200_OK)
+        }, status=status.HTTP_200_OK)
     except Exception as e:
+        print(str(e))
         return Response({
             'error': 'An error occurred while sending the OTP. Please try again later.'
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -314,9 +317,9 @@ def reset_password(request):
                 "error": "New password and confirm password do not match"
             }, status=status.HTTP_400_BAD_REQUEST)
         
-        try:
-            user = CustomUsers.objects.get(email=email)
-        except CustomUsers.DoesNotExist:
+        user = CustomUsers.objects.filter(email=email).first()
+        
+        if not user:
             return Response({
                 "error": "User does not exist"
             }, status=status.HTTP_404_NOT_FOUND)
@@ -324,9 +327,37 @@ def reset_password(request):
         user.set_password(new_password)
         user.save()
         
-        return Response({
-            "message": "Password reset successfully"
-        }, status=status.HTTP_200_OK)
+        user = authenticate(request, username=email, password=new_password)
+        if user is not None:
+            login(request, user)
+            refresh = RefreshToken.for_user(user)
+            response = Response({
+                "message": "Password reset successfully",
+            }, status=status.HTTP_200_OK)
+            
+            response.set_cookie(
+                key="access_token",
+                value=str(refresh.access_token),
+                httponly=True,
+                secure=False,
+                samesite='Lax',
+                max_age=3600
+            )
+            
+            response.set_cookie(
+                key="refresh_token",
+                value=str(refresh),
+                httponly=True,
+                secure=False,
+                samesite='Lax',
+                max_age=604800
+            )
+            
+            return response
+        else:
+            return Response({
+                "error": "Password reset failed. Please try again later."
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     except Exception as e:
         return Response({
             "error": "An error occurred while resetting the password. Please try again later."
