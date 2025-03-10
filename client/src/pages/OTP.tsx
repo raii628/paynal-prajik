@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FC, useState, useEffect, KeyboardEvent, FormEvent } from "react"
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useUserContext } from "../contexts/AuthContext";
 import { verifyOtp } from "../services/Auth";
@@ -122,7 +122,7 @@ const OTP: FC = () => {
         className="bg-white w-full max-w-md rounded-lg shadow-md p-6"
       >
         <div className="flex flex-col items-center mb-6">
-          <div className="text-4xl mb-4 text-orange-500">
+          <div className="text-4xl mb-4 text-blue-500">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-12 w-12"
@@ -159,7 +159,7 @@ const OTP: FC = () => {
                 id={`otp-input-${index}`}
                 type="text"
                 maxLength={1}
-                className="w-12 h-12 text-center border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-xl"
+                className="w-12 h-12 text-center border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-xl"
                 value={digit}
                 onChange={(e) => handleChange(e.target.value, index)}
                 onKeyDown={(e) => handleKeyDown(e, index)}
@@ -168,7 +168,7 @@ const OTP: FC = () => {
           </div>
 
           <div className="text-center mb-4">
-            <a href="#" className="text-sm text-orange-500 hover:underline mr-2">
+            <a href="#" className="text-sm text-blue-500 hover:underline mr-2">
               Change Email
             </a>
             |
@@ -180,7 +180,7 @@ const OTP: FC = () => {
                   resendOTP();
                 }
               }}
-              className={`text-sm ml-2 ${resendDisabled ? "text-gray-400 cursor-not-allowed" : "text-orange-500 hover:underline"
+              className={`text-sm ml-2 ${resendDisabled ? "text-gray-400 cursor-not-allowed" : "text-blue-500 hover:underline"
                 }`}
             >
               Resend Code
@@ -193,7 +193,7 @@ const OTP: FC = () => {
           <button
             type="submit"
             disabled={isVerifying}
-            className={`w-full bg-orange-500 text-white py-2 rounded-md hover:bg-orange-600 transition-colors ${isVerifying ? "opacity-50 cursor-not-allowed" : ""
+            className={`w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors ${isVerifying ? "opacity-50 cursor-not-allowed" : ""
               }`}
           >
             {isVerifying ? "Verifying..." : "Verify Email"}
