@@ -1,5 +1,17 @@
 import { API } from "./_axios";
 
+export const authenticateUser = async () => {
+    try {
+        const response = await API.get('/auth/user', {
+            withCredentials: true
+        });
+        return response;
+    } catch (error) {
+        console.error(`Failed to authenticate user: ${error}`);
+        throw error;
+    }
+};
+
 export const login = async (email: string, password: string) => {
     try {
         const response = await API.post('/auth/login', {
