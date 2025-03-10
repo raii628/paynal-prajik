@@ -6,7 +6,6 @@ import { useUserContext } from "../contexts/AuthContext";
 import { navLinks } from "../constants/Navbar";
 import { logout } from "../services/Auth";
 import Modal from "../components/Modal";
-import hotelLogo from "../assets/hotel_logo.png";  
 
 const Navbar: FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -48,6 +47,17 @@ const Navbar: FC = () => {
   }, []);
 
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        if (loginModal) setLoginModal(false);
+        if (registerModal) setRegisterModal(false);
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [loginModal, registerModal]);
+
+  useEffect(() => {
     if (isAuthenticated) {
       setLoginModal(false);
       setRegisterModal(false);
@@ -57,42 +67,46 @@ const Navbar: FC = () => {
   return (
     <>
       <nav
-        className={`sticky top-0 left-0 w-full py-2 px-10 flex justify-between items-center z-40 transition-all duration-75 ${isScrolled
-          ? "bg-white shadow-lg text-black py-0"
-          : "bg-transparent text-white py-2"
+        className={`sticky top-0 left-0 w-full px-10 py-4 flex items-center justify-between z-40 transition-all duration-75 ${isScrolled
+            ? "bg-white shadow-lg text-black"
+            : "bg-transparent text-white"
           }`}
       >
         <div className="flex justify-between items-center gap-12">
           <div>
             <Link to="/">
-            <img src={hotelLogo} alt="Hotel Logo" className="h-12 w-auto cursor-pointer" />
+              <h1 className="text-xl bg-gradient-to-r from-[#7300FF] to-[#08D3FC] bg-clip-text text-transparent cursor-pointer">
+                <i className="fa-solid fa-moon text-5xl mr-2"></i>
+                Azurea
+              </h1>
             </Link>
           </div>
         </div>
 
-        <ul className="flex items-center gap-5">
+        {/* Navigation Links */}
+        <ul className="flex items-center space-x-6">
           {navLinks.map((link, index) => (
             <li
               key={index}
-              className="text-sm font-bold cursor-pointer hover:text-[#3C69FF] transition-all duration-300 p-3"
+              className="text-lg font-bold hover:text-[#3C69FF] transition-all duration-300"
             >
               <Link to={link.link}>{link.text}</Link>
             </li>
           ))}
         </ul>
 
-        <div className="flex items-center gap-5">
+        {/* Auth Buttons */}
+        <div className="flex items-center space-x-4">
           {!isAuthenticated ? (
             <>
               <button
-                className="text-sm font-bold rounded-md border-2 px-5 py-1 cursor-pointer hover:bg-gradient-to-r from-[#7300FF] to-[#08D3FC] transition-all duration-300"
+                className="px-4 py-2 text-base font-bold border rounded-md hover:bg-blue-600 transition duration-300"
                 onClick={toggleLoginModal}
               >
                 Login
               </button>
-
               <button
-                className="text-sm font-bold rounded-md border-2 px-5 py-1 cursor-pointer hover:bg-gradient-to-r from-[#7300FF] to-[#08D3FC] transition-all duration-300"
+                className="px-4 py-2 text-base font-bold border rounded-md hover:bg-blue-600 transition duration-300"
                 onClick={toggleRegisterModal}
               >
                 Sign Up
@@ -100,7 +114,7 @@ const Navbar: FC = () => {
             </>
           ) : (
             <button
-              className="text-sm font-bold rounded-md border-2 px-5 py-1 cursor-pointer hover:bg-gradient-to-r from-[#7300FF] to-[#08D3FC] transition-all duration-300"
+              className="px-4 py-2 text-lg font-bold border rounded-md hover:bg-gradient-to-r from-[#7300FF] to-[#08D3FC] transition duration-300"
               onClick={() => setIsModalOpen(true)}
             >
               Logout
@@ -110,7 +124,7 @@ const Navbar: FC = () => {
       </nav>
 
       {loginModal && (
-        <div className="fixed inset-0 bg-black/50 bg-opacity-50 z-50">
+        <div className="fixed inset-0 bg-black/50 z-50">
           <LoginModal
             toggleLoginModal={toggleLoginModal}
             openSignupModal={toggleRegisterModal}
@@ -118,7 +132,7 @@ const Navbar: FC = () => {
         </div>
       )}
       {registerModal && (
-        <div className="fixed inset-0 bg-black/50 bg-opacity-50 z-50">
+        <div className="fixed inset-0 bg-black/50 z-50">
           <SignupModal
             toggleRegisterModal={toggleRegisterModal}
             openLoginModal={toggleLoginModal}
@@ -127,12 +141,13 @@ const Navbar: FC = () => {
       )}
       <Modal
         isOpen={isModalOpen}
-        icon={null}
+        icon="fa fa-sign-out-alt"
         title="Log Out"
         description="Are you sure you want to log out?"
         cancel={() => setIsModalOpen(!isModalOpen)}
         onConfirm={handleLogout}
-        className={`bg-purple-600 text-white active:bg-purple-700 font-bold uppercase text-sm px-6 py-3 rounded-md shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 ${loading} ? 'opacity-50 cursor-not-allowed' : ''`}
+        className={`bg-purple-600 text-white active:bg-purple-700 font-bold uppercase text-sm px-6 py-3 cursor-pointer rounded-md shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 ${loading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
         confirmText={loading ? "Logging out..." : "Log Out"}
         cancelText="Cancel"
       />
