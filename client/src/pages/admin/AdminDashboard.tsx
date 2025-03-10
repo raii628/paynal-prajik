@@ -1,9 +1,8 @@
-import AdminSidebar from "../../layout/admin/AdminSidebar";
 
 const AdminDashboard = () => {
   return (
     <>
-      <AdminSidebar />
+      <div>Admin Dashboard</div>
     </>
   );
 };
