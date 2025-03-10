@@ -19,7 +19,7 @@ const App = () => {
   const { isAuthenticated, role, loading } = useUserContext();
   useTokenHandler();
 
-  if (loading) return <LoadingHydrate />
+  if (loading) return <LoadingHydrate />;
 
   return (
     <Suspense fallback={<LoadingHydrate />}>

@@ -18,17 +18,13 @@ const Hero = () => {
         </h1>
 
         <p className="text-m text-white mt-5">
-          Beyond a stay, it&apos;s an experience. Relax, unwind, and indulge in the
-          finest <br /> comforts designed just for you.
+          Beyond a stay, it&apos;s an experience. Relax, unwind, and indulge in
+          the finest <br /> comforts designed just for you.
         </p>
 
-        <button
-          className="text-2xl text-white mt-10 rounded-full border px-4 py-3 font-medium hover:bg-gradient-to-r from-[#7300FF] to-[#08D3FC] transition-all duration-300 group"
-        >
+        <button className="text-2xl text-white mt-10 rounded-full border px-4 py-3 font-medium hover:bg-gradient-to-r from-[#7300FF] to-[#08D3FC] transition-all duration-300 group">
           Book now
-          <i
-            className="fa-solid fa-arrow-right ml-4 transition-transform duration-300 ease-in-out group-hover:-rotate-45"
-          ></i>
+          <i className="fa-solid fa-arrow-right ml-4 transition-transform duration-300 ease-in-out group-hover:-rotate-45"></i>
         </button>
       </div>
     </section>

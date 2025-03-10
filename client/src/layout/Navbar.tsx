@@ -14,6 +14,7 @@ const Navbar: FC = () => {
   const [registerModal, setRegisterModal] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -68,10 +69,11 @@ const Navbar: FC = () => {
   return (
     <>
       <nav
-        className={`sticky top-0 left-0 w-full px-10 py-4 flex items-center justify-between z-40 transition-all duration-75 ${isScrolled
+        className={` sticky top-0 left-0 w-full px-10 py-4 flex items-center justify-between z-40 transition-all duration-75 ${
+          isScrolled
             ? "bg-white shadow-lg text-black"
             : "bg-transparent text-white"
-          }`}
+        }`}
       >
         <div className="flex items-center">
           <Link to="/">
@@ -83,7 +85,57 @@ const Navbar: FC = () => {
           </Link>
         </div>
 
+<<<<<<< HEAD
+        <div className="block lg:hidden">
+          {/* Hamburger icon */}
+          {!menuOpen && (
+            <i
+              className="fa fa-bars text-2xl cursor-pointer transition-all duration-300"
+              onClick={() => setMenuOpen(true)} // Open menu on click
+            ></i>
+          )}
+
+          {/* Overlay Menu */}
+          <div className="h-full">
+            <ul
+              className={`fixed top-0 right-0 w-full md:w-1/2 sm:w-3/5 max-w[] h-screen bg-white shadow-md text-black flex flex-col items-center gap-4 font-bold text-lg z-50 transition-all duration-300 ease-in-out ${
+                menuOpen
+                  ? "opacity-100 pointer-events-auto translate-x-0"
+                  : "opacity-0 pointer-events-none translate-x-full"
+              }`}
+            >
+              {/* Close Icon */}
+              <li
+                className="w-full text-right text-4xl pr-10 py-3 cursor-pointer"
+                onClick={() => setMenuOpen(false)} // Close menu on click
+              >
+                <i className="fa fa-times"></i>
+              </li>
+
+              {/* Menu Links */}
+              <li className="w-full text-center py-3 hover:bg-violet-400 hover:text-white cursor-pointer">
+                Home
+              </li>
+              <li className="w-full text-center py-3 hover:bg-violet-400 hover:text-white cursor-pointer">
+                About
+              </li>
+              <li className="w-full text-center py-3 hover:bg-violet-400 hover:text-white cursor-pointer">
+                Rooms
+              </li>
+              <li className="w-full text-center py-3 hover:bg-violet-400 hover:text-white cursor-pointer">
+                Services
+              </li>
+              <li className="w-full text-center py-3 hover:bg-violet-400 hover:text-white cursor-pointer">
+                Promo
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <ul className=" hidden lg:flex items-center space-x-6">
+=======
         <ul className="flex items-center space-x-6">
+>>>>>>> upstream/main
           {navLinks.map((link, index) => (
             <li
               key={index}
@@ -94,17 +146,21 @@ const Navbar: FC = () => {
           ))}
         </ul>
 
+<<<<<<< HEAD
+        <div className="hidden lg:flex items-center space-x-4">
+=======
         <div className="flex items-center space-x-4">
+>>>>>>> upstream/main
           {!isAuthenticated ? (
             <>
               <button
-                className="px-4 py-2 text-base font-bold border rounded-md hover:bg-blue-600 transition duration-300"
+                className="px-4 py-2 text-base font-bold border rounded-md hover:bg-blue-600 transition duration-300 cursor-pointer"
                 onClick={toggleLoginModal}
               >
                 Login
               </button>
               <button
-                className="px-4 py-2 text-base font-bold border rounded-md hover:bg-blue-600 transition duration-300"
+                className="px-4 py-2 text-base font-bold border rounded-md hover:bg-blue-600 transition duration-300 cursor-pointer"
                 onClick={toggleRegisterModal}
               >
                 Sign Up
@@ -144,8 +200,9 @@ const Navbar: FC = () => {
         description="Are you sure you want to log out?"
         cancel={() => setIsModalOpen(!isModalOpen)}
         onConfirm={handleLogout}
-        className={`bg-purple-600 text-white active:bg-purple-700 font-bold uppercase text-sm px-6 py-3 cursor-pointer rounded-md shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 ${loading ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+        className={`bg-purple-600 text-white active:bg-purple-700 font-bold uppercase text-sm px-6 py-3 cursor-pointer rounded-md shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 ${
+          loading ? "opacity-50 cursor-not-allowed" : ""
+        }`}
         confirmText={loading ? "Logging out..." : "Log Out"}
         cancelText="Cancel"
       />
