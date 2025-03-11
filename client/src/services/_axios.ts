@@ -14,3 +14,11 @@ export const ADMIN = axios.create({
     },
     withCredentials: true
 });
+
+export const guest = axios.create({
+    baseURL: `${import.meta.env.VITE_API_URL}/api/guest`,
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    withCredentials: true
+});

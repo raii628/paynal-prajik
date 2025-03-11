@@ -34,7 +34,7 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
   } | null>(null);
 
   const navigate = useNavigate();
-  const { setIsAuthenticated, setRole } = useUserContext();
+  const { setIsAuthenticated, setRole, setUserDetails, setProfileImage } = useUserContext();
 
   const togglePassword = () => setPasswordVisible(!passwordVisible);
 
@@ -52,6 +52,9 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
       const response = await login(email, password);
       if (response.status === 200) {
         const { user } = response.data;
+        console.log(`Logged in as ${user}`);
+        setUserDetails(user);
+        setProfileImage(user.profile_image || "");
         setIsAuthenticated(true);
         setRole(user.role);
         setNotification({

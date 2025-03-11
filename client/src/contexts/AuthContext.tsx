@@ -3,6 +3,7 @@
 import { createContext, useState, useContext, ReactNode, FC } from "react";
 
 interface UserDetails {
+    id: number;
     username: string;
     email: string;
 }
@@ -13,11 +14,13 @@ interface UserContextType {
     sessionExpired: boolean;
     role?: string;
     loading: boolean;
+    profileImage?: string;
     setIsAuthenticated: (value: boolean) => void;
     setUserDetails: (value: UserDetails) => void;
     setSessionExpired: (value: boolean) => void;
     setRole: (value: string) => void;
     setLoading: (value: boolean) => void;
+    setProfileImage?: (value: string) => void;
 }
 
 const UserContext = createContext<UserContextType | any>(null);
@@ -28,6 +31,7 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [sessionExpired, setSessionExpired] = useState<boolean>(false);
     const [role, setRole] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(true);
+    const [profileImage, setProfileImage] = useState<string>("");
     
     const contextValue: UserContextType = {
         isAuthenticated,
@@ -35,11 +39,13 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
         sessionExpired,
         role,
         loading,
+        profileImage,
         setIsAuthenticated,
         setUserDetails,
         setSessionExpired,
         setRole,
-        setLoading
+        setLoading,
+        setProfileImage
     }
 
     return (

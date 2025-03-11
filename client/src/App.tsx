@@ -22,6 +22,7 @@ import Comments from "./pages/admin/Comments";
 import Reports from "./pages/admin/Reports";
 import Suites from "./pages/Suites";
 import RegistrationFlow from "./pages/RegistrationFlow";
+import GuestProfile from "./pages/guests/GuestProfile";
 
 const App = () => {
   const { isAuthenticated, role, loading } = useUserContext();
@@ -47,6 +48,7 @@ const App = () => {
           }
         />
 
+        <Route path="/guest/:id" element={<GuestProfile />} />
         <Route path="/registration" element={<RegistrationFlow />} />
         <Route path="/about" element={<About />} />
         <Route path="/reservation" element={<Reservation />} />
