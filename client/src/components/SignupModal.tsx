@@ -54,19 +54,12 @@ const SignupModal: FC<SignupModalProps> = ({ toggleRegisterModal, openLoginModal
     try {
       const response = await sendRegisterOtp(email, password, confirmPassword);
       if (response.status === 200) {
-        // Set a notification that OTP was sent successfully
         setNotification({
           message: "OTP sent successfully! Please check your email.",
           type: "success",
           icon: "fas fa-check-circle"
         });
-        // Save email and password in sessionStorage for OTP verification page
-        sessionStorage.setItem("email", email);
-        sessionStorage.setItem("password", password);
-        // Delay navigation to allow notification display
-        setTimeout(() => {
-          navigate("/otp", { state: { email, password } });
-        }, 2000);
+        navigate("/registration", { state: { email, password } });
       }
     } catch (error: any) {
       console.error(`Failed to register: ${error}`);
