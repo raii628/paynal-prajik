@@ -14,7 +14,6 @@ import AdminLayout from "./layout/admin/AdminLayout";
 import ForgotPassword from "./pages/ForgotPassword";
 import About from "./pages/About";
 import Rooms from "./pages/Rooms";
-import Promo from "./pages/Promo";
 import ManageUsers from "./pages/admin/ManageUsers";
 import UserStats from "./pages/admin/UserStats";
 import AreaReservations from "./pages/admin/AreaReservations";
