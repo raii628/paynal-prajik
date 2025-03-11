@@ -5,6 +5,9 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 urlpatterns = [
     path('token', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh', TokenRefreshView.as_view(), name="token_refresh_pair"),
+    
+    # For user authentication
+    
     path('auth/user', views.user_auth, name='user_auth'),
     path('auth/login', views.user_login, name='user_login'),
     path('auth/verify', views.verify_otp, name='verify_otp'),
@@ -16,6 +19,10 @@ urlpatterns = [
     path('auth/reset_password', views.reset_password, name='reset_password'),
     path('auth/forgot_password', views.forgot_password, name='forgot_password'),
     path('auth/verify_reset_otp', views.verify_reset_otp, name='verify_reset_otp'),
+    
     # Delete view must be deleted after some dry tests
     path('auth/delete', views.force_delete_account, name='complete_reset'),
+
+    # For guest profile
+    path('guest/<int:user_id>', views.user_details, name='user_details'),
 ]

@@ -444,12 +444,20 @@ def user_login(request):
         
         token = RefreshToken.for_user(auth_user)
         
+        user_data = {
+            'id': auth_user.id,
+            'email': auth_user.email,
+            'username': auth_user.username,
+            'first_name': auth_user.first_name,
+            'last_name': auth_user.last_name,
+            'age': auth_user.age,
+            'guest_type': auth_user.guest_type,
+            'profile_image': auth_user.profile_image.url if auth_user.profile_image else "",
+        }
+        
         response = Response({
             'message': f'{role.capitalize()} logged in successfully!',
-            'user': {
-                'email': auth_user.email,
-                'role': role
-            },
+            'user': user_data,
             'access_token': str(token.access_token),
             'refresh_token': str(token)
         }, status=status.HTTP_200_OK)
@@ -492,15 +500,15 @@ def user_auth(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def user_details(request):
+def user_details(request, user_id):
     try:
-        user = request.user
-        
-        if not user or not user.is_authenticated:
-            return Response({'error': 'User is not authenticated'}, status=status.HTTP_401_UNAUTHORIZED)
+        user = CustomUsers.objects.get(id=user_id)
         
         serializer = CustomUserSerializer(user)
-        
         return Response({'user': serializer.data}, status=status.HTTP_200_OK)
+    except CustomUsers.DoesNotExist:
+        return Response({
+            'error': 'User not found'
+        }, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
