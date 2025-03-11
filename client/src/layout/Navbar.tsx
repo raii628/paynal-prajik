@@ -37,7 +37,7 @@ const Navbar: FC = () => {
           message: "Logged out successfully",
           type: "success",
           icon: "fas fa-check-circle",
-        })
+        });
         setIsModalOpen(false);
         navigate("/", { replace: true });
       }
@@ -80,7 +80,7 @@ const Navbar: FC = () => {
   return (
     <>
       {notification && (
-        <Notification 
+        <Notification
           icon={notification.icon}
           message={notification.message}
           type={notification.type}
@@ -88,7 +88,11 @@ const Navbar: FC = () => {
         />
       )}
       <nav
-        className={`sticky top-0 left-0 w-full px-10 py-4 flex items-center justify-between z-40 transition-all duration-75 ${isScrolled ? "bg-gray-200 shadow-lg text-black" : "bg-transparent text-white"}`}
+        className={`fixed top-0 left-0 w-full px-10 py-4 flex items-center justify-between z-40 transition-all duration-75 ${
+          isScrolled
+            ? "bg-gray-200 shadow-lg text-black"
+            : "bg-transparent text-white"
+        }`}
       >
         <div className="flex items-center">
           <Link to="/">
@@ -110,15 +114,15 @@ const Navbar: FC = () => {
           )}
 
           {/* Overlay Menu */}
-          <div className="h-full">
+          <div className="h-full overflow-y-auto">
             {menuOpen && (
               <div
-                className="hidden md:block fixed inset-0 bg-black/30 bg-opacity-50 z-40"
+                className="hidden md:block sm:block fixed inset-0 bg-black/30 bg-opacity-50 z-40"
                 onClick={() => setMenuOpen(false)} // Close on click
               ></div>
             )}
             <ul
-              className={`fixed top-0 right-0 w-full md:w-2/5 sm:w-3/5 h-screen bg-white shadow-md text-black  items-center gap-4 font-bold text-lg z-50 transition-all duration-300 ease-in-out ${
+              className={`fixed top-0 right-0 w-full md:w-2/5 sm:w-3/5 xs:w-4/5 h-screen bg-white shadow-md text-black  items-center gap-4 font-bold text-lg z-50 transition-all duration-300 ease-in-out ${
                 menuOpen
                   ? "opacity-100 pointer-events-auto translate-x-0"
                   : "opacity-0 pointer-events-none translate-x-full"
@@ -142,18 +146,21 @@ const Navbar: FC = () => {
               </div>
 
               <div>
-                <li className="w-full text-left text-black/70 pl-5 py-3">
+                <li className="w-full text-left text-black/70 pl-5 py-2">
                   <i className="fa fa-bars text-black/70 mr-3"></i>
                   Navigation
                 </li>
-                <div className="border-b-2 pl-5 px-3 py-3 text-black/80 border-gray-300 uppercase font-light tracking-wide">
+                <div className="border-b-2 pl-5 px-3 pb-3 text-black/80 border-gray-300 uppercase font-light tracking-wide">
                   {navLinks.map((link, index) => (
                     <li
                       key={index}
                       className="w-full py-3 rounded-md hover:bg-violet-200 hover:text-violet-700 cursor-pointer"
                       onClick={() => setMenuOpen(false)} // Close menu when clicking link
                     >
-                      <Link to={link.link} className="flex items-center">
+                      <Link
+                        to={link.link}
+                        className="flex items-center text-sm"
+                      >
                         <i className={`ml-3 mr-3 ${link.icon}`}></i> {link.text}
                       </Link>
                     </li>
@@ -162,13 +169,13 @@ const Navbar: FC = () => {
 
                 <div className="pl-5 py-3 px-3 text-black/80">
                   <li
-                    className="w-full py-3 rounded-md hover:bg-violet-200 hover:text-violet-700 cursor-pointer"
+                    className="w-full py-3 rounded-md text-sm hover:bg-violet-200 hover:text-violet-700 cursor-pointer"
                     onClick={toggleLoginModal}
                   >
                     <i className="fa-regular fa-user ml-3 mr-3"></i> Login
                   </li>
                   <li
-                    className="w-full py-3 rounded-md hover:bg-violet-200 hover:text-violet-700 cursor-pointer
+                    className="w-full py-3 rounded-md text-sm hover:bg-violet-200 hover:text-violet-700 cursor-pointer
                   "
                     onClick={toggleRegisterModal}
                   >

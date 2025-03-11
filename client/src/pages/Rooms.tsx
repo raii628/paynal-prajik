@@ -1,8 +1,13 @@
+import Footer from "../layout/Footer";
+import RoomHero from "../layout/RoomHero";
 
 const Rooms = () => {
   return (
-    <div>Rooms</div>
-  )
-}
+    <>
+      <RoomHero />
+      <Footer />
+    </>
+  );
+};
 
-export default Rooms
+export default Rooms;

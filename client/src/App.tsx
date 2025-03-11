@@ -14,7 +14,6 @@ import AdminLayout from "./layout/admin/AdminLayout";
 import ForgotPassword from "./pages/ForgotPassword";
 import About from "./pages/About";
 import Rooms from "./pages/Rooms";
-import Services from "./pages/Services";
 import Promo from "./pages/Promo";
 import ManageUsers from "./pages/admin/ManageUsers";
 import UserStats from "./pages/admin/UserStats";
@@ -22,6 +21,7 @@ import AreaReservations from "./pages/admin/AreaReservations";
 import ManageAmenities from "./pages/admin/ManageAmenities";
 import Comments from "./pages/admin/Comments";
 import Reports from "./pages/admin/Reports";
+import Suites from "./pages/Suites";
 import RegistrationFlow from "./pages/RegistrationFlow";
 
 const App = () => {
@@ -50,9 +50,9 @@ const App = () => {
 
         <Route path="/registration" element={<RegistrationFlow />} />
         <Route path="/about" element={<About />} />
+        <Route path="/reservation" element={<Reservation />} />
         <Route path="/rooms" element={<Rooms />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/promo" element={<Promo />} />
+        <Route path="/suites" element={<Suites />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
 
         {/* Protected admin routes */}
@@ -65,7 +65,7 @@ const App = () => {
             <Route path="amenities" element={<ManageAmenities />} />
             <Route path="comments" element={<Comments />} />
             <Route path="reports" element={<Reports />} />
-            <Route path="users" element={<ManageUsers /> }>
+            <Route path="users" element={<ManageUsers />}>
               <Route path=":id" element={<UserStats />} />
             </Route>
           </Route>
