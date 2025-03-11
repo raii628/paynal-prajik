@@ -6,11 +6,8 @@ import { useUserContext } from "../contexts/AuthContext";
 import { navLinks } from "../constants/Navbar";
 import { logout } from "../services/Auth";
 import Modal from "../components/Modal";
-<<<<<<<<< Temporary merge branch 1
 import hotelLogo from "../assets/hotel_logo.png";
-=========
-import hotelLogo from "../assets/hotel_logo.png";  
->>>>>>>>> Temporary merge branch 2
+import Notification from "../components/Notification";
 
 const Navbar: FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
