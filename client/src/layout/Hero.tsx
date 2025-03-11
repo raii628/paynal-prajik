@@ -8,13 +8,12 @@ const Hero = () => {
       style={{ backgroundImage: `url(${hotel_bg})` }}
     >
       <Navbar />
-      <div
-        className="relative z-10 h-full flex flex-col justify-start mt-30 sm:mt-28 md:mt-26 lg:mt-22 xl:mt-19 2xl:mt-16 px-5 sm:px-10 md:px-16 lg:px-24 xl:px-32 2xl:px-40">
-        <h3 className="text-[clamp(1.5rem,3vw,3rem)] text-white mb-4 tracking-wider">
+      <div className="relative z-10 h-full flex flex-col justify-center px-8 sm:px-15 md:px-20 lg:px-24 xl:px-30 2xl:px-35">
+        <h3 className="text-[clamp(1.5rem,3vw,3rem)] text-white mt-5 mb-4 tracking-wider">
           Azurea Hotel
         </h3>
 
-        <h1 className="text-[clamp(2.5rem,6vw,7rem)] text-white font-bold leading-tight">
+        <h1 className="text-[clamp(2rem,6vw,7rem)] text-white font-bold leading-tight">
           Stay in <span className="text-[#3C69FF]">Comfort</span>, <br />
           Leave with <span className="text-[#3C69FF]">Memories</span>
         </h1>
