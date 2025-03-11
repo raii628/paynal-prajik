@@ -16,5 +16,6 @@ urlpatterns = [
     path('auth/reset_password', views.reset_password, name='reset_password'),
     path('auth/forgot_password', views.forgot_password, name='forgot_password'),
     path('auth/verify_reset_otp', views.verify_reset_otp, name='verify_reset_otp'),
+    # Delete view must be deleted after some dry tests
     path('auth/delete', views.force_delete_account, name='complete_reset'),
 ]
