@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from .models import AdminDetails
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -23,3 +22,12 @@ def get_admin_details(request):
     return Response({
         'data': data
     }, status=status.HTTP_200_OK)
+
+# For Manage Users
+# @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+# def manage_users(request):
+#     try:
+        
+#     except Exception as e:
+#         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

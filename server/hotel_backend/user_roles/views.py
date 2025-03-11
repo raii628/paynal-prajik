@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, logout
+from django.contrib.auth import authenticate, logout, login
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
@@ -6,15 +6,31 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken # type: ignore
 from .models import CustomUsers
 from .serializers import CustomUserSerializer
-from .email.email import send_otp_to_email
+from .email.email import send_otp_to_email, send_reset_password
 from django.core.cache import cache
 from .validation.validation import RegistrationForm
+
+# Deleted later
+@api_view(['DELETE'])
+@permission_classes([AllowAny])
+def force_delete_account(request):
+    user_id = request.data.get('id')
+    if not user_id:
+        return Response({"error": "Email is required."}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        user = CustomUsers.objects.get(id=user_id)
+        user.delete()
+        return Response({"success": f"User with user id {user_id} has been deleted."}, status=status.HTTP_200_OK)
+    except CustomUsers.DoesNotExist:
+        return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": "An error occurred while deleting the account."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def auth_logout(request):
     try:
-        # logout(request)
+        logout(request)
         
         response = Response({'message': 'User logged out successfully'}, status=status.HTTP_200_OK)
         
@@ -77,10 +93,7 @@ def send_register_otp(request):
         
         if not form.is_valid():
             return Response({
-                "error": {
-                    "general": "Invalid data",
-                    "details": form.errors
-                }
+                "error": form.errors
             }, status=status.HTTP_400_BAD_REQUEST)
         
         if CustomUsers.objects.filter(email=email).exists():
@@ -148,51 +161,264 @@ def verify_otp(request):
 
         if str(cached_otp) != str(received_otp):
             return Response({"error": "Incorrect OTP code. Please try again"}, status=status.HTTP_400_BAD_REQUEST)
-    
+        
+        cache.delete(cache_key)
+        verified_key = f"{email}_verified"
+        cache.set(verified_key, True, timeout=600)
+        
+        return Response({
+            "message": "OTP verified successfully"
+        }, status=status.HTTP_200_OK)
+    except Exception as e:
+        print(f"OTP Error: {e}")
+        return Response({"error": "An error occurred during registration. Please try again later."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def complete_registration(request):
+    try:
+        email = request.data.get("email")
+        password = request.data.get("password")
+        first_name = request.data.get("first_name")
+        last_name = request.data.get("last_name")
+        age = request.data.get("age")
+        
+        if not email or not password or not first_name or not last_name or not age:
+            return Response({
+                "error": "Please fill out the fields"
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        verified_key = f"{email}_verified"
+        if not cache.get(verified_key):
+            return Response({
+                "error": "OTP not verified. Please complete OTP verification"
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        if CustomUsers.objects.filter(email=email).exists():
+            return Response({
+                'error': 'Email already exists'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
         user = CustomUsers.objects.create_user(
             username=email,
             email=email,
             password=password,
+            first_name=first_name,
+            last_name=last_name,
+            age=age,
             is_admin=False
         )
         user.save()
+        cache.delete(verified_key)
+        
+        user_auth = authenticate(request, username=email, password=password)
+        if user_auth is not None:
+            login(request, user_auth)
+            refresh = RefreshToken.for_user(user_auth)
+            response = {
+                "message": "User registered successfully",
+                "access_token": str(refresh.access_token),
+                "refresh_token": str(refresh),
+                "user": CustomUserSerializer(user_auth).data
+            }
+            response = Response(response, status=status.HTTP_200_OK)
+            
+            response.set_cookie(
+                key="access_token",
+                value=str(refresh.access_token),
+                httponly=True,
+                secure=False,
+                samesite='Lax',
+                max_age=3600
+            )
+            
+            response.set_cookie(
+                key="refresh_token",
+                value=str(refresh),
+                httponly=True,
+                secure=False,
+                samesite="Lax",
+                max_age=604800
+            )
+            
+            return response
+        else:
+            return Response({
+                "error": "An error occurred while completing the registration. Please try again later."
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    except Exception as e:
+        return Response({
+            "error": "An error occurred while completing the registration. Please try again later."
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+@authentication_classes([])
+@permission_classes([AllowAny])
+def resend_otp(request):
+    try:
+        email = request.data.get("email")
+        if not email:
+            return Response({
+                "error": "Email is required"
+            }, status=status.HTTP_400_BAD_REQUEST)
+            
+        purpose = "account_verification"
+        cache_key = f"{email}_{purpose}"
+        
+        cached_otp = cache.get(cache_key)
+        if cached_otp:
+            otp_to_send = cached_otp
+        else:
+            otp_to_send = send_otp_to_email(email, "Your OTP for account verification")
+            if otp_to_send is None:
+                return Response({
+                    "error": "An error occurred while resending the OTP. Please try again later."
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            cache.set(cache_key, otp_to_send, timeout=120)
+            
+        return Response({
+            "message": "OTP resent successfully",
+        }, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({
+            'error': 'An error occurred while resending the OTP. Please try again later.'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+@authentication_classes([])
+@permission_classes([AllowAny])
+def forgot_password(request):
+    try:
+        email = request.data.get('email')
+        if not email:
+            return Response({"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        user = CustomUsers.objects.filter(email=email).first()
+        if not user:
+            return Response({
+                "error": "User does not exist"
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        otp = send_reset_password(email)
+        if otp is None:
+            return Response({
+                "error": "An error occurred while sending the OTP. Please try again later."
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        purpose = "reset_password"
+        cache_key = f"{email}_{purpose}"
+        cache.set(cache_key, otp, timeout=120)
+        
+        return Response({
+            "message": "OTP sent successfully",
+        }, status=status.HTTP_200_OK)
+    except Exception as e:
+        print(str(e))
+        return Response({
+            'error': 'An error occurred while sending the OTP. Please try again later.'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+@authentication_classes([])
+@permission_classes([AllowAny])
+def verify_reset_otp(request):
+    try:
+        email = request.data.get('email')
+        received_otp = request.data.get('otp')
+        
+        if not email or not received_otp:
+            return Response({
+                "error": "Email and OTP are required"
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        purpose = "reset_password"
+        cache_key = f"{email}_{purpose}"
+        cached_otp = cache.get(cache_key)
+        
+        if cached_otp is None:
+            return Response({
+                "error": "OTP expired. Please request a new one."
+            }, status=status.HTTP_404_NOT_FOUND)
+            
+        if str(cached_otp) != str(received_otp):
+            return Response({
+                "error": "Incorrect OTP code. Please try again."
+            }, status=status.HTTP_400_BAD_REQUEST)
         
         cache.delete(cache_key)
         
-        refresh = RefreshToken.for_user(user)
-        
-        response = Response({
-            'success': 'User registered successfully',
-            'user': {
-                'email': user.email,
-                'role': 'guest'
-            },
-            'access_token': str(refresh.access_token),
-            'refresh_token': str(refresh)
-        }, status=status.HTTP_201_CREATED)
-        
-        response.set_cookie(
-            key="access_token",
-            value=str(refresh.access_token),
-            httponly=True,
-            secure=False,
-            samesite='Lax',
-            max_age=3600
-        )
-        
-        response.set_cookie(
-            key="refresh_token",
-            value=str(refresh),
-            httponly=True,
-            secure=False,
-            samesite='Lax',
-            max_age=604800
-        )
-        
-        return response
+        return Response({
+            "message": "OTP verified successfully"
+        }, status=status.HTTP_200_OK)
     except Exception as e:
-        print(f"OTP Error: {e}")
-        return Response({"error": "An error occurred during registration. Please try again later."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({
+            "error": "An error occurred while verifying the OTP. Please try again later."
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+@authentication_classes([])
+@permission_classes([AllowAny])
+def reset_password(request):
+    try:
+        email = request.data.get('email')
+        new_password = request.data.get('new_password')
+        confirm_password = request.data.get('confirm_password')
+        
+        if not email or not new_password or not confirm_password:
+            return Response({
+                "error": "Email, new password, and confirm password are required"
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        if new_password != confirm_password:
+            return Response({
+                "error": "New password and confirm password do not match"
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        user = CustomUsers.objects.filter(email=email).first()
+        
+        if not user:
+            return Response({
+                "error": "User does not exist"
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        user.set_password(new_password)
+        user.save()
+        
+        user = authenticate(request, username=email, password=new_password)
+        if user is not None:
+            login(request, user)
+            refresh = RefreshToken.for_user(user)
+            response = Response({
+                "message": "Password reset successfully",
+            }, status=status.HTTP_200_OK)
+            
+            response.set_cookie(
+                key="access_token",
+                value=str(refresh.access_token),
+                httponly=True,
+                secure=False,
+                samesite='Lax',
+                max_age=3600
+            )
+            
+            response.set_cookie(
+                key="refresh_token",
+                value=str(refresh),
+                httponly=True,
+                secure=False,
+                samesite='Lax',
+                max_age=604800
+            )
+            
+            return response
+        else:
+            return Response({
+                "error": "Password reset failed. Please try again later."
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    except Exception as e:
+        return Response({
+            "error": "An error occurred while resetting the password. Please try again later."
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['POST'])
 @authentication_classes([])
