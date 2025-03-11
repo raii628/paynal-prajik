@@ -64,6 +64,24 @@ export const verifyOtp = async (email: string, password: string, otp: string) =>
     }
 };
 
+export const completeRegistration = async (email: string, password: string, first_name: string, last_name: string, age: string) => {
+    try {
+        const response = await API.post('/auth/complete_reg', {
+            email: email,
+            password: password,
+            first_name: first_name,
+            last_name: last_name,
+            age: age
+        }, {
+            withCredentials: true
+        });
+        return response;
+    } catch (error) {
+        console.error(`Failed to complete registration: ${error}`);
+        throw error;
+    }
+};
+
 export const resendOtp = async (email: string) => {
     try {
         const response = await API.post('/auth/resend_otp', {
@@ -74,20 +92,6 @@ export const resendOtp = async (email: string) => {
         return response;
     } catch (error) {
         console.error(`Failed to resend OTP: ${error}`);
-        throw error;
-    }
-};
-
-export const guestSignup = async (email: string, password: string, confirmPassword: string) => {
-    try {
-        const response = await API.post('/auth/register', {
-            email: email,
-            password: password,
-            confirmPassword: confirmPassword,
-        });
-        return response;
-    } catch (error) {
-        console.error(`Failed to signup user: ${error}`);
         throw error;
     }
 };

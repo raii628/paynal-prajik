@@ -5,7 +5,6 @@ import ProtectedRoute from "./contexts/ProtectedRoutes";
 import useTokenHandler from "./hooks/useTokenHandler";
 import NotFound from "./pages/_NotFound";
 import Homepage from "./pages/Homepage";
-import OTP from "./pages/OTP";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import LoadingHydrate from "./motions/LoadingHydrate";
 import { Suspense } from "react";
@@ -23,6 +22,7 @@ import ManageAmenities from "./pages/admin/ManageAmenities";
 import Comments from "./pages/admin/Comments";
 import Reports from "./pages/admin/Reports";
 import Suites from "./pages/Suites";
+import RegistrationFlow from "./pages/RegistrationFlow";
 
 const App = () => {
   const { isAuthenticated, role, loading } = useUserContext();
@@ -48,7 +48,7 @@ const App = () => {
           }
         />
 
-        <Route path="/otp" element={<OTP />} />
+        <Route path="/registration" element={<RegistrationFlow />} />
         <Route path="/about" element={<About />} />
         <Route path="/reservation" element={<Reservation />} />
         <Route path="/rooms" element={<Rooms />} />
