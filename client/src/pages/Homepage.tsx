@@ -1,8 +1,13 @@
+import Footer from "../layout/Footer";
+import Hero from "../layout/Hero";
 
 const Homepage = () => {
   return (
-    <div>Homepage</div>
-  )
-}
+    <section>
+      <Hero />
+      <Footer />
+    </section>
+  );
+};
 
-export default Homepage
+export default Homepage;
