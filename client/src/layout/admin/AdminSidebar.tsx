@@ -72,12 +72,16 @@ const AdminSidebar: FC = () => {
                 <NavLink
                   to={item.link}
                   end={item.link === "/admin"}
+<<<<<<< HEAD
                   className={({ isActive }) =>
                     `flex items-start space-x-3 py-2 px-3 rounded-md cursor-pointer ${isActive
                       ? "border-r-3 border-blue-600 bg-blue-100 text-blue-700 font-bold"
                       : "hover:bg-black/15"
                     }`
                   }
+=======
+                  className={({ isActive }) => `flex items-start space-x-3 py-2 px-3 rounded-md cursor-pointer ${isActive ? "border-r-3 border-blue-600 bg-blue-100 text-blue-700 font-bold" : "hover:bg-black/15"}`}
+>>>>>>> upstream/main
                 >
                   <FontAwesomeIcon icon={item.icon} className="text-2xl" /> <span>{item.label}</span>
                 </NavLink>
@@ -88,10 +92,17 @@ const AdminSidebar: FC = () => {
         <div className="px-3 py-4">
           <button
             onClick={() => setIsModalOpen(true)}
+<<<<<<< HEAD
             className="w-full flex items-center space-x-3 py-2 px-3 rounded-md transition-all duration-300 text-[hsl(190,98%,10%)] hover:bg-violet-200 hover:text-[#7300FF] cursor-pointer"
           >
             <i className="fa fa-sign-out-alt font-light"></i>
             <span className="font-light">Log Out</span>
+=======
+            className="w-full flex items-center space-x-3 py-2 px-3 rounded-md transition-all duration-300 text-red-600 hover:bg-black/15 cursor-pointer"
+          >
+            <i className="fa fa-sign-out-alt font-light"></i>
+            <span className="font-bold uppercase">Log Out</span>
+>>>>>>> upstream/main
           </button>
         </div>
       </aside>

@@ -16,7 +16,11 @@ const AdminProfile: FC<AdminProfileProps> = ({ admin }) => {
         <div className="flex space-x-3 items-center border-b border-b-gray-200 p-5">
             <div className="flex justify-center items-center rounded-full bg-violet-400 w-18 h-18">
                 <img
+<<<<<<< HEAD
                     src={admin.profile_pic}
+=======
+                    src={admin.profile_pic && admin.profile_pic.trim() !== "" ? admin.profile_pic : "/images/default_avatar.png"}
+>>>>>>> upstream/main
                     alt={admin.profile_pic}
                     className="w-full h-full rounded-full object-cover"
                 />

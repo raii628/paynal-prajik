@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.conf import settings
+=======
+from django.core.mail import EmailMultiAlternatives
+>>>>>>> upstream/main
 import random, os
 from dotenv import load_dotenv
 
@@ -83,6 +87,10 @@ def send_reset_password(email):
 """
         email_from = os.getenv('EMAIL_HOST_USER')
         msg = EmailMultiAlternatives(subject, message, email_from, [email])
+<<<<<<< HEAD
+=======
+        msg.attach_alternative(message, "text/html")
+>>>>>>> upstream/main
         msg.send()
         
         return otp

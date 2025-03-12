@@ -1,5 +1,7 @@
 import Navbar from "./Navbar";
 import hotel_bg from "../assets/hotel_bg.jpg";
+import Navbar from "./Navbar";
+import hotel_bg from "../assets/hotel_bg.jpg";
 
 const Hero = () => {
   return (

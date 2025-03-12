@@ -64,6 +64,27 @@ export const verifyOtp = async (email: string, password: string, otp: string) =>
     }
 };
 
+<<<<<<< HEAD
+=======
+export const completeRegistration = async (email: string, password: string, first_name: string, last_name: string, age: string) => {
+    try {
+        const response = await API.post('/auth/complete_reg', {
+            email: email,
+            password: password,
+            first_name: first_name,
+            last_name: last_name,
+            age: age
+        }, {
+            withCredentials: true
+        });
+        return response;
+    } catch (error) {
+        console.error(`Failed to complete registration: ${error}`);
+        throw error;
+    }
+};
+
+>>>>>>> upstream/main
 export const resendOtp = async (email: string) => {
     try {
         const response = await API.post('/auth/resend_otp', {
@@ -78,6 +99,7 @@ export const resendOtp = async (email: string) => {
     }
 };
 
+<<<<<<< HEAD
 export const guestSignup = async (email: string, password: string, confirmPassword: string) => {
     try {
         const response = await API.post('/auth/register', {
@@ -92,6 +114,8 @@ export const guestSignup = async (email: string, password: string, confirmPasswo
     }
 };
 
+=======
+>>>>>>> upstream/main
 export const logout = async () => {
     try {
         const response = await API.post('/auth/logout', {}, {
@@ -123,10 +147,21 @@ export const changePassword = async (oldPassword: string, newPassword: string, c
     }
 };
 
+<<<<<<< HEAD
 export const resetPassword = async (email: string) => {
     try {
         const response = await API.post('/auth/reset_password', {
             email: email
+=======
+export const resetPassword = async (email: string, newPassword: string, confirmPassword: string) => {
+    try {
+        const response = await API.post('/auth/reset_password', {
+            email: email,
+            new_password: newPassword,
+            confirm_password: confirmPassword
+        }, {
+            withCredentials: true
+>>>>>>> upstream/main
         });
         return response;
     } catch (error) {
@@ -135,6 +170,7 @@ export const resetPassword = async (email: string) => {
     }
 };
 
+<<<<<<< HEAD
 export const forgotPassword = async (email: string, otp: string, password: string, confirmPassword: string) => {
     try {
         const response = await API.post('/auth/forgot_password', {
@@ -142,6 +178,12 @@ export const forgotPassword = async (email: string, otp: string, password: strin
             otp: otp,
             password: password,
             confirmPassword: confirmPassword
+=======
+export const forgotPassword = async (email: string) => {
+    try {
+        const response = await API.post('/auth/forgot_password', {
+            email: email,
+>>>>>>> upstream/main
         }, {
             withCredentials: true
         });
