@@ -153,7 +153,7 @@ const Navbar: FC = () => {
               </button>
               <button
                 className="px-4 py-2 text-base font-bold border rounded-md hover:bg-blue-600 transition duration-300 cursor-pointer"
-                onClick={toggleRegisterModal}
+                onClick={toggleRegisterModal}gitv
               >
                 Sign Up
               </button>
