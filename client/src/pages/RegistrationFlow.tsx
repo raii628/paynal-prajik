@@ -123,7 +123,6 @@ const RegistrationFlow: React.FC = () => {
         }
     };
 
-    // STEP 3: Complete Registration Submit
     const handleCompleteRegistrationSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setErrors({});

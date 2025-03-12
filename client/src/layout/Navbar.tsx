@@ -1,13 +1,14 @@
-import { useState, useEffect, FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import LoginModal from "../components/LoginModal";
-import SignupModal from "../components/SignupModal";
-import { useUserContext } from "../contexts/AuthContext";
-import { navLinks } from "../constants/Navbar";
-import { logout } from "../services/Auth";
-import Modal from "../components/Modal";
 import hotelLogo from "../assets/hotel_logo.png";
+import LoginModal from "../components/LoginModal";
+import Modal from "../components/Modal";
 import Notification from "../components/Notification";
+import SignupModal from "../components/SignupModal";
+import { navLinks } from "../constants/Navbar";
+import { useUserContext } from "../contexts/AuthContext";
+import { logout } from "../services/Auth";
+import Dropdown from "../components/Dropdown";
 
 const Navbar: FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -24,7 +25,15 @@ const Navbar: FC = () => {
 
   const navigate = useNavigate();
 
-  const { isAuthenticated, setIsAuthenticated, setRole } = useUserContext();
+  // Destructure userDetails along with profileImage from the global context.
+  const {
+    isAuthenticated,
+    setIsAuthenticated,
+    setRole,
+    profileImage,
+    userDetails,
+    setProfileImage,
+  } = useUserContext();
 
   const handleLogout = async () => {
     setLoading(true);
@@ -74,8 +83,10 @@ const Navbar: FC = () => {
     if (isAuthenticated) {
       setLoginModal(false);
       setRegisterModal(false);
+      // Reset profile image if needed, or set it after fetching from API
+      setProfileImage("");
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, setProfileImage]);
 
   return (
     <>
@@ -105,30 +116,27 @@ const Navbar: FC = () => {
         </div>
 
         <div className="block lg:hidden">
-          {/* Hamburger icon */}
           {!menuOpen && (
             <i
               className="fa fa-bars text-2xl cursor-pointer transition-all duration-300"
-              onClick={() => setMenuOpen(true)} // Open menu on click
+              onClick={() => setMenuOpen(true)}
             ></i>
           )}
 
-          {/* Overlay Menu */}
           <div className="h-full overflow-y-auto">
             {menuOpen && (
               <div
                 className="hidden md:block sm:block fixed inset-0 bg-black/30 bg-opacity-50 z-40"
-                onClick={() => setMenuOpen(false)} // Close on click
+                onClick={() => setMenuOpen(false)}
               ></div>
             )}
             <ul
-              className={`fixed top-0 right-0 w-full md:w-2/5 sm:w-3/5 xs:w-4/5 h-screen bg-white shadow-md text-black  items-center gap-4 font-bold text-lg z-50 transition-all duration-300 ease-in-out ${
+              className={`fixed top-0 right-0 w-full md:w-2/5 sm:w-3/5 xs:w-4/5 h-screen bg-white shadow-md text-black items-center gap-4 font-bold text-lg z-50 transition-all duration-300 ease-in-out ${
                 menuOpen
                   ? "opacity-100 pointer-events-auto translate-x-0"
                   : "opacity-0 pointer-events-none translate-x-full"
               }`}
             >
-              {/* Close Icon */}
               <div className="text-3xl bg-gray-200 flex justify-between items-center py-2.5">
                 <Link to="/">
                   <img
@@ -138,8 +146,8 @@ const Navbar: FC = () => {
                   />
                 </Link>
                 <li
-                  className="  pr-10 py-3 cursor-pointer"
-                  onClick={() => setMenuOpen(false)} // Close menu on click
+                  className="pr-10 py-3 cursor-pointer"
+                  onClick={() => setMenuOpen(false)}
                 >
                   <i className="fa fa-times"></i>
                 </li>
@@ -155,7 +163,7 @@ const Navbar: FC = () => {
                     <li
                       key={index}
                       className="w-full py-3 rounded-md hover:bg-violet-200 hover:text-violet-700 cursor-pointer"
-                      onClick={() => setMenuOpen(false)} // Close menu when clicking link
+                      onClick={() => setMenuOpen(false)}
                     >
                       <Link
                         to={link.link}
@@ -175,8 +183,7 @@ const Navbar: FC = () => {
                     <i className="fa-regular fa-user ml-3 mr-3"></i> Login
                   </li>
                   <li
-                    className="w-full py-3 rounded-md text-sm hover:bg-violet-200 hover:text-violet-700 cursor-pointer
-                  "
+                    className="w-full py-3 rounded-md text-sm hover:bg-violet-200 hover:text-violet-700 cursor-pointer"
                     onClick={toggleRegisterModal}
                   >
                     <i className="fa fa-user-plus ml-3 mr-3"></i>Sign up
@@ -187,7 +194,7 @@ const Navbar: FC = () => {
           </div>
         </div>
 
-        <ul className=" hidden lg:flex items-center 2xl:space-x-15 xl:space-x-10 md:space-x-7">
+        <ul className="hidden lg:flex items-center 2xl:space-x-15 xl:space-x-10 md:space-x-7">
           {navLinks.map((link, index) => (
             <li
               key={index}
@@ -215,12 +222,35 @@ const Navbar: FC = () => {
               </button>
             </>
           ) : (
-            <button
-              className="px-4 py-2 text-lg font-bold border rounded-md hover:bg-gradient-to-r from-[#7300FF] to-[#08D3FC] transition duration-300"
-              onClick={() => setIsModalOpen(true)}
+            <Dropdown
+              options={[
+                {
+                  label: "Accounts",
+                  onClick: () => {
+                    // Navigate to the guest profile of the authenticated user using their id.
+                    console.log(`Navigating to ${userDetails}`);
+                    if (userDetails && userDetails.id) {
+                      navigate(`/guest/${userDetails.id}`);
+                    } else {
+                      console.error("User details are not available");
+                    }
+                  },
+                },
+                {
+                  label: "Logout",
+                  onClick: () => setIsModalOpen(true),
+                },
+              ]}
+              position="bottom"
             >
-              Logout
-            </button>
+              <img
+                src={
+                  profileImage || "https://via.placeholder.com/40?text=Avatar"
+                }
+                alt="Profile"
+                className="h-10 w-10 rounded-full object-cover cursor-pointer"
+              />
+            </Dropdown>
           )}
         </div>
       </nav>

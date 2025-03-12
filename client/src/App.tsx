@@ -1,5 +1,6 @@
 import "./App.css";
 import { Navigate, Route, Routes } from "react-router-dom";
+import { Suspense } from "react";
 import { useUserContext } from "./contexts/AuthContext";
 import ProtectedRoute from "./contexts/ProtectedRoutes";
 import useTokenHandler from "./hooks/useTokenHandler";
@@ -7,7 +8,6 @@ import NotFound from "./pages/_NotFound";
 import Homepage from "./pages/Homepage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import LoadingHydrate from "./motions/LoadingHydrate";
-import { Suspense } from "react";
 import Reservation from "./pages/admin/Reservation";
 import ManageRooms from "./pages/ManageRooms";
 import AdminLayout from "./layout/admin/AdminLayout";
@@ -22,6 +22,7 @@ import Comments from "./pages/admin/Comments";
 import Reports from "./pages/admin/Reports";
 import RegistrationFlow from "./pages/RegistrationFlow";
 import Gallery from "./pages/Gallery";
+import GuestProfile from "./pages/guests/GuestProfile";
 
 const App = () => {
   const { isAuthenticated, role, loading } = useUserContext();
@@ -47,6 +48,7 @@ const App = () => {
           }
         />
 
+        <Route path="/guest/:id" element={<GuestProfile />} />
         <Route path="/registration" element={<RegistrationFlow />} />
         <Route path="/about" element={<About />} />
         <Route path="/reservation" element={<Reservation />} />
