@@ -452,6 +452,7 @@ def user_login(request):
             'last_name': auth_user.last_name,
             'age': auth_user.age,
             'guest_type': auth_user.guest_type,
+            'role': role,
             'profile_image': auth_user.profile_image.url if auth_user.profile_image else "",
         }
         
