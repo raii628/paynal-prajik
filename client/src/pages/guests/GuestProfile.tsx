@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FC, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { getGuestDetails } from "../../services/Guest";
+import { ChangeEvent, FC, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useUserContext } from "../../contexts/AuthContext";
 import LoadingHydrate from "../../motions/LoadingHydrate";
+import { getGuestDetails, updateProfileImage } from "../../services/Guest";
+import DefaultImg from '../../assets/Default_pfp.jpg';
 
 interface GuestProfileData {
   id: number;
@@ -17,16 +18,51 @@ interface GuestProfileData {
 }
 
 const GuestProfile: FC = () => {
-  // Use the route parameter "id" as defined in App.tsx
   const { id } = useParams<{ id: string }>();
   const [profile, setProfile] = useState<GuestProfileData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Use the global context for the profile image fallback if needed
+  // Track file upload state
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
+
   const { profileImage } = useUserContext();
   const navigate = useNavigate();
 
+  // 1. Handle file input
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedImage(e.target.files[0]);
+    }
+  };
+
+  // 2. Upload the image + show loading
+  const handleUpload = async () => {
+    if (!selectedImage) return;
+    setIsUploading(true);       // start upload spinner
+    setError(null);
+
+    try {
+      const formData = new FormData();
+      formData.append("profile_image", selectedImage);
+      
+      // Call your PUT endpoint: /api/change_profile_picture
+      await updateProfileImage(formData);
+
+      // Re-fetch the user data to ensure we have the latest profile_image
+      const updatedData = await getGuestDetails(id!);
+      setProfile(updatedData.user);
+
+    } catch (err) {
+      console.error(`Failed to upload profile image: ${err}`);
+      setError("Failed to upload profile image");
+    } finally {
+      setIsUploading(false);   // stop upload spinner
+    }
+  };
+
+  // 3. Fetch user details on mount or ID change
   useEffect(() => {
     const fetchProfile = async () => {
       setLoading(true);
@@ -37,20 +73,18 @@ const GuestProfile: FC = () => {
         } else {
           setError("User ID not found");
         }
-      } catch (error: any) {
-        setError(error.message || "An error occurred");
+      } catch (err: any) {
+        setError(err.message || "An error occurred");
       } finally {
         setLoading(false);
       }
     };
-
     fetchProfile();
   }, [id]);
 
   if (loading) {
     return <LoadingHydrate />;
   }
-
   if (error) {
     return (
       <div className="flex items-center justify-center h-screen text-red-500">
@@ -67,7 +101,6 @@ const GuestProfile: FC = () => {
       className="min-h-screen bg-gradient-to-b from-gray-100 to-white py-10"
     >
       <div className="max-w-4xl mx-auto px-4">
-        {/* Back Button */}
         <button
           onClick={() => navigate("/")}
           className="mb-4 inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors duration-200"
@@ -76,30 +109,26 @@ const GuestProfile: FC = () => {
         </button>
         <div className="bg-white rounded-lg shadow-xl overflow-hidden">
           <div className="grid md:grid-cols-3">
-            {/* Profile Image Section */}
             <div className="md:col-span-1 bg-gray-200">
               <img
                 src={
-                  profileImage ||
-                  profile?.profile_image ||
-                  "https://via.placeholder.com/400?text=No+Image"
+                  profile?.profile_image || profileImage || DefaultImg
                 }
                 alt="Profile"
-                className="hidden md:block w-full h-full object-cover"
+                className="hidden md:block w-32 h-32 rounded-full object-cover"
               />
               <div className="md:hidden flex items-center justify-center h-48">
                 <img
                   src={
-                    profileImage ||
-                    profile?.profile_image ||
-                    "https://via.placeholder.com/400?text=No+Image"
+                    profile?.profile_image || profileImage || DefaultImg
                   }
                   alt="Profile"
                   className="w-32 h-32 rounded-full object-cover"
                 />
               </div>
             </div>
-            {/* Profile Details Section */}
+
+            {/* Profile Details */}
             <div className="md:col-span-2 p-6">
               <motion.h1
                 initial={{ opacity: 0 }}
@@ -129,9 +158,25 @@ const GuestProfile: FC = () => {
                 </div>
                 <div className="flex items-center space-x-2">
                   <span className="font-semibold text-gray-700">Guest Type:</span>
-                  <span className="text-gray-600">{profile?.guest_type.toUpperCase()}</span>
+                  <span className="text-gray-600">{profile?.guest_type?.toUpperCase()}</span>
                 </div>
               </motion.div>
+
+              <div className="mt-4">
+                {isUploading ? (
+                  <p className="text-blue-600">Updating your profile picture...</p>
+                ) : (
+                  <>
+                    <input type="file" accept="image/*" onChange={handleFileChange} />
+                    <button
+                      onClick={handleUpload}
+                      className="ml-2 px-4 py-2 bg-green-600 text-white rounded cursor-pointer"
+                    >
+                      Change Profile Image
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>

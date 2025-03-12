@@ -24,4 +24,19 @@ export const updateGuestDetails = async (id: string, data: string[]) => {
         console.error(`Failed to update guest details: ${error}`);
         throw error;
     }
-}
+};
+
+export const updateProfileImage = async (formData: FormData) => {
+    try {
+        const response = await guest.put("/change_image", formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            withCredentials: true,
+        });
+        return response;
+    } catch (error) {
+        console.error(`Failed to update profile image: ${error}`);
+        throw error;
+    }
+};

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useState, useContext, ReactNode, FC } from "react";
+import { createContext, useState, useContext, ReactNode, FC, useEffect } from "react";
+import { API } from "../services/_axios";
 
 interface UserDetails {
     id: number;
@@ -32,7 +33,28 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [role, setRole] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(true);
     const [profileImage, setProfileImage] = useState<string>("");
-    
+
+    useEffect(() => {
+        const checkAuth = async () => {
+            try {
+                const res = await API.get("/auth/user", { withCredentials: true });
+                setIsAuthenticated(true);
+                setUserDetails(res.data.user);
+                setProfileImage(res.data.user.profile_image || "");
+                setRole(res.data.role || "");
+            } catch {
+                setIsAuthenticated(false);
+                setUserDetails(null);
+                setProfileImage("");
+                setRole("");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        checkAuth();
+    }, []);
+
     const contextValue: UserContextType = {
         isAuthenticated,
         userDetails,

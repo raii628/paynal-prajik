@@ -9,6 +9,7 @@ from .serializers import CustomUserSerializer
 from .email.email import send_otp_to_email, send_reset_password
 from django.core.cache import cache
 from .validation.validation import RegistrationForm
+from datetime import timedelta
 
 # Deleted later
 @api_view(['DELETE'])
@@ -198,6 +199,9 @@ def complete_registration(request):
             return Response({
                 'error': 'Email already exists'
             }, status=status.HTTP_400_BAD_REQUEST)
+            
+        
+        DEFAULT_PROFILE_IMAGE = "https://res.cloudinary.com/ddjp3phzz/image/upload/v1741784007/wyzaupfxdvmwoogegsg8.jpg"
         
         user = CustomUsers.objects.create_user(
             username=email,
@@ -206,7 +210,8 @@ def complete_registration(request):
             first_name=first_name,
             last_name=last_name,
             age=age,
-            is_admin=False
+            is_admin=False,
+            profile_image=DEFAULT_PROFILE_IMAGE
         )
         user.save()
         cache.delete(verified_key)
@@ -229,7 +234,7 @@ def complete_registration(request):
                 httponly=True,
                 secure=False,
                 samesite='Lax',
-                max_age=3600
+                max_age=timedelta(day=1)
             )
             
             response.set_cookie(
@@ -238,7 +243,7 @@ def complete_registration(request):
                 httponly=True,
                 secure=False,
                 samesite="Lax",
-                max_age=604800
+                max_age=timedelta(days=7)
             )
             
             return response
@@ -469,7 +474,7 @@ def user_login(request):
             httponly=True,
             secure=False,
             samesite='Lax',
-            max_age=3600
+            max_age=timedelta(days=1)
         )
         
         response.set_cookie(
@@ -478,7 +483,7 @@ def user_login(request):
             httponly=True,
             secure=False,
             samesite='Lax',
-            max_age=604800
+            max_age=timedelta(days=7)
         )
         
         return response
@@ -494,8 +499,13 @@ def user_auth(request):
         'isAuthenticated': True,
         'role': role,
         'user': {
+            'id': user.id,
             'email': user.email,
-            'role': role
+            'role': role,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'profile_image': user.profile_image.url if user.profile_image else "",
+            'age': user.age
         }
     }, status=status.HTTP_200_OK)
 
@@ -508,8 +518,26 @@ def user_details(request, user_id):
         serializer = CustomUserSerializer(user)
         return Response({'user': serializer.data}, status=status.HTTP_200_OK)
     except CustomUsers.DoesNotExist:
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def change_profile_picture(request):
+    try:
+        user = request.user
+        if not user:
+            return Response({
+                'error': 'User not found'
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        user.profile_image = request.FILES['profile_image']
+        user.save()
+        
         return Response({
-            'error': 'User not found'
-        }, status=status.HTTP_404_NOT_FOUND)
+            'message': 'Profile picture updated successfully',
+            'profile_image': user.profile_image.url
+        }, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

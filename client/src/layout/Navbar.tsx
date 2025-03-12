@@ -9,6 +9,8 @@ import { navLinks } from "../constants/Navbar";
 import { useUserContext } from "../contexts/AuthContext";
 import { logout } from "../services/Auth";
 import Dropdown from "../components/Dropdown";
+import { getGuestDetails } from "../services/Guest";
+import DefaultImg from "../assets/Default_pfp.jpg";
 
 const Navbar: FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -17,6 +19,7 @@ const Navbar: FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
+
   const [notification, setNotification] = useState<{
     message: string;
     type: "success" | "error" | "info" | "warning";
@@ -25,7 +28,6 @@ const Navbar: FC = () => {
 
   const navigate = useNavigate();
 
-  // Destructure userDetails along with profileImage from the global context.
   const {
     isAuthenticated,
     setIsAuthenticated,
@@ -34,6 +36,8 @@ const Navbar: FC = () => {
     userDetails,
     setProfileImage,
   } = useUserContext();
+
+  const [imageLoading, setImageLoading] = useState<boolean>(false);
 
   const handleLogout = async () => {
     setLoading(true);
@@ -63,7 +67,6 @@ const Navbar: FC = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -83,10 +86,25 @@ const Navbar: FC = () => {
     if (isAuthenticated) {
       setLoginModal(false);
       setRegisterModal(false);
-      // Reset profile image if needed, or set it after fetching from API
-      setProfileImage("");
     }
   }, [isAuthenticated, setProfileImage]);
+
+  useEffect(() => {
+    const fetchProfileImage = async () => {
+      if (isAuthenticated && userDetails?.id) {
+        setImageLoading(true);
+        try {
+          const data = await getGuestDetails(userDetails.id);
+          setProfileImage(data.user.profile_image);
+        } catch (err) {
+          console.error("Failed to fetch user profile for Navbar:", err);
+        } finally {
+          setImageLoading(false);
+        }
+      }
+    };
+    fetchProfileImage();
+  }, [isAuthenticated, userDetails?.id, setProfileImage]);
 
   return (
     <>
@@ -99,10 +117,9 @@ const Navbar: FC = () => {
         />
       )}
       <nav
-        className={`fixed top-0 left-0 w-full px-10 py-4 flex items-center justify-between z-40 transition-all duration-75 ${isScrolled
-            ? "bg-gray-200 shadow-lg text-black"
-            : "bg-transparent text-white"
-          }`}
+        className={`fixed top-0 left-0 w-full px-10 py-4 flex items-center justify-between z-40 transition-all duration-75 ${
+          isScrolled ? "bg-gray-200 shadow-lg text-black" : "bg-transparent text-white"
+        }`}
       >
         <div className="flex items-center">
           <Link to="/">
@@ -130,10 +147,11 @@ const Navbar: FC = () => {
               ></div>
             )}
             <ul
-              className={`fixed top-0 right-0 w-full md:w-2/5 sm:w-3/5 xs:w-4/5 h-screen bg-white shadow-md text-black items-center gap-4 font-bold text-lg z-50 transition-all duration-300 ease-in-out ${menuOpen
+              className={`fixed top-0 right-0 w-full md:w-2/5 sm:w-3/5 xs:w-4/5 h-screen bg-white shadow-md text-black items-center gap-4 font-bold text-lg z-50 transition-all duration-300 ease-in-out ${
+                menuOpen
                   ? "opacity-100 pointer-events-auto translate-x-0"
                   : "opacity-0 pointer-events-none translate-x-full"
-                }`}
+              }`}
             >
               <div className="text-3xl bg-gray-200 flex justify-between items-center py-2.5">
                 <Link to="/">
@@ -163,10 +181,7 @@ const Navbar: FC = () => {
                       className="w-full py-3 rounded-md hover:bg-violet-200 hover:text-violet-700 cursor-pointer"
                       onClick={() => setMenuOpen(false)}
                     >
-                      <Link
-                        to={link.link}
-                        className="flex items-center text-sm"
-                      >
+                      <Link to={link.link} className="flex items-center text-sm">
                         <i className={`ml-3 mr-3 ${link.icon}`}></i> {link.text}
                       </Link>
                     </li>
@@ -225,8 +240,6 @@ const Navbar: FC = () => {
                 {
                   label: "Accounts",
                   onClick: () => {
-                    // Navigate to the guest profile of the authenticated user using their id.
-                    console.log(`Navigating to ${userDetails}`);
                     if (userDetails && userDetails.id) {
                       navigate(`/guest/${userDetails.id}`);
                     } else {
@@ -241,14 +254,17 @@ const Navbar: FC = () => {
               ]}
               position="bottom"
             >
-              <img
-                src={
-                  profileImage ||
-                  "https://via.placeholder.com/40?text=Avatar"
-                }
-                alt="Profile"
-                className="h-10 w-10 rounded-full object-cover cursor-pointer"
-              />
+              {imageLoading ? (
+                <div className="h-10 w-10 flex items-center justify-center">
+                  <i className="fa fa-spinner fa-spin"></i>
+                </div>
+              ) : (
+                <img
+                  src={profileImage || DefaultImg}
+                  alt="Profile"
+                  className="h-10 w-10 rounded-full object-cover cursor-pointer"
+                />
+              )}
             </Dropdown>
           )}
         </div>
@@ -277,8 +293,9 @@ const Navbar: FC = () => {
         description="Are you sure you want to log out?"
         cancel={() => setIsModalOpen(!isModalOpen)}
         onConfirm={handleLogout}
-        className={`bg-purple-600 text-white active:bg-purple-700 font-bold uppercase text-sm px-6 py-3 cursor-pointer rounded-md shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 ${loading ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+        className={`bg-purple-600 text-white active:bg-purple-700 font-bold uppercase text-sm px-6 py-3 cursor-pointer rounded-md shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 ${
+          loading ? "opacity-50 cursor-not-allowed" : ""
+        }`}
         confirmText={loading ? "Logging out..." : "Log Out"}
         cancelText="Cancel"
       />
