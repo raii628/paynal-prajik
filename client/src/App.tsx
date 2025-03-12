@@ -14,15 +14,14 @@ import AdminLayout from "./layout/admin/AdminLayout";
 import ForgotPassword from "./pages/ForgotPassword";
 import About from "./pages/About";
 import Rooms from "./pages/Rooms";
-import Promo from "./pages/Promo";
 import ManageUsers from "./pages/admin/ManageUsers";
 import UserStats from "./pages/admin/UserStats";
 import AreaReservations from "./pages/admin/AreaReservations";
 import ManageAmenities from "./pages/admin/ManageAmenities";
 import Comments from "./pages/admin/Comments";
 import Reports from "./pages/admin/Reports";
-import Suites from "./pages/Suites";
 import RegistrationFlow from "./pages/RegistrationFlow";
+import Gallery from "./pages/Gallery";
 
 const App = () => {
   const { isAuthenticated, role, loading } = useUserContext();
@@ -52,7 +51,7 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/reservation" element={<Reservation />} />
         <Route path="/rooms" element={<Rooms />} />
-        <Route path="/suites" element={<Suites />} />
+        <Route path="/gallery" element={<Gallery />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
 
         {/* Protected admin routes */}

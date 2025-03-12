@@ -1,7 +1,7 @@
 export const footerSections = [
   {
     title: "Navigation",
-    links: ["Home", "Rooms", "Booking", "Services", "Contact"],
+    links: ["Home", "About", "Book Now", "Rooms & Suites", "Gallery"],
   },
   {
     title: "Reservations",

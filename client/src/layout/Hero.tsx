@@ -1,5 +1,6 @@
 import Navbar from "./Navbar";
 import hotel_bg from "../assets/hotel_bg.jpg";
+import RoomAvailabilityCalendar from "../components/rooms/RoomAvailabilityCalendar";
 
 const Hero = () => {
   return (
@@ -8,7 +9,7 @@ const Hero = () => {
       style={{ backgroundImage: `url(${hotel_bg})` }}
     >
       <Navbar />
-      <div className="relative z-10 h-full flex flex-col justify-center px-8 sm:px-15 md:px-20 lg:px-24 xl:px-30 2xl:px-35">
+      {/* <div className="relative z-10 h-full flex flex-col justify-center px-8 sm:px-15 md:px-20 lg:px-24 xl:px-30 2xl:px-35">
         <h3 className="text-[clamp(1.5rem,3vw,3rem)] text-white mt-5 mb-4 tracking-wider">
           Azurea Hotel
         </h3>
@@ -28,6 +29,17 @@ const Hero = () => {
           Book now
           <i className="fa-solid fa-arrow-right ml-3 transition-transform duration-300 ease-in-out group-hover:-rotate-45"></i>
         </button>
+      </div> */}
+      <div className="flex flex-col justify-end items-center h-screen z-10 relative gap-20">
+        <div className="text-white text-center">
+          <h1 className="text-5xl mb-5">The stay you deserve</h1>
+          <p className="text-4xl">
+            Lorem ipsum dolor sit amet consectetur adipisicing.
+          </p>
+        </div>
+        <div>
+          <RoomAvailabilityCalendar />
+        </div>
       </div>
     </section>
   );
