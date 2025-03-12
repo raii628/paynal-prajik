@@ -26,12 +26,13 @@ const RegistrationFlow: React.FC = () => {
 
     const location = useLocation();
     const navigate = useNavigate();
-    const { setIsAuthenticated } = useUserContext();
+    
+    const { setIsAuthenticated, setUserDetails } = useUserContext();
     const { email, password } = (location.state as { email: string; password: string }) || {};
 
     useEffect(() => {
         if (!email || !password) {
-            navigate("/login");
+            navigate("/");
         }
     }, [email, password, navigate]);
 
@@ -140,10 +141,9 @@ const RegistrationFlow: React.FC = () => {
                     icon: "fas fa-check-circle"
                 });
                 setIsAuthenticated(true);
-                setTimeout(() => {
-                    navigate("/");
-                }, 2000);
+                setUserDetails(response.data.user);
             }
+            navigate("/");
         } catch (error: any) {
             setErrors({ general: error.response?.data?.error || "Registration completion failed." });
         } finally {
