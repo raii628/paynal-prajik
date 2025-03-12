@@ -24,5 +24,6 @@ urlpatterns = [
     path('auth/delete', views.force_delete_account, name='complete_reset'),
 
     # For guest profile
+    path('guest/change_image', views.change_profile_picture, name='change_profile_picture'),
     path('guest/<int:user_id>', views.user_details, name='user_details'),
 ]
