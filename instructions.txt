@@ -1,7 +1,7 @@
 Folder basis for the project:
 
 client/ - front-end (React TSX Vite)
-server/ - back-end / database (Flask & MySQL)
+server/ - back-end / database (Django & MySQL)
 
 config files:
 
@@ -25,7 +25,8 @@ local machine
 split it first and type these:
 
 front-end : `cd client` -> `npm run dev`
-back-end : `cd server` -> `npm run server (if Express.js) or py app.py (if Flask)`
+back-end : `cd server` -> (activate your .venv first) -> 
+`cd hotel_backend` -> `py manage.py runserver`
 
 4. Don't directly clone the original repository (from GioMjds) 
 in order to collab works. Instead, fork the repository and 
@@ -92,8 +93,36 @@ code reviewer for pull requests and merging
         - Go to your forked repo
         - Locate your all branches
         - Click the sync code
-        - Make sure to match the commit count of original repo to your forked repo
+        - Make sure to match the commit count of 
+          original repo to your forked repo
+
+11. After your part was finish, you must delete
+your branch you've worked with
+    - To delete a local branch:
+        - `git branch -d <branch-name>` - safe delete (recommended)
+        - `git branch -D <branch-name>` - force delete 
+    - To delete a remote branch:
+        - `git push origin --delete <branch-name>`
+    - In order to list your branches:
+        - `git branch` - for local branches
+        - `git branch -r` - for remote branches
+
+12. If you've working with another specific area, you must
+create an new branch. Name it base on what specific area you're
+working
+
+For database migration and merges:
+1. Locate to server directory (`cd server`)
+2. Activate your .venv
+3. `cd hotel_backend`
+4. Run `py manage.py makemigrations <name of the app, e.g., 
+users subfolders, etc>`
+5. Run `py manage.py migrate <name of the app, e.g., users 
+subfolders, etc>`
+
+13. (MOST IMPORTANT) - Always pull the latest and recent changes
+in main branch before working
 
 Optional: Updating README.md for extra documentation
 
-******************************************************************************************************************************
+************************(END OF FILE)******************************

@@ -1,30 +1,60 @@
-/* eslint-disable react-refresh/only-export-components */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useState, useContext, ReactNode, FC } from "react";
 
-/* This context will be used throughout the app for authentication 
-    Tentative changes may occur here
-*/
+interface UserDetails {
+    id: number;
+    username: string;
+    email: string;
+}
 
-import { createContext, FC, ReactNode, useContext, useState } from "react";
+interface UserContextType {
+    isAuthenticated: boolean;
+    userDetails: UserDetails | null;
+    sessionExpired: boolean;
+    role?: string;
+    loading: boolean;
+    profileImage?: string;
+    setIsAuthenticated: (value: boolean) => void;
+    setUserDetails: (value: UserDetails) => void;
+    setSessionExpired: (value: boolean) => void;
+    setRole: (value: string) => void;
+    setLoading: (value: boolean) => void;
+    setProfileImage?: (value: string) => void;
+}
 
-const AuthContext = createContext<any>(null);
+const UserContext = createContext<UserContextType | any>(null);
 
-export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
+export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-    const [session, setSession] = useState<boolean>(false);
+    const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
+    const [sessionExpired, setSessionExpired] = useState<boolean>(false);
+    const [role, setRole] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(true);
+    const [profileImage, setProfileImage] = useState<string>("");
+    
+    const contextValue: UserContextType = {
+        isAuthenticated,
+        userDetails,
+        sessionExpired,
+        role,
+        loading,
+        profileImage,
+        setIsAuthenticated,
+        setUserDetails,
+        setSessionExpired,
+        setRole,
+        setLoading,
+        setProfileImage
+    }
 
     return (
-        <AuthContext.Provider
-            value={{
-                isAuthenticated,
-                setIsAuthenticated,
-                session,
-                setSession
-            }}
-        >
+        <UserContext.Provider value={contextValue}>
             {children}
-        </AuthContext.Provider>
+        </UserContext.Provider>
     )
-};
+}
 
-export const useAuthContext = () => useContext(AuthContext);
+export const useUserContext = () => {
+    return useContext(UserContext);
+}

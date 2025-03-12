@@ -1,41 +1,81 @@
-import { useEffect, useState } from 'react'
-import { getMessage } from './services/axios'
-import './App.css'
-import { AuthProvider } from './contexts/AuthContext'
+import "./App.css";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { Suspense } from "react";
+import { useUserContext } from "./contexts/AuthContext";
+import ProtectedRoute from "./contexts/ProtectedRoutes";
+import useTokenHandler from "./hooks/useTokenHandler";
+import NotFound from "./pages/_NotFound";
+import Homepage from "./pages/Homepage";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import LoadingHydrate from "./motions/LoadingHydrate";
+import Reservation from "./pages/admin/Reservation";
+import ManageRooms from "./pages/ManageRooms";
+import AdminLayout from "./layout/admin/AdminLayout";
+import ForgotPassword from "./pages/ForgotPassword";
+import About from "./pages/About";
+import Rooms from "./pages/Rooms";
+import ManageUsers from "./pages/admin/ManageUsers";
+import UserStats from "./pages/admin/UserStats";
+import AreaReservations from "./pages/admin/AreaReservations";
+import ManageAmenities from "./pages/admin/ManageAmenities";
+import Comments from "./pages/admin/Comments";
+import Reports from "./pages/admin/Reports";
+import Suites from "./pages/Suites";
+import RegistrationFlow from "./pages/RegistrationFlow";
+import GuestProfile from "./pages/guests/GuestProfile";
 
-// Wrap the app component in the auth provider for global state management
-// Routing must be done in the MainContent component
 const App = () => {
-  return (
-    <AuthProvider>
-      <MainContent />
-    </AuthProvider>
-  )
-}
+  const { isAuthenticated, role, loading } = useUserContext();
+  useTokenHandler();
 
-const MainContent = () => {
-  const [message, setMessage] = useState("");
-
-  const fetchMessage = async () => {
-    try {
-      const response = await getMessage();
-      console.log(response);
-      setMessage(response.message);
-    } catch (error) {
-      console.error(`Error: ${error}`);
-    }
-  }
-
-  useEffect(() => {
-    fetchMessage();
-  }, []);
+  if (loading) return <LoadingHydrate />;
 
   return (
-    <>
-      <h1 className='text-3xl'>React TypeScript Flask Starter</h1>
-      <h1 className='text-3xl'>{message}</h1>
-    </>
-  )
-}
+    <Suspense fallback={<LoadingHydrate />}>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            isAuthenticated ? (
+              role === "admin" ? (
+                <Navigate to="/admin" replace />
+              ) : (
+                <Homepage />
+              )
+            ) : (
+              <Homepage />
+            )
+          }
+        />
 
-export default App
+        <Route path="/guest/:id" element={<GuestProfile />} />
+        <Route path="/registration" element={<RegistrationFlow />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/reservation" element={<Reservation />} />
+        <Route path="/rooms" element={<Rooms />} />
+        <Route path="/suites" element={<Suites />} />
+        <Route path="forgot-password" element={<ForgotPassword />} />
+
+        {/* Protected admin routes */}
+        <Route element={<ProtectedRoute requiredRole="admin" />}>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="reservations" element={<Reservation />} />
+            <Route path="rooms" element={<ManageRooms />} />
+            <Route path="areas" element={<AreaReservations />} />
+            <Route path="amenities" element={<ManageAmenities />} />
+            <Route path="comments" element={<Comments />} />
+            <Route path="reports" element={<Reports />} />
+            <Route path="users" element={<ManageUsers />}>
+              <Route path=":id" element={<UserStats />} />
+            </Route>
+          </Route>
+        </Route>
+
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
+  );
+};
+
+export default App;
