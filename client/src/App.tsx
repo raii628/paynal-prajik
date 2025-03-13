@@ -20,8 +20,8 @@ import AreaReservations from "./pages/admin/AreaReservations";
 import ManageAmenities from "./pages/admin/ManageAmenities";
 import Comments from "./pages/admin/Comments";
 import Reports from "./pages/admin/Reports";
-import Suites from "./pages/Suites";
 import RegistrationFlow from "./pages/RegistrationFlow";
+import Gallery from "./pages/Gallery";
 import GuestProfile from "./pages/guests/GuestProfile";
 
 const App = () => {
@@ -53,7 +53,7 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/reservation" element={<Reservation />} />
         <Route path="/rooms" element={<Rooms />} />
-        <Route path="/suites" element={<Suites />} />
+        <Route path="/gallery" element={<Gallery />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
 
         {/* Protected admin routes */}

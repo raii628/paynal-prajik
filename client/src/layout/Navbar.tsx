@@ -118,7 +118,9 @@ const Navbar: FC = () => {
       )}
       <nav
         className={`fixed top-0 left-0 w-full px-10 py-4 flex items-center justify-between z-40 transition-all duration-75 ${
-          isScrolled ? "bg-gray-200 shadow-lg text-black" : "bg-transparent text-white"
+          isScrolled
+            ? "bg-gray-200 shadow-lg text-black"
+            : "bg-transparent text-white"
         }`}
       >
         <div className="flex items-center">
@@ -181,7 +183,10 @@ const Navbar: FC = () => {
                       className="w-full py-3 rounded-md hover:bg-violet-200 hover:text-violet-700 cursor-pointer"
                       onClick={() => setMenuOpen(false)}
                     >
-                      <Link to={link.link} className="flex items-center text-sm">
+                      <Link
+                        to={link.link}
+                        className="flex items-center text-sm"
+                      >
                         <i className={`ml-3 mr-3 ${link.icon}`}></i> {link.text}
                       </Link>
                     </li>
