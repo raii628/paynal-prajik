@@ -10,9 +10,8 @@ const Hero = () => {
     >
       <Navbar />
 
-      <div className="flex flex-col justify-end items-center h-screen z-10 relative gap-8 sm:gap-14 px-6 sm:px-12 md:px-20">
-        {/* Hero Text */}
-        <div className="text-white text-center max-w-4xl">
+      <div className="flex flex-col justify-end items-center h-screen z-10 relative gap-9 sm:gap-13 md:gap-17 lg-gap-21 xl:gap-23 px-6 sm:px-12 md:px-20">
+        <div className="text-white text-center self-center max-w-4xl">
           <h1 className="font-playfair mb-4 text-[clamp(1.75rem,3.5vw,3rem)] leading-tight">
             Experience Comfort and Luxury
           </h1>
@@ -22,8 +21,7 @@ const Hero = () => {
           </p>
         </div>
 
-        {/* Calendar */}
-        <div className="w-10/12">
+        <div className="lg:w-9/12 xl:w-8/12 2xl:w-7/12">
           <RoomAvailabilityCalendar />
         </div>
       </div>

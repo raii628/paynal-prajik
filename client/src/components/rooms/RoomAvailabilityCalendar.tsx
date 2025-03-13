@@ -14,7 +14,7 @@ const RoomAvailabilityCalendar = () => {
       <div className="py-3 font-montserrat">
         <div className="flex flex-col justify-around gap-3">
           {/* Header - Hidden on small screens */}
-          <div className="hidden lg:flex justify-between items-center">
+          <div className="hidden sm:flex justify-between items-center">
             <h1 className="text-sm font-montserrat font-medium text-gray-500">
               <i className="fas fa-calendar-check text-blue-500 text-lg mr-3"></i>
               Tell us when — your perfect stay awaits you.
