@@ -180,7 +180,7 @@ const Navbar: FC = () => {
                   {navLinks.map((link, index) => (
                     <li
                       key={index}
-                      className="w-full py-3 rounded-md hover:bg-violet-200 hover:text-violet-700 cursor-pointer"
+                      className="w-full py-3 rounded-md hover:bg-blue-200 hover:text-blue-700 cursor-pointer"
                       onClick={() => setMenuOpen(false)}
                     >
                       <Link
@@ -195,13 +195,13 @@ const Navbar: FC = () => {
 
                 <div className="pl-5 py-3 px-3 text-black/80">
                   <li
-                    className="w-full py-3 rounded-md text-sm hover:bg-violet-200 hover:text-violet-700 cursor-pointer"
+                    className="w-full py-3 rounded-md text-sm hover:bg-blue-200 hover:text-blue-700 cursor-pointer"
                     onClick={toggleLoginModal}
                   >
                     <i className="fa-regular fa-user ml-3 mr-3"></i> Login
                   </li>
                   <li
-                    className="w-full py-3 rounded-md text-sm hover:bg-violet-200 hover:text-violet-700 cursor-pointer"
+                    className="w-full py-3 rounded-md text-sm hover:bg-blue-200 hover:text-blue-700 cursor-pointer"
                     onClick={toggleRegisterModal}
                   >
                     <i className="fa fa-user-plus ml-3 mr-3"></i>Sign up
@@ -267,7 +267,7 @@ const Navbar: FC = () => {
                 <img
                   src={profileImage || DefaultImg}
                   alt="Profile"
-                  className="h-10 w-10 rounded-full object-cover cursor-pointer"
+                  className="h-15 w-15 rounded-full object-cover cursor-pointer"
                 />
               )}
             </Dropdown>

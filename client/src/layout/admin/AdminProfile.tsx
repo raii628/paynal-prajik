@@ -14,7 +14,7 @@ interface AdminProfileProps {
 const AdminProfile: FC<AdminProfileProps> = ({ admin }) => {
     return (
         <div className="flex space-x-3 items-center border-b border-b-gray-200 p-5">
-            <div className="flex justify-center items-center rounded-full bg-violet-400 w-18 h-18">
+            <div className="flex justify-center items-center rounded-full bg-violet-400 w-15 h-15">
                 <img
                     src={admin.profile_pic && admin.profile_pic.trim() !== "" ? admin.profile_pic : "/images/default_avatar.png"}
                     alt={admin.profile_pic}
