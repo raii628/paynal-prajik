@@ -2,14 +2,20 @@ from django.db import models
 
 # Create your models here.
 class RoomTypes(models.Model):
-    name = models.CharField(max_length=100, unique=True, null=False)
+    name = models.CharField(max_length=100, unique=False, null=False)
     description = models.TextField(blank=True)
     base_price = models.DecimalField(max_digits=10, decimal_places=2, null=False)
     capacity = models.PositiveIntegerField()
+    
+    class Meta:
+        db_table = 'room_types'
 
 class Amenities(models.Model):
     name = models.CharField(max_length=100, unique=True, null=False)
     description = models.TextField(blank=True)
+    
+    class Meta:
+        db_table = 'amenities'
 
 class RoomTypeAmenities(models.Model):
     room_type = models.ForeignKey(RoomTypes, on_delete=models.CASCADE, related_name='amenities')
@@ -17,6 +23,7 @@ class RoomTypeAmenities(models.Model):
     
     class Meta:
         unique_together = ('room_type', 'amenity')
+        db_table = 'room_type_amenities'
 
 class Rooms(models.Model):
     ROOM_STATUS_CHOICES = [
@@ -33,6 +40,9 @@ class Rooms(models.Model):
         default='available',
     )
     notes = models.TextField(blank=True)
+    
+    class Meta:
+        db_table = 'rooms'
 
 class Areas(models.Model):
     AREA_STATUS_CHOICES = [
@@ -50,6 +60,9 @@ class Areas(models.Model):
         choices=AREA_STATUS_CHOICES,
         default='available',
     )
+    
+    class Meta:
+        db_table = 'areas'
 
 class RoomTypePrices(models.Model):
     room_type = models.ForeignKey(RoomTypes, on_delete=models.CASCADE, related_name='prices')
@@ -57,4 +70,5 @@ class RoomTypePrices(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     
     class Meta:
+        db_table = 'room_type_prices'
         unique_together = ('room_type', 'valid_from')

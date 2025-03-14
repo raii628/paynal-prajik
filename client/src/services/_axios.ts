@@ -22,3 +22,11 @@ export const guest = axios.create({
     },
     withCredentials: true
 });
+
+export const booking = axios.create({
+    baseURL: `${import.meta.env.VITE_API_URL}/booking`,
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    withCredentials: true
+});

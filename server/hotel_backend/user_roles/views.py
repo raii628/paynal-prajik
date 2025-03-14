@@ -234,7 +234,7 @@ def complete_registration(request):
                 httponly=True,
                 secure=False,
                 samesite='Lax',
-                max_age=timedelta(day=1)
+                max_age=timedelta(days=1)
             )
             
             response.set_cookie(
