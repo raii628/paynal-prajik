@@ -386,7 +386,10 @@ def reset_password(request):
                 "error": "User does not exist"
             }, status=status.HTTP_404_NOT_FOUND)
         
+        existing_profile_image = user.profile_image
+        
         user.set_password(new_password)
+        user.profile_image = existing_profile_image
         user.save()
         
         user = authenticate(request, username=email, password=new_password)
@@ -395,6 +398,7 @@ def reset_password(request):
             refresh = RefreshToken.for_user(user)
             response = Response({
                 "message": "Password reset successfully",
+                'profile_image': user.profile_image.url if user.profile_image else "",
             }, status=status.HTTP_200_OK)
             
             response.set_cookie(
@@ -403,7 +407,7 @@ def reset_password(request):
                 httponly=True,
                 secure=False,
                 samesite='Lax',
-                max_age=3600
+                max_age=timedelta(days=1)
             )
             
             response.set_cookie(
@@ -412,7 +416,7 @@ def reset_password(request):
                 httponly=True,
                 secure=False,
                 samesite='Lax',
-                max_age=604800
+                max_age=timedelta(days=7)
             )
             
             return response
