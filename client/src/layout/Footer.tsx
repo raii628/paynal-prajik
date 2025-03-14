@@ -2,7 +2,7 @@ import { footerSections } from "../constants/Footer";
 
 const Footer = () => {
   return (
-    <footer className="relative bg-white/80 px-6 md:px-15 py-5">
+    <footer className="relative bg-gray-100 px-6 md:px-15 py-5">
       <h1 className="text-2xl text-blue-700 mb-2">Azurea Hotel</h1>
       <i className="fa-solid fa-location-dot text-violet-600"></i>
       <h6 className="inline-block ml-1 text-sm italic mb-5">
