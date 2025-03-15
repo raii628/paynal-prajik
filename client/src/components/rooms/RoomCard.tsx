@@ -1,4 +1,4 @@
-// RoomCard.jsx
+import { Link } from "react-router-dom";
 const RoomCard = ({ image, title, description, bedType, capacity, price }) => {
   return (
     <div className=" rounded-lg overflow-hidden shadow-sm bg-white flex flex-col">
@@ -22,9 +22,11 @@ const RoomCard = ({ image, title, description, bedType, capacity, price }) => {
         </div>
         <div className="flex justify-between items-center mt-4">
           <span className="font-bold text-lg">₱{price.toLocaleString()}</span>
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
-            Book Now
-          </button>
+          <Link to="/booking">
+            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+              Book Now
+            </button>
+          </Link>
         </div>
       </div>
     </div>

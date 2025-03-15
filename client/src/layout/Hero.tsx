@@ -10,7 +10,7 @@ const Hero = () => {
     >
       <Navbar />
 
-      <div className="flex flex-col justify-end items-center h-screen z-10 relative gap-9 sm:gap-13 md:gap-17 lg-gap-21 xl:gap-23 px-6 sm:px-12 md:px-20">
+      <div className="flex flex-col justify-end items-center h-screen z-10 relative gap-15 sm:gap-13 md:gap-17 lg-gap-21 xl:gap-23 px-6 sm:px-12 md:px-20">
         <div className="text-white text-center self-center max-w-4xl">
           <h1 className="font-playfair mb-4 text-[clamp(1.75rem,3.5vw,3rem)] leading-tight">
             Experience Comfort and Luxury
