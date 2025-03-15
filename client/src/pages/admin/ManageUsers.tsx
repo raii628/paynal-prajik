@@ -18,7 +18,6 @@ const ManageUsers = () => {
 
   const users = Array.isArray(data) ? data : data?.users || [];
 
-  // Filtering users based on search input and filter dropdown
   const filteredUsers = users.filter((user: any) => {
     const firstName = user.first_name?.toLowerCase() || "";
     const lastName = user.last_name?.toLowerCase() || "";
@@ -26,14 +25,12 @@ const ManageUsers = () => {
     const guestType = user.guest_type?.toLowerCase() || "";
     const searchText = search.toLowerCase();
 
-    // Search-based filtering
     const matchesSearch =
       firstName.includes(searchText) ||
       lastName.includes(searchText) ||
       email.includes(searchText) ||
       guestType.includes(searchText);
 
-    // Dropdown filter for guest type
     const matchesFilter = filter === "All" || guestType === filter.toLowerCase();
 
     return matchesSearch && matchesFilter;
@@ -61,51 +58,56 @@ const ManageUsers = () => {
         <option value="All">All Guests</option>
         <option value="VIP">VIP</option>
         <option value="Regular">Regular</option>
-        <option value="New">New</option>
       </select>
 
-      {/* User Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border p-2">Profile</th>
-              <th className="border p-2">First Name</th>
-              <th className="border p-2">Last Name</th>
-              <th className="border p-2">Email</th>
-              <th className="border p-2">Age</th>
-              <th className="border p-2">Guest Type</th>
-              <th className="border p-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredUsers.map((user: any) => (
-              <tr key={user.id} className="border">
-                <td className="p-2 text-center">
-                  <img
-                    src={user.profile_image || "https://via.placeholder.com/50"}
-                    alt="Profile"
-                    className="w-10 h-10 rounded-full mx-auto"
-                  />
-                </td>
-                <td className="p-2 text-center">{user.first_name}</td>
-                <td className="p-2 text-center">{user.last_name}</td>
-                <td className="p-2 text-center">{user.email}</td>
-                <td className="p-2 text-center">{user.age}</td>
-                <td className="p-2 text-center capitalize">{user.guest_type}</td>
-                <td className="p-2 text-center">
-                  <button className="bg-blue-500 text-white px-3 py-1 rounded mr-2">
-                    Edit
-                  </button>
-                  <button className="bg-red-500 text-white px-3 py-1 rounded">
-                    Delete
-                  </button>
-                </td>
+      {filteredUsers.length === 0 ? (
+        <div className="flex flex-col items-center justify-center mt-10">
+          <p className="text-3xl font-bold text-gray-700">🚫 No Users Found</p>
+        </div>
+      ) : (
+        // User Table
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse border border-gray-300">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="border p-2">Profile</th>
+                <th className="border p-2">First Name</th>
+                <th className="border p-2">Last Name</th>
+                <th className="border p-2">Email</th>
+                <th className="border p-2">Age</th>
+                <th className="border p-2">Guest Type</th>
+                <th className="border p-2">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {filteredUsers.map((user: any) => (
+                <tr key={user.id} className="border">
+                  <td className="p-2 text-center">
+                    <img
+                      src={user.profile_image || "https://via.placeholder.com/50"}
+                      alt="Profile"
+                      className="w-16 h-16 rounded-full mx-auto"
+                    />
+                  </td>
+                  <td className="p-2 text-center">{user.first_name}</td>
+                  <td className="p-2 text-center">{user.last_name}</td>
+                  <td className="p-2 text-center">{user.email}</td>
+                  <td className="p-2 text-center">{user.age}</td>
+                  <td className="p-2 text-center capitalize">{user.guest_type}</td>
+                  <td className="p-2 text-center">
+                    <button className="bg-blue-500 text-white px-3 py-1 rounded mr-2">
+                      Edit
+                    </button>
+                    <button className="bg-red-500 text-white px-3 py-1 rounded">
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   )
 }

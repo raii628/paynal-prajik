@@ -17,3 +17,4 @@ remarkable
 jwt-decode
 universal-cookie
 chart.js
+lucide-react

@@ -35,7 +35,7 @@ const App = () => {
 
   return (
     <Suspense fallback={<LoadingHydrate />}>
-      <ScrollToTop /> {/* ✅ This is now globally active */}
+      <ScrollToTop />
       <Routes>
         <Route
           path="/"
