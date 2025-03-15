@@ -1,21 +1,24 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { motion } from "framer-motion"
 import { fetchReservations } from "../../services/Booking";
+import DashboardSkeleton from "../../motions/DashboardSkeleton";
+import Error from "../_ErrorBoundary";
 
-const Reservation = () => {
+const GuestReservation = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['reservations'],
     queryFn: fetchReservations,
-    retry: 2
   });
   const [search, setSearch] = useState<string>('');
   const [filter, setFilter] = useState<string>('All');
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading reservations</div>;
+  if (isLoading) return <DashboardSkeleton />;
+  if (error) return <Error />;
 
-  const filteredReservations = data.filter(reservation => {
+  const reservationsArray = Array.isArray(data) ? data : [];
+  const filteredReservations = reservationsArray.filter((reservation: any) => {
     return (
       (filter === "all" || reservation.status === filter) &&
       (search === "" || reservation.guest_name.toLowerCase().includes(search.toLowerCase()))
@@ -24,7 +27,7 @@ const Reservation = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-semibold mb-6">Reservations</h1>
+      <h1 className="text-3xl font-semibold mb-6">Guest Reservations</h1>
       <div className="flex flex-col md:flex-row justify-between mb-4">
         <input
           type="text"
@@ -59,7 +62,7 @@ const Reservation = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredReservations.map((res) => (
+              {filteredReservations.map((res: any) => (
                 <motion.tr key={res.id} className="text-center hover:bg-gray-50" whileHover={{ scale: 1.02 }}>
                   <td className="border p-2">{res.guest_name}</td>
                   <td className="border p-2">{res.room_number}</td>
@@ -80,4 +83,4 @@ const Reservation = () => {
   )
 }
 
-export default Reservation
+export default GuestReservation

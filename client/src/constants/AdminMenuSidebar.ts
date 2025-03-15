@@ -1,5 +1,5 @@
 import { 
-  faTachometerAlt, 
+  faGauge, 
   faCalendarCheck, 
   faBed, 
   faUsers, 
@@ -11,19 +11,19 @@ import {
 
 export const menuItems = [
   { 
-    icon: faTachometerAlt, 
+    icon: faGauge, 
     label: "Dashboard",
-    link: '/admin' 
+    link: '/admin'
   },
   { 
     icon: faCalendarCheck, 
-    label: "Reservations/Bookings",
-    link: '/admin/reservations' 
+    label: "Guest Reservations",
+    link: '/admin/reservations'
   },
   { 
     icon: faBed,
     label: "Manage Rooms",
-    link: '/admin/rooms' 
+    link: '/admin/rooms'
   },
   {
     icon: faMapMarkerAlt,

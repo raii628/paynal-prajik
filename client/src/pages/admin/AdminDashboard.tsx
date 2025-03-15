@@ -11,6 +11,8 @@ import {
 import { Bar, Doughnut } from "react-chartjs-2";
 import StatCard from "../../components/admin/StatCard";
 import { fetchStats } from "../../services/Admin";
+import DashboardSkeleton from "../../motions/DashboardSkeleton";
+import Error from "../_ErrorBoundary";
 
 Chart.register(BarElement, ArcElement, Tooltip, Legend, CategoryScale, LinearScale);
 
@@ -21,8 +23,8 @@ const AdminDashboard = () => {
     retry: 2
   });
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading stats</div>;
+  if (isLoading) return <DashboardSkeleton />;
+  if (error) return <Error />;
 
   const stats = {
     activeBookings: data?.active_bookings || 0,
@@ -34,7 +36,7 @@ const AdminDashboard = () => {
   const doughnutOptions = {
     maintainAspectRatio: false,
     responsive: true,
-    cutout: 55,
+    cutout: 40,
     plugins: {
       legend: {
         position: 'bottom' as const,
@@ -69,10 +71,10 @@ const AdminDashboard = () => {
 
       {/* Stat Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <StatCard title="Active Bookings" value={data.active_bookings} />
-        <StatCard title="Available Rooms" value={data.available_rooms} />
-        <StatCard title="Upcoming Reservations" value={data.upcoming_reservations} />
-        <StatCard title="Revenue This Month" value={`$${data.revenue}`} />
+        <StatCard title="Active Bookings" value={data.active_bookings} borderColor="border-blue-500" />
+        <StatCard title="Available Rooms" value={data.available_rooms} borderColor="border-green-500" />
+        <StatCard title="Upcoming Reservations" value={data.upcoming_reservations} borderColor="border-yellow-500" />
+        <StatCard title="Revenue This Month" value={`$${data.revenue}`} borderColor="border-orange-500" />
       </div>
 
       {/* Charts */}

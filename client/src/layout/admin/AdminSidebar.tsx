@@ -65,16 +65,16 @@ const AdminSidebar: FC = () => {
             {admin ? <AdminProfile admin={admin} /> : <AdminDetailSkeleton />}
           </Suspense>
         </div>
-        <div className="flex-grow overflow-y-auto px-3">
+        <div className="flex-grow overflow-y-auto p-2">
           <ul className="space-y-4">
             {menuItems.map((item, index) => (
               <li key={index}>
                 <NavLink
                   to={item.link}
                   end={item.link === "/admin"}
-                  className={({ isActive }) => `flex items-start space-x-3 py-2 px-3 rounded-md cursor-pointer ${isActive ? "border-r-3 border-blue-600 bg-blue-100 text-blue-700 font-bold" : "hover:bg-black/15"}`}
+                  className={({ isActive }) => `flex items-center space-x-2 p-2 justify-baseline rounded-md cursor-pointer ${isActive ? "border-r-3 border-blue-600 bg-blue-100/80 text-blue-700 font-bold" : "hover:bg-black/15"}`}
                 >
-                  <FontAwesomeIcon icon={item.icon} className="text-2xl" /> <span>{item.label}</span>
+                  <FontAwesomeIcon icon={item.icon} className="text-2xl p-2 w-5 h-5 text-left" /> <span className="text-lg">{item.label}</span>
                 </NavLink>
               </li>
             ))}
