@@ -14,14 +14,11 @@ const RoomHero = () => {
             Discover Your Perfect Stay
           </h1>
           <p className="text-white mt-4 [font-size:clamp(0.9rem,2.5vw,1.2rem)] max-w-3xl leading-relaxed drop-shadow-sm font-montserrat">
-            Experience a blend of elegance and comfort in our beautifully designed
-            rooms. Whether for a relaxing getaway or a business trip, our suites
-            offer an unforgettable experience filled with style and modern
-            amenities.
+            Experience a blend of elegance and comfort in our beautifully
+            designed rooms. Whether for a relaxing getaway or a business trip,
+            our suites offer an unforgettable experience filled with style and
+            modern amenities.
           </p>
-          <button className="mt-8 px-5 py-2.5 bg-white text-black font-semibold rounded-full shadow-lg hover:bg-gray-200 transition font-montserrat [font-size:clamp(0.9rem,2vw,1rem)]">
-            Explore Rooms
-          </button>
         </div>
       </section>
     </>
