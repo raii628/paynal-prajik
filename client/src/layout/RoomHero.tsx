@@ -18,9 +18,6 @@ const RoomHero = () => {
           offer an unforgettable experience filled with style and modern
           amenities.
         </p>
-        <button className="mt-8 px-5 py-2.5 bg-white text-black font-semibold rounded-full shadow-lg hover:bg-gray-200 transition font-montserrat [font-size:clamp(0.9rem,2vw,1rem)]">
-          Explore Rooms
-        </button>
       </div>
     </section>
   );

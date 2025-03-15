@@ -179,7 +179,7 @@ const Navbar: FC = () => {
                   <i className="fa fa-bars text-black/70 mr-3"></i>
                   Navigation
                 </li>
-                <div className="border-b-2 pl-5 px-3 pb-3 text-black/80 border-gray-300 uppercase font-light tracking-wide">
+                <div className="border-b-2 pl-5 px-3 pb-3 text-black/80 border-gray-300 uppercase font-montserrat font-light tracking-wide">
                   {navLinks.map((link, index) => (
                     <li
                       key={index}
@@ -198,13 +198,13 @@ const Navbar: FC = () => {
 
                 <div className="pl-5 py-3 px-3 text-black/80">
                   <li
-                    className="w-full py-3 rounded-md text-sm hover:bg-blue-200 hover:text-blue-700 cursor-pointer"
+                    className="w-full py-3 rounded-md text-sm font-montserrat hover:bg-blue-200 hover:text-blue-700 cursor-pointer"
                     onClick={toggleLoginModal}
                   >
                     <i className="fa-regular fa-user ml-3 mr-3"></i> Login
                   </li>
                   <li
-                    className="w-full py-3 rounded-md text-sm hover:bg-blue-200 hover:text-blue-700 cursor-pointer"
+                    className="w-full py-3 rounded-md text-sm font-montserrat hover:bg-blue-200 hover:text-blue-700 cursor-pointer"
                     onClick={toggleRegisterModal}
                   >
                     <i className="fa fa-user-plus ml-3 mr-3"></i>Sign up
@@ -219,7 +219,7 @@ const Navbar: FC = () => {
           {navLinks.map((link, index) => (
             <li
               key={index}
-              className="text-lg lg:text-lg 2xl:text-xl font-bold hover:text-violet-500 transition-all duration-300"
+              className="text-lg lg:text-lg 2xl:text-xl font-montserrat font-bold hover:text-violet-500 transition-all duration-300"
             >
               <Link to={link.link}>{link.text}</Link>
             </li>

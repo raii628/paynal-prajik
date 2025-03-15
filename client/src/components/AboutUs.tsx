@@ -23,14 +23,14 @@ const AboutUs = () => {
             Experience Luxury and Comfort at Azurea Hotel
           </h1>
 
-          <p className="text-gray-600 text-base sm:text-sm lg:text-lg  leading-relaxed">
+          <p className="text-gray-60 font-montserrat text-base sm:text-sm lg:text-lg  leading-relaxed">
             Discover a place where elegance meets comfort. Azurea Hotel offers
             top-notch amenities, personalized services, and a welcoming
             atmosphere that makes every stay unforgettable. Whether for business
             or leisure, Azurea is your perfect destination.
           </p>
 
-          <button className="mt-4 inline-block bg-blue-800 text-white px-6 py-3 rounded-full shadow hover:bg-blue-700 transition-all">
+          <button className="mt-4 inline-block font-montserrat bg-blue-800 text-white px-6 py-3 rounded-full shadow hover:bg-blue-700 transition-all">
             More about us &rarr;
           </button>
         </div>
@@ -46,13 +46,13 @@ const AboutUs = () => {
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium font-playfair text-gray-800 leading-tight">
             Creating Memorable Experiences
           </h1>
-          <p className="text-gray-600 text-base sm:text-sm lg:text-lg leading-relaxed">
+          <p className="text-gray-600 text-base font-montserrat sm:text-sm lg:text-lg leading-relaxed">
             We believe in offering more than just a place to stay. Azurea Hotel
             is a place where memories are made — whether you're on a romantic
             getaway, a family vacation, or a business trip.
           </p>
           <Link to={"/booking"}>
-            <button className="mt-4 inline-block bg-blue-800 text-white px-6 py-3 rounded-full shadow hover:bg-blue-700 transition-all">
+            <button className="mt-4 inline-block font-montserrat bg-blue-800 text-white px-6 py-3 rounded-full shadow hover:bg-blue-700 transition-all">
               Book with us &rarr;
             </button>
           </Link>
