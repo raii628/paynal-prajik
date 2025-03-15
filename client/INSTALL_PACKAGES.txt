@@ -20,3 +20,4 @@ chart.js
 lucide-react
 @gsap/react
 gsap
+locomotive-scroll

@@ -1,5 +1,5 @@
 import Navbar from "./Navbar";
-import hotel_bg from "../assets/hotel_bg.jpg";
+import hotel_bg from "../assets/homepage_slider/hotel_bg.jpg";
 import RoomAvailabilityCalendar from "../components/rooms/RoomAvailabilityCalendar";
 
 const Hero = () => {
