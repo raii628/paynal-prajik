@@ -5,6 +5,12 @@ import deluxe_single from "../../assets/deluxe_single.webp";
 import executive_king from "../../assets/executive_king.webp";
 import executive_double from "../../assets/executive_double.avif";
 import president_king from "../../assets/president_king.jpg";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
 const RoomList = () => {
   const rooms = [
     {
@@ -63,8 +69,28 @@ const RoomList = () => {
     },
   ];
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<Array<HTMLDivElement | null>>([]);
+
+  useEffect(() => {
+    gsap.fromTo(
+      cardRefs.current,
+      { opacity: 0, y: 50 },
+      {
+        opacity: 1,
+        y: 0,
+        stagger: 0.2,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 80%",
+        },
+      }
+    );
+  }, [])
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-15 p-6">
+    <div ref={containerRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-15 p-6">
       {rooms.map((room, index) => (
         <RoomCard key={index} {...room} />
       ))}

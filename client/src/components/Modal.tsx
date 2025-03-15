@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface ModalProps {
@@ -8,9 +8,10 @@ interface ModalProps {
   cancel: () => void;
   onConfirm: () => void;
   className?: string;
-  confirmText?: string;
+  confirmText?: ReactNode;
   cancelText?: string;
   isOpen: boolean;
+  loading?: boolean;
 }
 
 const Modal: FC<ModalProps> = ({
@@ -23,6 +24,7 @@ const Modal: FC<ModalProps> = ({
   confirmText,
   cancelText,
   isOpen,
+  loading = false
 }) => {
   return (
     <AnimatePresence>
@@ -70,6 +72,7 @@ const Modal: FC<ModalProps> = ({
                 type="button"
                 onClick={onConfirm}
                 className={className}
+                disabled={loading}
               >
                 {confirmText}
               </button>

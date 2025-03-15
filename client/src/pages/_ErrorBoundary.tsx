@@ -12,7 +12,6 @@ const Error = () => {
         className="bg-white rounded-xl p-10 h-full max-w-lg w-full shadow-lg"
       >
         <div className="flex flex-row items-center">
-          {/* Icon Container */}
           <div className="mr-3">
             <FontAwesomeIcon
               icon={faExclamationTriangle}
@@ -20,7 +19,6 @@ const Error = () => {
               className="text-red-600"
             />
           </div>
-          {/* Text Container */}
           <div className="text-center flex-1">
             <h1 className="text-3xl font-bold text-red-600 mb-2">
               An error has occurred!
