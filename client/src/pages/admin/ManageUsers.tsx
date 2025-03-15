@@ -37,10 +37,9 @@ const ManageUsers = () => {
   });
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
+    <div className="p-6 max-w-full mx-auto">
       <h1 className="text-2xl font-bold mb-4">Manage Users</h1>
 
-      {/* Search Input */}
       <input
         type="text"
         placeholder="Search users..."
@@ -49,7 +48,6 @@ const ManageUsers = () => {
         onChange={(e) => setSearch(e.target.value)}
       />
 
-      {/* Filter Dropdown */}
       <select
         className="w-full p-2 border rounded mb-4"
         value={filter}
@@ -65,7 +63,6 @@ const ManageUsers = () => {
           <p className="text-3xl font-bold text-gray-700">🚫 No Users Found</p>
         </div>
       ) : (
-        // User Table
         <div className="overflow-x-auto">
           <table className="w-full border-collapse border border-gray-300">
             <thead>
@@ -84,9 +81,9 @@ const ManageUsers = () => {
                 <tr key={user.id} className="border">
                   <td className="p-2 text-center">
                     <img
-                      src={user.profile_image || "https://via.placeholder.com/50"}
+                      src={user.profile_image}
                       alt="Profile"
-                      className="w-16 h-16 rounded-full mx-auto"
+                      className="w-20 h-20 object-cover rounded-full mx-auto"
                     />
                   </td>
                   <td className="p-2 text-center">{user.first_name}</td>

@@ -7,6 +7,7 @@ import Modal from "../../components/Modal";
 import { logout } from "../../services/Auth";
 import { useNavigate, NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 const AdminProfile = React.lazy(() => import("./AdminProfile"));
 
@@ -97,9 +98,17 @@ const AdminSidebar: FC = () => {
         description="Are you sure you want to log out?"
         cancel={modalCancel}
         onConfirm={handleLogout}
-        className={`bg-red-600 text-white hover:bg-red-700 font-bold uppercase text-sm px-6 py-3 rounded-md shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-300 cursor-pointer ${loading ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-        confirmText={loading ? "Logging out..." : "Log Out"}
+        loading={loading}
+        className={`bg-red-600 text-white hover:bg-red-700 font-bold uppercase text-sm px-6 py-3 rounded-md shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-300 cursor-pointer ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+        confirmText={
+          loading ? (
+            <>
+              <FontAwesomeIcon icon={faSpinner} spin className="mr-2" /> Logging out...
+            </>
+          ) : (
+            "Log Out"
+          )
+        }
         cancelText="Cancel"
       />
     </>

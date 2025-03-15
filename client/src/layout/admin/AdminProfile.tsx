@@ -22,10 +22,10 @@ const AdminProfile: FC<AdminProfileProps> = ({ admin }) => {
                 />
             </div>
             <ul className="flex flex-col justify-center">
-                <li className="text-gray-700 font-medium tracking-wide text-xl">
+                <li className="text-gray-700 font-black tracking-wide text-xl">
                     {admin.name}
                 </li>
-                <li className="relative flex items-center text-gray-600 font-medium tracking-wide text-normal">
+                <li className="relative flex items-center text-gray-600 font-medium tracking-wide text-base">
                     {admin.email}
                 </li>
             </ul>
