@@ -8,8 +8,8 @@ import NotFound from "./pages/_NotFound";
 import Homepage from "./pages/Homepage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import LoadingHydrate from "./motions/LoadingHydrate";
-import Reservation from "./pages/admin/Reservation";
-import ManageRooms from "./pages/ManageRooms";
+import GuestReservation from "./pages/admin/GuestReservation";
+import ManageRooms from "./pages/admin/ManageRooms";
 import AdminLayout from "./layout/admin/AdminLayout";
 import ForgotPassword from "./pages/ForgotPassword";
 import About from "./pages/About";
@@ -23,6 +23,7 @@ import Reports from "./pages/admin/Reports";
 import RegistrationFlow from "./pages/RegistrationFlow";
 import Gallery from "./pages/Gallery";
 import GuestProfile from "./pages/guests/GuestProfile";
+import Reservations from "./pages/Reservations";
 
 const App = () => {
   const { isAuthenticated, role, loading } = useUserContext();
@@ -51,7 +52,7 @@ const App = () => {
         <Route path="/guest/:id" element={<GuestProfile />} />
         <Route path="/registration" element={<RegistrationFlow />} />
         <Route path="/about" element={<About />} />
-        <Route path="/reservation" element={<Reservation />} />
+        <Route path="/reservation" element={<Reservations />} />
         <Route path="/rooms" element={<Rooms />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
@@ -60,7 +61,7 @@ const App = () => {
         <Route element={<ProtectedRoute requiredRole="admin" />}>
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
-            <Route path="reservations" element={<Reservation />} />
+            <Route path="reservations" element={<GuestReservation />} />
             <Route path="rooms" element={<ManageRooms />} />
             <Route path="areas" element={<AreaReservations />} />
             <Route path="amenities" element={<ManageAmenities />} />

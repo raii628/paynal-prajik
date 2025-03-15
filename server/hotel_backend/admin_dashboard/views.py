@@ -6,6 +6,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from booking.models import *
+from user_roles.serializers import CustomUserSerializer
+from user_roles.models import CustomUsers
 
 # Create your views here.
 @api_view(['GET'])
@@ -53,11 +55,26 @@ def dashboard_stats(request):
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-# For Manage Users
-# @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
-# def manage_users(request):
-#     try:
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def area_reservations(request):
+    try:
+        data = Reservations.objects.values('area').annotate(count=Count('area'))
         
-#     except Exception as e:
-#         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({
+            "data": data
+        }, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def manage_users(request):
+    try:
+        users = CustomUsers.objects.filter(is_admin=False)
+        serializer = CustomUserSerializer(users, many=True)
+        return Response({
+            "data": serializer.data
+        }, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
