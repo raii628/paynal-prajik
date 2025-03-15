@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import aboutUs_bg from "../assets/aboutUs_bg.jpg";
+import philosophy from "../assets/philosophy.jpg";
 
 const AboutUs = () => {
   return (
@@ -49,11 +51,16 @@ const AboutUs = () => {
             is a place where memories are made — whether you're on a romantic
             getaway, a family vacation, or a business trip.
           </p>
+          <Link to={"/booking"}>
+            <button className="mt-4 inline-block bg-blue-800 text-white px-6 py-3 rounded-full shadow hover:bg-blue-700 transition-all">
+              Book with us &rarr;
+            </button>
+          </Link>
         </div>
         {/* Image */}
         <div className="order-1 md:order-2">
           <img
-            src={aboutUs_bg}
+            src={philosophy}
             alt="Our Philosophy"
             className="w-full h-auto rounded-2xl shadow-md"
           />

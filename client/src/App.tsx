@@ -23,6 +23,8 @@ import Reports from "./pages/admin/Reports";
 import RegistrationFlow from "./pages/RegistrationFlow";
 import Gallery from "./pages/Gallery";
 import GuestProfile from "./pages/guests/GuestProfile";
+import Booking from "./pages/Booking";
+import ScrollToTop from "./components/ScrollToTop";
 
 const App = () => {
   const { isAuthenticated, role, loading } = useUserContext();
@@ -32,6 +34,7 @@ const App = () => {
 
   return (
     <Suspense fallback={<LoadingHydrate />}>
+      <ScrollToTop /> {/* ✅ This is now globally active */}
       <Routes>
         <Route
           path="/"
@@ -47,15 +50,14 @@ const App = () => {
             )
           }
         />
-
         <Route path="/guest/:id" element={<GuestProfile />} />
         <Route path="/registration" element={<RegistrationFlow />} />
         <Route path="/about" element={<About />} />
         <Route path="/reservation" element={<Reservation />} />
         <Route path="/rooms" element={<Rooms />} />
+        <Route path="/booking" element={<Booking />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
-
         {/* Protected admin routes */}
         <Route element={<ProtectedRoute requiredRole="admin" />}>
           <Route path="/admin" element={<AdminLayout />}>
@@ -71,7 +73,6 @@ const App = () => {
             </Route>
           </Route>
         </Route>
-
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
