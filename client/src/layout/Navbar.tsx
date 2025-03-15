@@ -124,10 +124,11 @@ const Navbar: FC = () => {
       )}
 
       <nav
-        className={`fixed top-0 left-0 w-full px-10 py-4 z-40 transition-all duration-75 ${isScrolled || isBookingPage
+        className={`fixed top-0 left-0 w-full px-10 py-4 z-40 transition-all duration-75 ${
+          isScrolled || isBookingPage
             ? "bg-gray-200 shadow-lg text-black"
             : "bg-transparent text-white"
-          }`}
+        }`}
       >
         <div className="max-w-7xl mx-auto flex items-center">
           {/* Left Section */}
@@ -148,101 +149,18 @@ const Navbar: FC = () => {
                 <SlotNavButton
                   key={index}
                   to={link.link}
-                  className={`${isScrolled || isBookingPage
+                  className={`${
+                    isScrolled || isBookingPage
                       ? "text-black hover:text-purple-600"
                       : "bg-transparent text-white hover:text-purple-600"
-                    }`}
+                  }`}
                 >
-<<<<<<< HEAD
-                  <i className="fa fa-times"></i>
-                </li>
-              </div>
-
-              <div>
-                <li className="w-full text-left text-black/70 pl-5 py-2">
-                  <i className="fa fa-bars text-black/70 mr-3"></i>
-                  Navigation
-                </li>
-                <div className="border-b-2 pl-5 px-3 pb-3 text-black/80 border-gray-300 uppercase font-montserrat font-light tracking-wide">
-                  {navLinks.map((link, index) => (
-                    <li
-                      key={index}
-                      className="w-full py-3 rounded-md hover:bg-blue-200 hover:text-blue-700 cursor-pointer"
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      <Link
-                        to={link.link}
-                        className="flex items-center text-sm"
-                      >
-                        <i className={`ml-3 mr-3 ${link.icon}`}></i> {link.text}
-                      </Link>
-                    </li>
-                  ))}
-                </div>
-
-                <div className="pl-5 py-3 px-3 text-black/80">
-                  <li
-                    className="w-full py-3 rounded-md text-sm font-montserrat hover:bg-blue-200 hover:text-blue-700 cursor-pointer"
-                    onClick={toggleLoginModal}
-                  >
-                    <i className="fa-regular fa-user ml-3 mr-3"></i> Login
-                  </li>
-                  <li
-                    className="w-full py-3 rounded-md text-sm font-montserrat hover:bg-blue-200 hover:text-blue-700 cursor-pointer"
-                    onClick={toggleRegisterModal}
-                  >
-                    <i className="fa fa-user-plus ml-3 mr-3"></i>Sign up
-                  </li>
-                </div>
-              </div>
-=======
                   {link.text}
                 </SlotNavButton>
               ))}
->>>>>>> 8bb5b6a956aa5299b86dc5bd0282599971aad5b4
             </ul>
           </div>
 
-<<<<<<< HEAD
-        <ul className="hidden lg:flex items-center 2xl:space-x-15 xl:space-x-10 md:space-x-7">
-          {navLinks.map((link, index) => (
-            <li
-              key={index}
-              className="text-lg lg:text-lg 2xl:text-xl font-montserrat font-bold hover:text-violet-500 transition-all duration-300"
-            >
-              <Link to={link.link}>{link.text}</Link>
-            </li>
-          ))}
-        </ul>
-
-        <div className="hidden lg:flex items-center space-x-4">
-          {!isAuthenticated ? (
-            <>
-              <button
-                className="px-4 py-2 text-base font-bold border rounded-md hover:bg-gradient-to-r from-[#7300FF] to-[#08D3FC] transition duration-300 cursor-pointer"
-                onClick={toggleLoginModal}
-              >
-                Login
-              </button>
-              <button
-                className="px-4 py-2 text-base font-bold border rounded-md hover:bg-gradient-to-r from-[#7300FF] to-[#08D3FC] transition duration-300 cursor-pointer"
-                onClick={toggleRegisterModal}
-              >
-                Sign Up
-              </button>
-            </>
-          ) : (
-            <Dropdown
-              options={[
-                {
-                  label: "Accounts",
-                  onClick: () => {
-                    if (userDetails && userDetails.id) {
-                      navigate(`/guest/${userDetails.id}`);
-                    } else {
-                      console.error("User details are not available");
-                    }
-=======
           {/* Right Section */}
           <div className="hidden lg:flex flex-1 items-center justify-end">
             {!isAuthenticated ? (
@@ -272,7 +190,6 @@ const Navbar: FC = () => {
                         console.error("User details are not available");
                       }
                     },
->>>>>>> 8bb5b6a956aa5299b86dc5bd0282599971aad5b4
                   },
                   {
                     label: "Logout",
@@ -377,13 +294,15 @@ const Navbar: FC = () => {
         description="Are you sure you want to log out?"
         cancel={() => setIsModalOpen(!isModalOpen)}
         onConfirm={handleLogout}
-        className={`bg-red-600 text-white active:bg-red-700 font-bold uppercase px-4 py-2 cursor-pointer rounded-md shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 transition-all duration-150 ${loading ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+        className={`bg-red-600 text-white active:bg-red-700 font-bold uppercase px-4 py-2 cursor-pointer rounded-md shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 transition-all duration-150 ${
+          loading ? "opacity-50 cursor-not-allowed" : ""
+        }`}
         loading={loading}
         confirmText={
           loading ? (
             <>
-              <FontAwesomeIcon icon={faSpinner} spin className="mr-2" /> Logging out...
+              <FontAwesomeIcon icon={faSpinner} spin className="mr-2" /> Logging
+              out...
             </>
           ) : (
             "Log Out"

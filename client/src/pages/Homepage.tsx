@@ -8,21 +8,12 @@ const Homepage = () => {
   return (
     <section>
       <Hero />
-<<<<<<< HEAD
-      <AboutUs />
-      <Values />
-
-=======
       <AnimatedSection animationDelay={0.2}>
         <AboutUs />
       </AnimatedSection>
       <AnimatedSection animationDelay={0.4}>
         <Values />
       </AnimatedSection>
-      <AnimatedSection animationDelay={0.6}>
-        <RoomFeatures />
-      </AnimatedSection>
->>>>>>> 8bb5b6a956aa5299b86dc5bd0282599971aad5b4
       <Footer />
     </section>
   );
