@@ -48,7 +48,7 @@ class Reservations(models.Model):
     
     class Meta:
         db_table = 'reservations'
-    
+
 class Transactions(models.Model):
     TRANSACTION_TYPE_CHOICES = [
         ('booking', 'Booking'),

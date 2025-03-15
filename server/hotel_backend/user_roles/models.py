@@ -14,3 +14,6 @@ class CustomUsers(AbstractUser):
     )
     is_admin = models.BooleanField(default=False)
     profile_image = CloudinaryField('profile_image', null=True, blank=True)
+    
+    class Meta:
+        db_table = 'users'

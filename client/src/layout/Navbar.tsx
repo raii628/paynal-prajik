@@ -182,7 +182,7 @@ const Navbar: FC = () => {
               <Dropdown
                 options={[
                   {
-                    label: "Accounts",
+                    label: "Account",
                     onClick: () => {
                       if (userDetails && userDetails.id) {
                         navigate(`/guest/${userDetails.id}`);
