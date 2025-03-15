@@ -19,7 +19,7 @@ const Values = () => {
           <h3 className="font-playfair text-xl font-semibold mb-4">
             Hospitality
           </h3>
-          <p className="text-gray-700 max-w-xs">
+          <p className="text-gray-700 max-w-xs font-medium  font-montserrat">
             We welcome every guest with warmth and respect, creating a home away
             from home.
           </p>
@@ -31,7 +31,7 @@ const Values = () => {
             <i className="fa fa-bed relative text-xl"></i>
           </div>
           <h3 className="font-playfair text-xl font-semibold mb-4">Comfort</h3>
-          <p className="text-gray-700 max-w-xs">
+          <p className="text-gray-700 font-medium  font-montserrat max-w-xs">
             Our spaces are designed to offer peace and relaxation, ensuring a
             restful stay.
           </p>
@@ -43,7 +43,7 @@ const Values = () => {
             <i className="fa fa-globe  relative text-xl"></i>
           </div>
           <h3 className="font-playfair text-xl font-semibold mb-4">Culture</h3>
-          <p className="text-gray-700 max-w-xs">
+          <p className="text-gray-700 max-w-xs font-medium  font-montserrat">
             We celebrate diversity and showcase the beauty of our local and
             global traditions.
           </p>

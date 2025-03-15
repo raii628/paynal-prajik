@@ -124,10 +124,11 @@ const Navbar: FC = () => {
       )}
 
       <nav
-        className={`fixed top-0 left-0 w-full px-10 py-4 z-40 transition-all duration-75 ${isScrolled || isBookingPage
+        className={`fixed top-0 left-0 w-full px-10 py-4 z-40 transition-all duration-75 ${
+          isScrolled || isBookingPage
             ? "bg-gray-200 shadow-lg text-black"
             : "bg-transparent text-white"
-          }`}
+        }`}
       >
         <div className="max-w-7xl mx-auto flex items-center">
           {/* Left Section */}
@@ -148,10 +149,11 @@ const Navbar: FC = () => {
                 <SlotNavButton
                   key={index}
                   to={link.link}
-                  className={`${isScrolled || isBookingPage
+                  className={`${
+                    isScrolled || isBookingPage
                       ? "text-black hover:text-purple-600"
                       : "bg-transparent text-white hover:text-purple-600"
-                    }`}
+                  }`}
                 >
                   {link.text}
                 </SlotNavButton>
@@ -292,13 +294,15 @@ const Navbar: FC = () => {
         description="Are you sure you want to log out?"
         cancel={() => setIsModalOpen(!isModalOpen)}
         onConfirm={handleLogout}
-        className={`bg-red-600 text-white active:bg-red-700 font-bold uppercase px-4 py-2 cursor-pointer rounded-md shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 transition-all duration-150 ${loading ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+        className={`bg-red-600 text-white active:bg-red-700 font-bold uppercase px-4 py-2 cursor-pointer rounded-md shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 transition-all duration-150 ${
+          loading ? "opacity-50 cursor-not-allowed" : ""
+        }`}
         loading={loading}
         confirmText={
           loading ? (
             <>
-              <FontAwesomeIcon icon={faSpinner} spin className="mr-2" /> Logging out...
+              <FontAwesomeIcon icon={faSpinner} spin className="mr-2" /> Logging
+              out...
             </>
           ) : (
             "Log Out"
