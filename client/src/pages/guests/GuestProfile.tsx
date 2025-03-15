@@ -167,7 +167,7 @@ const GuestProfile: FC = () => {
                   <p className="text-blue-600">Updating your profile picture...</p>
                 ) : (
                   <>
-                    <input type="file" accept="image/*" onChange={handleFileChange} />
+                    <input type="file" accept="image/*" onChange={handleFileChange} className="cursor-pointer bg-blue-300 p-2 rounded-md" />
                     <button
                       onClick={handleUpload}
                       className="ml-2 px-4 py-2 bg-green-600 text-white rounded cursor-pointer"

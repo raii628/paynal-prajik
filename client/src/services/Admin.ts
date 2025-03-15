@@ -11,3 +11,15 @@ export const fetchAdminProfile = async () => {
         throw error;
     }
 };
+
+export const fetchStats = async () => {
+    try {
+        const response = await ADMIN.get('/stats', {
+            withCredentials: true
+        });
+        return response.data;
+    } catch (error) {
+        console.error(`Failed to fetch stats: ${error}`);
+        throw error;
+    }
+};

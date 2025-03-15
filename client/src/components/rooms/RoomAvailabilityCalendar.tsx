@@ -10,7 +10,7 @@ const RoomAvailabilityCalendar = () => {
   const [departureDate, setDepartureDate] = useState(lastDayOfYear);
 
   return (
-    <div className="bg-[#ffffffe6] px-5 mb-6 sm:mb-15 w-full">
+    <div className="bg-[#ffffffe6] px-5 mb-10 sm:mb-15 w-full shadow-md drop-shadow-md inset-shadow-md">
       <div className="py-3 font-montserrat">
         <div className="flex flex-col justify-around gap-3">
           {/* Header - Hidden on small screens */}
@@ -29,7 +29,7 @@ const RoomAvailabilityCalendar = () => {
             {/* Arrival Date */}
             <div className="flex flex-col min-w-[150px] flex-grow bg-white px-4 py-2">
               <label htmlFor="arrival" className="text-xs tracking-tight mb-1">
-                Arrival Date
+                Arrival Date <span className="text-gray-400">(DD/MM/YY)</span>
               </label>
               <input
                 type="date"
@@ -45,7 +45,7 @@ const RoomAvailabilityCalendar = () => {
                 htmlFor="departure"
                 className="text-xs tracking-tight mb-1"
               >
-                Departure Date
+                Departure Date <span className="text-gray-400">(DD/MM/YY)</span>
               </label>
               <input
                 type="date"

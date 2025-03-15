@@ -1,6 +1,7 @@
 from django.db import models
 from property.models import Rooms, Areas
 from user_roles.models import CustomUsers
+from django.utils.timezone import now
 
 # Create your models here.
 class Bookings(models.Model):
@@ -23,6 +24,9 @@ class Bookings(models.Model):
     cancellation_reason = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'bookings'
 
 class Reservations(models.Model):
     RESERVATION_STATUS_CHOICES = [
@@ -31,8 +35,8 @@ class Reservations(models.Model):
     ]
     user = models.ForeignKey(CustomUsers, on_delete=models.CASCADE, related_name='reservations')
     area = models.ForeignKey(Areas, on_delete=models.CASCADE, related_name='reservations')
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    start_time = models.DateTimeField(default=now)
+    end_time = models.DateTimeField(default=now)
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(
         max_length=20,
@@ -41,6 +45,9 @@ class Reservations(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'reservations'
     
 class Transactions(models.Model):
     TRANSACTION_TYPE_CHOICES = [
@@ -67,6 +74,9 @@ class Transactions(models.Model):
         choices=TRANSACTION_STATUS_CHOICES,
         default='pending',
     )
+    
+    class Meta:
+        db_table = 'transactions'
 
 class Reviews(models.Model):
     booking = models.ForeignKey(Bookings, on_delete=models.CASCADE, related_name='reviews')
@@ -82,3 +92,4 @@ class Reviews(models.Model):
                 name="valid_rating"
             )
         ]
+        db_table = 'reviews'

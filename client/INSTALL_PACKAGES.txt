@@ -16,3 +16,4 @@ remarkable
 @tanstack/react-query
 jwt-decode
 universal-cookie
+chart.js

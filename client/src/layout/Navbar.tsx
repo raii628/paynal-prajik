@@ -11,6 +11,7 @@ import { logout } from "../services/Auth";
 import Dropdown from "../components/Dropdown";
 import { getGuestDetails } from "../services/Guest";
 import DefaultImg from "../assets/Default_pfp.jpg";
+import { useLocation } from "react-router-dom";
 
 const Navbar: FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -19,6 +20,8 @@ const Navbar: FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const location = useLocation();
+  const isBookingPage = location.pathname === "/booking";
 
   const [notification, setNotification] = useState<{
     message: string;
@@ -118,7 +121,7 @@ const Navbar: FC = () => {
       )}
       <nav
         className={`fixed top-0 left-0 w-full px-10 py-4 flex items-center justify-between z-40 transition-all duration-75 ${
-          isScrolled
+          isScrolled || isBookingPage
             ? "bg-gray-200 shadow-lg text-black"
             : "bg-transparent text-white"
         }`}
@@ -298,7 +301,7 @@ const Navbar: FC = () => {
         description="Are you sure you want to log out?"
         cancel={() => setIsModalOpen(!isModalOpen)}
         onConfirm={handleLogout}
-        className={`bg-purple-600 text-white active:bg-purple-700 font-bold uppercase text-sm px-6 py-3 cursor-pointer rounded-md shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 ${
+        className={`bg-red-600 text-white active:bg-red-700 font-bold uppercase px-4 py-2 cursor-pointer rounded-md shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 ${
           loading ? "opacity-50 cursor-not-allowed" : ""
         }`}
         confirmText={loading ? "Logging out..." : "Log Out"}

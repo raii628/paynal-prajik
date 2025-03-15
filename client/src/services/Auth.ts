@@ -136,6 +136,7 @@ export const resetPassword = async (email: string, newPassword: string, confirmP
         }, {
             withCredentials: true
         });
+
         return response;
     } catch (error) {
         console.error(`Failed to reset password: ${error}`);

@@ -1,6 +1,6 @@
 const Values = () => {
   return (
-    <section className="py-16 px-6 sm:px-12 md:px-20 lg:px-32 bg-white text-center">
+    <section className="py-16 px-6 sm:px-12 md:px-20 lg:px-32 bg-gray-50 text-center">
       {/* Section Title */}
       <h2
         className="font-playfair font-bold text-gray-900 mb-12"
@@ -13,8 +13,8 @@ const Values = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
         {/* Hospitality */}
         <div className="flex flex-col items-center text-center">
-          <div className="w-16 h-16 bg-blue-700 text-white flex justify-center items-center rotate-45 mb-6 relative">
-            <i className="fa fa-users -rotate-45 relative text-xl"></i>
+          <div className="w-20 h-20 bg-blue-700 text-white flex justify-center items-center rounded-full mb-6 relative">
+            <i className="fa fa-users relative text-xl"></i>
           </div>
           <h3 className="font-playfair text-xl font-semibold mb-4">
             Hospitality
@@ -27,8 +27,8 @@ const Values = () => {
 
         {/* Comfort */}
         <div className="flex flex-col items-center text-center">
-          <div className="w-16 h-16 bg-blue-700 text-white flex justify-center items-center rotate-45 mb-6 relative">
-            <i className="fa fa-bed -rotate-45 relative text-xl"></i>
+          <div className="w-20 h-20 bg-blue-700 text-white flex justify-center rounded-full items-center mb-6 relative">
+            <i className="fa fa-bed relative text-xl"></i>
           </div>
           <h3 className="font-playfair text-xl font-semibold mb-4">Comfort</h3>
           <p className="text-gray-700 max-w-xs">
@@ -39,8 +39,8 @@ const Values = () => {
 
         {/* Culture */}
         <div className="flex flex-col items-center text-center">
-          <div className="w-16 h-16 bg-blue-700 text-white flex justify-center items-center rotate-45 mb-6 relative">
-            <i className="fa fa-globe -rotate-45 relative text-xl"></i>
+          <div className="w-20 h-20 bg-blue-700 text-white flex justify-center items-center rounded-full mb-6 relative">
+            <i className="fa fa-globe  relative text-xl"></i>
           </div>
           <h3 className="font-playfair text-xl font-semibold mb-4">Culture</h3>
           <p className="text-gray-700 max-w-xs">
