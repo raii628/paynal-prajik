@@ -10,8 +10,8 @@ import {
 } from "chart.js";
 import { Bar, Doughnut } from "react-chartjs-2";
 import StatCard from "../../components/admin/StatCard";
+import DashboardSkeleton from "../../motions/skeletons/AdminDashboardSkeleton";
 import { fetchStats } from "../../services/Admin";
-import DashboardSkeleton from "../../motions/DashboardSkeleton";
 import Error from "../_ErrorBoundary";
 
 Chart.register(BarElement, ArcElement, Tooltip, Legend, CategoryScale, LinearScale);

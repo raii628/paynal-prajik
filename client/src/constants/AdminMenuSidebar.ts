@@ -1,6 +1,6 @@
 import { 
   faGauge, 
-  faCalendarCheck, 
+  // faCalendarCheck, 
   faBed, 
   faUsers, 
   faMapMarkerAlt,
@@ -15,11 +15,11 @@ export const menuItems = [
     label: "Dashboard",
     link: '/admin'
   },
-  { 
-    icon: faCalendarCheck, 
-    label: "Guest Reservations",
-    link: '/admin/reservations'
-  },
+  // { 
+  //   icon: faCalendarCheck, 
+  //   label: "Guest Reservations",
+  //   link: '/admin/reservations'
+  // },
   { 
     icon: faBed,
     label: "Manage Rooms",

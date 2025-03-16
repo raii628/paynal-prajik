@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import DashboardSkeleton from "../../motions/skeletons/AdminDashboardSkeleton";
 import { fetchReservations } from "../../services/Booking";
-import DashboardSkeleton from "../../motions/DashboardSkeleton";
 import Error from "../_ErrorBoundary";
 
 const AreaReservations = () => {

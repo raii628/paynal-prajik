@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useQuery } from "@tanstack/react-query"
-import { useState } from "react"
-import { manageUsers } from "../../services/Admin"
-import DashboardSkeleton from "../../motions/DashboardSkeleton";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import DefaultImg from "../../assets/Default_pfp.jpg";
+import DashboardSkeleton from "../../motions/skeletons/AdminDashboardSkeleton";
+import { manageUsers } from "../../services/Admin";
 import Error from "../_ErrorBoundary";
 
 const ManageUsers = () => {
@@ -64,7 +65,7 @@ const ManageUsers = () => {
         </div>
       ) : (
         <div className="overflow-x-auto">
-          <table className="w-full border-collapse border border-gray-300">
+          <table className="w-full border-collapse table-fixed border-gray-300">
             <thead>
               <tr className="bg-gray-100">
                 <th className="border p-2">Profile</th>
@@ -82,8 +83,8 @@ const ManageUsers = () => {
                 <tr key={user.id} className="border">
                   <td className="p-2 text-center">
                     <img
-                      src={user.profile_image}
-                      alt="Profile"
+                      src={user.profile_image || DefaultImg}
+                      alt={user.profile_image}
                       className="w-20 h-20 object-cover rounded-full mx-auto"
                     />
                   </td>

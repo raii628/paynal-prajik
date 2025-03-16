@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react"
-import { useQuery } from "@tanstack/react-query"
-import { motion } from "framer-motion"
+import { useQuery } from "@tanstack/react-query";
+import { motion } from "framer-motion";
+import { useState } from "react";
 import { fetchReservations } from "../../services/Booking";
-import DashboardSkeleton from "../../motions/DashboardSkeleton";
 import Error from "../_ErrorBoundary";
+import GuestReservationSkeleton from "../../motions/skeletons/GuestDetailSkeleton";
 
 const GuestReservation = () => {
   const { data, isLoading, error } = useQuery({
@@ -14,7 +14,7 @@ const GuestReservation = () => {
   const [search, setSearch] = useState<string>('');
   const [filter, setFilter] = useState<string>('All');
 
-  if (isLoading) return <DashboardSkeleton />;
+  if (isLoading) return <GuestReservationSkeleton />;
   if (error) return <Error />;
 
   const reservationsArray = Array.isArray(data) ? data : [];

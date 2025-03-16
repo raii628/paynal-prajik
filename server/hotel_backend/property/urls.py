@@ -3,5 +3,5 @@ from . import views
 
 # /property/** routes
 urlpatterns = [
-    
+    path('rooms/', views.fetch_rooms, name='fetch_rooms'),
 ]

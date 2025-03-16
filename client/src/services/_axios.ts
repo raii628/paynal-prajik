@@ -32,7 +32,7 @@ export const booking = axios.create({
 });
 
 export const room = axios.create({
-    baseURL: `${import.meta.env.VITE_API_URL}/room`,
+    baseURL: `${import.meta.env.VITE_API_URL}/property`,
     headers: {
         'Content-Type': 'application/json',
     },

@@ -1,7 +1,7 @@
 import React, { Suspense, useState, useEffect, FC } from "react";
 import { fetchAdminProfile } from "../../services/Admin";
 import { menuItems } from "../../constants/AdminMenuSidebar";
-import AdminDetailSkeleton from "../../motions/AdminDetailSkeleton";
+import AdminDetailSkeleton from "../../motions/skeletons/AdminDetailSkeleton";
 import { useUserContext } from "../../contexts/AuthContext";
 import Modal from "../../components/Modal";
 import { logout } from "../../services/Auth";
