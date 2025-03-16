@@ -31,7 +31,7 @@ const ReservationHero = () => {
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
+          transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
           className="text-white mt-4 [font-size:clamp(0.9rem,2.5vw,1.2rem)] max-w-3xl leading-relaxed drop-shadow-sm font-montserrat"
         >
           Make every occasion special with our exclusive area reservations.

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useState, useContext, ReactNode, FC, useEffect } from "react";
-import { API } from "../services/_axios";
+import { authenticateUser } from "../services/Auth";
 
 interface UserDetails {
     id: number;
@@ -37,7 +37,7 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const res = await API.get("/auth/user", { withCredentials: true });
+                const res = await authenticateUser();
                 setIsAuthenticated(true);
                 setUserDetails(res.data.user);
                 setProfileImage(res.data.user.profile_image || "");

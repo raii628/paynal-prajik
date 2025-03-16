@@ -22,3 +22,4 @@ lucide-react
 gsap
 locomotive-scroll
 swiper
+@mui/material @emotion/react @emotion/styled

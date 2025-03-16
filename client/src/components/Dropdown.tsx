@@ -1,9 +1,10 @@
-import { useState, useRef, useEffect, FC } from "react";
+import { useState, useRef, useEffect, FC, ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface DropdownItem {
     label: string;
     onClick: () => void;
+    icon?: ReactNode;
 }
 
 interface CustomDropdownProps {
@@ -75,9 +76,9 @@ const Dropdown: FC<CustomDropdownProps> = ({
                                         setIsOpen(false);
                                         item.onClick();
                                     }}
-                                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    className="w-full text-left px-4 py-2 text-base text-gray-700 hover:bg-gray-100"
                                 >
-                                    {item.label}
+                                    {item.icon} {item.label}
                                 </button>
                             ))}
                         </div>

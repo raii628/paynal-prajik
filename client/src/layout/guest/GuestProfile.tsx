@@ -5,8 +5,8 @@ import { ChangeEvent, FC } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useUserContext } from "../../contexts/AuthContext";
 import LoadingHydrate from "../../motions/LoadingHydrate";
+import Error from "../../pages/_ErrorBoundary";
 import { getGuestDetails, updateProfileImage } from "../../services/Guest";
-import Error from "../_ErrorBoundary";
 
 const GuestProfile: FC = () => {
   const { id } = useParams<{ id: string }>();

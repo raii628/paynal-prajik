@@ -183,8 +183,9 @@ def complete_registration(request):
         first_name = request.data.get("first_name")
         last_name = request.data.get("last_name")
         age = request.data.get("age")
+        gender = request.data.get("gender")
         
-        if not email or not password or not first_name or not last_name or not age:
+        if not email or not password or not first_name or not last_name or not age or not gender:
             return Response({
                 "error": "Please fill out the fields"
             }, status=status.HTTP_400_BAD_REQUEST)
@@ -210,6 +211,7 @@ def complete_registration(request):
             first_name=first_name,
             last_name=last_name,
             age=age,
+            gender=gender,
             is_admin=False,
             profile_image=DEFAULT_PROFILE_IMAGE
         )

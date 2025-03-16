@@ -60,7 +60,6 @@ const ManageRooms = () => {
 
   return (
     <div className="p-6">
-      {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
         <h1 className="text-3xl font-semibold mb-4 md:mb-0">Manage Rooms</h1>
         <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">

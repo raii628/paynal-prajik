@@ -72,6 +72,7 @@ const ManageUsers = () => {
                 <th className="border p-2">Last Name</th>
                 <th className="border p-2">Email</th>
                 <th className="border p-2">Age</th>
+                <th className="border p-2">Gender</th>
                 <th className="border p-2">Guest Type</th>
                 <th className="border p-2">Actions</th>
               </tr>
@@ -90,7 +91,8 @@ const ManageUsers = () => {
                   <td className="p-2 text-center">{user.last_name}</td>
                   <td className="p-2 text-center">{user.email}</td>
                   <td className="p-2 text-center">{user.age}</td>
-                  <td className="p-2 text-center capitalize">{user.guest_type}</td>
+                  <td className="p-2 text-center">{user.gender}</td>
+                  <td className="p-2 text-center font-semibold uppercase">{user.guest_type}</td>
                   <td className="p-2 text-center">
                     <button className="bg-blue-500 text-white px-3 py-1 rounded mr-2">
                       Edit

@@ -64,14 +64,15 @@ export const verifyOtp = async (email: string, password: string, otp: string) =>
     }
 };
 
-export const completeRegistration = async (email: string, password: string, first_name: string, last_name: string, age: string) => {
+export const completeRegistration = async (email: string, password: string, first_name: string, last_name: string, age: string, gender: string) => {
     try {
         const response = await API.post('/auth/complete_reg', {
             email: email,
             password: password,
             first_name: first_name,
             last_name: last_name,
-            age: age
+            age: age,
+            gender: gender
         }, {
             withCredentials: true
         });
