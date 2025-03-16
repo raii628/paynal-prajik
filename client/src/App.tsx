@@ -23,9 +23,10 @@ import Reports from "./pages/admin/Reports";
 import RegistrationFlow from "./pages/RegistrationFlow";
 import Gallery from "./pages/Gallery";
 import GuestProfile from "./pages/guests/GuestProfile";
-import Booking from "./pages/Booking";
+import Availability from "./pages/Availability";
 import ScrollToTop from "./components/ScrollToTop";
-import Reservations from "./pages/Reservations";
+import Venue from "./pages/Venue";
+import Booking from "./pages/Booking";
 
 const App = () => {
   const { isAuthenticated, role, loading } = useUserContext();
@@ -54,9 +55,9 @@ const App = () => {
         <Route path="/guest/:id" element={<GuestProfile />} />
         <Route path="/registration" element={<RegistrationFlow />} />
         <Route path="/about" element={<About />} />
-        <Route path="/reservation" element={<Reservations />} />
+        <Route path="/venues" element={<Venue />} />
         <Route path="/rooms" element={<Rooms />} />
-        <Route path="/booking" element={<Booking />} />
+        <Route path="/availability" element={<Availability />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
         {/* Protected admin routes */}
