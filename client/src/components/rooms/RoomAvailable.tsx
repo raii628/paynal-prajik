@@ -5,6 +5,7 @@ const RoomAvailable = ({
   capacity,
   price,
   availableRooms,
+  onBookNow, // Function passed from parent
 }) => {
   const soldOut = availableRooms <= 0;
 
@@ -26,12 +27,11 @@ const RoomAvailable = ({
             <i className="fas fa-bed"></i> {bedType}
           </span>
           <span className="flex items-center gap-1">
-            <i className="fas fa-users"></i> {capacity}{" "}
-            {capacity > 1 ? "pax" : "pax"}
+            <i className="fas fa-users"></i> {capacity} pax
           </span>
         </div>
 
-        {/* Availability (Separate Row) */}
+        {/* Availability */}
         <div
           className={`flex items-center gap-2 ${
             soldOut ? "text-red-500" : "text-green-600"
@@ -49,13 +49,11 @@ const RoomAvailable = ({
 
         {/* Price and Button */}
         <div className="flex justify-between items-center mt-2">
-          {/* Price */}
           <div className="text-lg font-bold text-gray-900 font-montserrat">
             ₱{price.toLocaleString()}
           </div>
-
-          {/* Book Now Button */}
           <button
+            onClick={onBookNow}
             className={`px-4 py-2 rounded-lg text-white font-semibold font-montserrat ${
               soldOut
                 ? "bg-gray-400 cursor-not-allowed"

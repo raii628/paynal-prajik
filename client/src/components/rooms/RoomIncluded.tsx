@@ -1,6 +1,5 @@
 const RoomIncluded = () => {
   const features = [
-    "Private Balcony",
     "Large Bathroom",
     "Fast WiFi",
     "Soft and Clean Bed Sheets",
@@ -9,7 +8,6 @@ const RoomIncluded = () => {
     "Coffee Machine",
     "24/7 Room Service",
     "Free Breakfast",
-    "Wake-up Call Service",
     "Bathrobes and Slippers",
     "Free Toiletries",
     "Work Desk",

@@ -1,11 +1,11 @@
-import AreaCard from "./AreaCard";
 import emerald_hall from "../../assets/emerald_hall.webp";
 import grand_ballroom from "../../assets/grand_ballroom.avif";
 import ruby_lounge from "../../assets/ruby_lounge.jpg";
 import conference_hall from "../../assets/conference_hall.webp";
 import rooftop_garden from "../../assets/rooftop_garden.jpg";
+import VenueCard from "./VenueCard";
 
-const AreaReservationList = () => {
+const VenueList = () => {
   const areas = [
     {
       title: "Grand Ballroom",
@@ -101,10 +101,10 @@ const AreaReservationList = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
       {areas.map((area, index) => (
-        <AreaCard key={index} {...area} />
+        <VenueCard key={index} {...area} />
       ))}
     </div>
   );
 };
 
-export default AreaReservationList;
+export default VenueList;
