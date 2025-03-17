@@ -26,7 +26,6 @@ import GuestProfile from "./pages/guests/GuestProfile";
 import Availability from "./pages/Availability";
 import ScrollToTop from "./components/ScrollToTop";
 import Venue from "./pages/Venue";
-import Booking from "./pages/Booking";
 
 const App = () => {
   const { isAuthenticated, role, loading } = useUserContext();
