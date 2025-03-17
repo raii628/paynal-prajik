@@ -24,6 +24,7 @@ const Navbar: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const location = useLocation();
+  const isAvailabilityPage = location.pathname === "/availability";
   const isBookingPage = location.pathname === "/booking";
 
   const [notification, setNotification] = useState<{
@@ -125,7 +126,7 @@ const Navbar: FC = () => {
 
       <nav
         className={`fixed top-0 left-0 w-full px-10 py-4 z-40 transition-all duration-75 ${
-          isScrolled || isBookingPage
+          isScrolled || isAvailabilityPage
             ? "bg-gray-200 shadow-lg text-black"
             : "bg-transparent text-white"
         }`}
@@ -150,7 +151,7 @@ const Navbar: FC = () => {
                   key={index}
                   to={link.link}
                   className={`${
-                    isScrolled || isBookingPage
+                    isScrolled || isAvailabilityPage || isBookingPage
                       ? "text-black hover:text-purple-600"
                       : "bg-transparent text-white hover:text-purple-600"
                   }`}
@@ -235,26 +236,26 @@ const Navbar: FC = () => {
             className="fixed inset-0 bg-black/30 z-40"
             onClick={() => setMenuOpen(false)}
           ></div>
-          <ul className="fixed top-0 right-0 w-4/5 h-screen bg-white shadow-md text-black z-50 flex flex-col">
-            <div className="flex justify-between items-center p-4 bg-gray-200">
+          <ul className="fixed top-0 right-0 w-full h-screen md:w-3/5 sm:w-4/5 bg-white shadow-md text-black z-50 flex flex-col">
+            <div className="flex justify-between items-center p-3.75 sm:p-5.25 md:p-5.25 bg-gray-200">
               <Link to="/">
                 <img
                   src={hotelLogo}
                   alt="Hotel Logo"
-                  className="h-12 w-auto cursor-pointer"
+                  className="h-9 w-auto cursor-pointer block sm:hidden md:hidden"
                 />
               </Link>
               <button onClick={() => setMenuOpen(false)}>
-                <i className="fa fa-times text-2xl"></i>
+                <i className="fa fa-times text-2xl mr-6"></i>
               </button>
             </div>
-            <li className="p-4 border-b text-black/70">
+            <li className="p-4 text-black/70">
               <i className="fa fa-bars text-black/70 mr-3"></i> Navigation
             </li>
             {navLinks.map((link, index) => (
               <li
                 key={index}
-                className="p-4 border-b hover:bg-blue-200 hover:text-blue-700 cursor-pointer"
+                className="p-4 mx-7 hover:bg-blue-200 hover:text-blue-700 rounded-md cursor-pointer"
                 onClick={() => setMenuOpen(false)}
               >
                 <Link to={link.link} className="flex items-center">
@@ -263,16 +264,16 @@ const Navbar: FC = () => {
               </li>
             ))}
             <li
-              className="p-4 hover:bg-blue-200 hover:text-blue-700 cursor-pointer"
+              className="p-4 border-t-2 mt-3 mx-7 border-gray-200 hover:bg-blue-200 hover:text-blue-700 rounded-md cursor-pointer"
               onClick={toggleLoginModal}
             >
               <i className="fa-regular fa-user mr-3"></i> Login
             </li>
             <li
-              className="p-4 hover:bg-blue-200 hover:text-blue-700 cursor-pointer"
+              className="p-4 mx-7 hover:bg-blue-200 hover:text-blue-700 rounded-md cursor-pointer"
               onClick={toggleRegisterModal}
             >
-              <i className="fa fa-user-plus mr-3"></i> Sign Up
+              <i className="fa fa-user-plus mr-1"></i> Sign Up
             </li>
           </ul>
         </div>

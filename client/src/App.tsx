@@ -18,14 +18,14 @@ import ManageRooms from "./pages/admin/ManageRooms";
 import ManageUsers from "./pages/admin/ManageUsers";
 import Reports from "./pages/admin/Reports";
 import UserStats from "./pages/admin/UserStats";
-import Booking from "./pages/Booking";
 import ForgotPassword from "./pages/ForgotPassword";
 import Gallery from "./pages/Gallery";
 import Homepage from "./pages/Homepage";
 import RegistrationFlow from "./pages/RegistrationFlow";
-import Reservations from "./pages/Reservations";
 import Rooms from "./pages/Rooms";
 import ManageAreas from "./pages/admin/ManageAreas";
+import Availability from "./pages/Availability";
+import Venue from "./pages/Venue";
 
 const App = () => {
   const { isAuthenticated, role, loading } = useUserContext();
@@ -54,9 +54,9 @@ const App = () => {
         <Route path="/guest/:id" element={<GuestProfile />} />
         <Route path="/registration" element={<RegistrationFlow />} />
         <Route path="/about" element={<About />} />
-        <Route path="/reservation" element={<Reservations />} />
+        <Route path="/venues" element={<Venue />} />
         <Route path="/rooms" element={<Rooms />} />
-        <Route path="/booking" element={<Booking />} />
+        <Route path="/availability" element={<Availability />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
         {/* Protected admin routes */}
