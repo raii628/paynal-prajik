@@ -2,12 +2,11 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .models import RoomTypes, Rooms, Areas
-from .serializers import RoomTypeSerializer, RoomSerializer, AreaSerializer
+from .models import Rooms
+from .serializers import RoomSerializer
 
 # Create your views here.
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def fetch_rooms(request):
     try:
         rooms = Rooms.objects.all()

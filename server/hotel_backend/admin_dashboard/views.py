@@ -8,6 +8,9 @@ from rest_framework.permissions import IsAuthenticated
 from booking.models import *
 from user_roles.serializers import CustomUserSerializer
 from user_roles.models import CustomUsers
+from property.models import Rooms
+from property.serializers import RoomSerializer
+from property.utils import generate_room_number
 
 # Create your views here.
 @api_view(['GET'])
@@ -64,6 +67,51 @@ def area_reservations(request):
         return Response({
             "data": data
         }, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def fetch_rooms(request):
+    try:
+        rooms = Rooms.objects.all()
+        serializer = RoomSerializer(rooms, many=True)
+        return Response({
+            "data": serializer.data
+        }, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_new_room(request):
+    try:
+        serializer = RoomSerializer(data=request.data)
+        if serializer.is_valid():
+            instance = serializer.save(room_number=generate_room_number())
+            data = RoomSerializer(instance).data
+            return Response({
+                "message": "Room added successfully",
+                "data": data
+            }, status=status.HTTP_201_CREATED)
+        else:
+            return Response({
+                "error": serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_room(request, room_id):
+    try:
+        room = Rooms.objects.get(id=room_id)
+        room.delete()
+        return Response({
+            "message": "Room deleted successfully"
+        }, status=status.HTTP_200_OK)
+    except Rooms.DoesNotExist:
+        return Response({"error": "Room not found"}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 

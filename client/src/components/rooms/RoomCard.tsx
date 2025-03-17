@@ -1,5 +1,16 @@
+import { FC } from "react";
 import { Link } from "react-router-dom";
-const RoomCard = ({ image, title, description, bedType, capacity, price }) => {
+
+interface RoomCardProps {
+  image: string;
+  title: string;
+  description: string;
+  bedType: string;
+  capacity: number;
+  price: number;
+}
+
+const RoomCard: FC<RoomCardProps> = ({ image, title, description, bedType, capacity, price }) => {
   return (
     <div className=" rounded-lg overflow-hidden shadow-sm bg-white flex flex-col">
       <img src={image} alt={title} className="h-48 w-full object-cover" />

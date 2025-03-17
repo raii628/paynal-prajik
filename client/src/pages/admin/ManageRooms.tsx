@@ -1,122 +1,223 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { fetchAllRooms } from '../../services/Room';
+import { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { fetchRooms, addNewRoom, deleteRoom } from "../../services/Admin";
+import EditRoomModal, { IRoom } from "../../components/admin/EditRoomModal";
+import Modal from "../../components/Modal";
 
-const ManageRooms = () => {
-  const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [typeFilter, setTypeFilter] = useState('all');
+interface AddRoomResponse {
+  data: any;
+}
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['rooms'], 
-    queryFn: fetchAllRooms,
+const ManageRooms: React.FC = () => {
+  const [showFormModal, setShowFormModal] = useState(false);
+  const [editRoom, setEditRoom] = useState<IRoom | null>(null);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [deleteRoomId, setDeleteRoomId] = useState<number | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const queryClient = useQueryClient();
+
+  const {
+    data: roomsData,
+    isLoading,
+    isError,
+  } = useQuery<{ data: any[] }>({
+    queryKey: ["rooms"],
+    queryFn: fetchRooms,
   });
 
-  if (isLoading) {
-    return <div>Loading rooms...</div>;
-  }
-
-  if (error) {
-    return <div>Error fetching rooms.</div>;
-  }
-
-  const roomsArray = Array.isArray(data?.data) ? data.data : [];
-
-  const filteredRooms = roomsArray.filter((room: any) => {
-    const matchesSearch =
-      room.room_number.includes(search) ||
-      room.room_type.toLowerCase().includes(search.toLowerCase());
-    const matchesStatus = statusFilter === 'all' ? true : room.status === statusFilter;
-    const matchesType = typeFilter === 'all' ? true : room.room_type.toString() === typeFilter;
-    return matchesSearch && matchesStatus && matchesType;
+  const addRoomMutation = useMutation<AddRoomResponse, unknown, FormData>({
+    mutationFn: addNewRoom,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["rooms"] });
+      setShowFormModal(false);
+    },
   });
+
+  const deleteRoomMutation = useMutation<any, unknown, number>({
+    mutationFn: deleteRoom,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["rooms"] });
+      setShowModal(false);
+    },
+  });
+  
+
+  const handleAddNew = () => {
+    setEditRoom(null);
+    setShowFormModal(true);
+  };
+
+  const handleEdit = (room: any) => {
+    setEditRoom({
+      id: room.id,
+      roomImage: typeof room.room_image === "string" ? room.room_image : room.room_price,
+      roomAdmission: room.admission === "vip" ? "VIP" : "Regular",
+      roomNumber: room.room_number,
+      status:
+        room.status === "maintenance"
+          ? "Maintenance"
+          : room.status === "occupied"
+            ? "Occupied"
+            : "Available",
+      roomPrice: room.room_price,
+      description: room.description,
+      bedSize: room.bed_size,
+      pax: room.pax,
+    });
+    setShowFormModal(true);
+  };
+
+  const handleDelete = (roomId: number) => {
+    setLoading(false);
+    setDeleteRoomId(roomId);
+    setShowModal(true);
+  };
+
+  const confirmDelete = () => {
+    if (deleteRoomId != null) {
+      deleteRoomMutation.mutate(deleteRoomId);
+    }
+    setLoading(false);
+  };
+
+  const cancelDelete = () => {
+    setDeleteRoomId(null);
+    setShowModal(false);
+  };
+
+  const handleSave = (roomData: IRoom) => {
+    if (!roomData.id) {
+      if (roomData.roomImage instanceof File) {
+        const formData = new FormData();
+        formData.append(
+          "admission",
+          roomData.roomAdmission === "VIP" ? "vip" : "regular"
+        );
+        formData.append("room_type", "Deluxe");
+        formData.append("status", roomData.status?.toLowerCase() || "available");
+        formData.append("room_price", String(roomData.roomPrice || 0));
+        formData.append("description", roomData.description || "");
+        formData.append("bed_size", roomData.bedSize || "");
+        formData.append("pax", String(roomData.pax || 1));
+        formData.append("room_image", roomData.roomImage);
+
+        addRoomMutation.mutate(formData);
+      } else {
+        const formData = new FormData();
+        formData.append(
+          "admission",
+          roomData.roomAdmission === "VIP" ? "vip" : "regular"
+        );
+        formData.append("room_type", "Deluxe");
+        formData.append("status", roomData.status?.toLowerCase() || "available");
+        formData.append("room_price", String(roomData.roomPrice || 0));
+        formData.append("description", roomData.description || "");
+        formData.append("bed_size", roomData.bedSize || "");
+        formData.append("pax", String(roomData.pax || 1));
+        formData.append("room_image", roomData.roomImage || "");
+        addRoomMutation.mutate(formData);
+      }
+    } else {
+      alert("Update functionality not implemented yet!");
+    }
+  };
+
+  if (isLoading) return <div>Loading rooms...</div>;
+  if (isError) return <div>Error fetching rooms!</div>;
+
+  const rooms = roomsData?.data || [];
 
   return (
     <div className="p-6">
-      <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-        <h1 className="text-3xl font-semibold mb-4 md:mb-0">Manage Rooms</h1>
-        <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
-          Add New Room
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold text-gray-700">Manage Rooms</h1>
+        <button
+          onClick={handleAddNew}
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          + Add New Room
         </button>
       </div>
 
-      {/* Search & Filter Bar */}
-      <div className="flex flex-col md:flex-row gap-4 mb-6">
-        <input
-          type="text"
-          placeholder="Search by Room Number or Type"
-          className="p-2 border rounded w-full md:w-1/3"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+      {/* Room Cards (Responsive Grid) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {rooms.map((room: any) => (
+          <div
+            key={room.id}
+            className="bg-white shadow-md rounded overflow-hidden flex flex-col h-[480px]"
+          >
+            {/* Image */}
+            <img
+              src={room.room_image}
+              alt="Room"
+              className="w-full h-36 object-cover"
+            />
+
+            {/* Card Content */}
+            <div className="p-4 flex flex-col flex-grow">
+              <h2 className="text-lg font-semibold mb-1">
+                {room.bed_size} - {room.room_number}
+              </h2>
+              <p className="text-gray-500 text-sm mb-2">
+                Admission:{" "}
+                <span className="font-medium">
+                  {room.admission === "vip" ? "VIP" : "Regular"}
+                </span>
+              </p>
+              <p className="text-gray-500 text-sm mb-2">
+                Status: <span className="font-medium">{room.status}</span>
+              </p>
+              <p className="text-gray-500 text-sm mb-2">
+                Price: ₱ {room.room_price?.toLocaleString()}
+              </p>
+              <p className="text-gray-500 text-sm mb-2">
+                Pax: <span className="font-medium">{room.pax}</span>
+              </p>
+              <p className="text-gray-500 text-sm flex-grow overflow-hidden">
+                {room.description}
+              </p>
+
+              {/* Action Buttons */}
+              <div className="flex justify-end mt-4 space-x-2">
+                <button
+                  onClick={() => handleEdit(room)}
+                  className="px-3 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(room.id)}
+                  className="px-3 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Modal for Add/Edit Room */}
+      {showFormModal && (
+        <EditRoomModal
+          onClose={() => setShowFormModal(false)}
+          onSave={handleSave}
+          roomData={editRoom}
         />
-        <select
-          className="p-2 border rounded w-full md:w-1/3"
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-        >
-          <option value="all">All Statuses</option>
-          <option value="available">Available</option>
-          <option value="occupied">Occupied</option>
-          <option value="maintenance">Maintenance</option>
-        </select>
-        <select
-          className="p-2 border rounded w-full md:w-1/3"
-          value={typeFilter}
-          onChange={(e) => setTypeFilter(e.target.value)}
-        >
-          <option value="all">All Room Types</option>
-          <option value="Standard Room">Standard Room</option>
-          <option value="Deluxe Room">Deluxe Room</option>
-          <option value="Executive Suite">Executive Suite</option>
-          <option value="Presidential Suite">Presidential Suite</option>
-        </select>
-      </div>
+      )}
 
-      {/* Rooms Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse table-fixed">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="border p-2 text-left">Room Number</th>
-              <th className="border p-2 text-left">Room Type</th>
-              <th className="border p-2 text-left">Status</th>
-              <th className="border p-2 text-left">Amenities</th>
-              <th className="border p-2 text-left">Price ($)</th>
-              <th className="border p-2 text-left">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredRooms.map((room: any) => (
-              <tr key={room.id} className="hover:bg-gray-50">
-                <td className="border p-2">{room.room_number}</td>
-                <td className="border p-2">{room.room_type}</td>
-                <td className="border p-2 capitalize">{room.status}</td>
-                <td className="border p-2">{room.amenities ? room.amenities.join(", ") : 'N/A'}</td>
-                <td className="border p-2">$ {parseFloat(room.price).toFixed(2)}</td>
-                <td className="border p-2 space-x-2">
-                  <button className="bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded">
-                    Edit
-                  </button>
-                  <button className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded">
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="flex justify-center items-center mt-6 space-x-2">
-        <button className="px-3 py-1 bg-gray-200 rounded-l hover:bg-gray-300">
-          Previous
-        </button>
-        <span className="px-3 py-1 bg-gray-100">1</span>
-        <button className="px-3 py-1 bg-gray-200 rounded-r hover:bg-gray-300">
-          Next
-        </button>
-      </div>
+      {/* Confirmation Modal for Delete */}
+      <Modal
+        title="Delete Room?"
+        description="Are you sure you want to delete this room?"
+        cancel={cancelDelete}
+        onConfirm={confirmDelete}
+        className="px-4 py-2 bg-red-600 text-white rounded-md uppercase font-bold hover:bg-red-700 transition-all duration-300"
+        confirmText={loading ? "Deleting..." : "Yes, Delete"}
+        cancelText="No"
+        isOpen={showModal}
+      />
     </div>
   );
 };

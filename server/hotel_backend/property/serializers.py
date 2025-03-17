@@ -1,45 +1,35 @@
 from rest_framework import serializers
-from .models import RoomTypes, Amenities, RoomTypeAmenities, Rooms, Areas, RoomTypePrices
-from django.utils import timezone
+from .models import Amenities, Rooms, Areas
+from cloudinary.utils import cloudinary_url # type: ignore
 
 class AmenitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Amenities
         fields = '__all__'
 
-class RoomTypeAmenitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = RoomTypeAmenities
-        fields = '__all__'
-        
-class RoomPriceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = RoomTypePrices
-        fields = '__all__'
-
-class RoomTypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = RoomTypes
-        fields = '__all__'
-
 class RoomSerializer(serializers.ModelSerializer):
-    price = serializers.SerializerMethodField()
-    amenities = serializers.SerializerMethodField()
+    room_image = serializers.SerializerMethodField()
     
     class Meta:
         model = Rooms
-        fields = '__all__'
-    
-    def get_price(self, obj):
-        today = timezone.now().date()
-        prices = obj.room_type.prices.filter(valid_from__lte=today).order_by('-valid_from')
-        if prices.exists():
-            return prices.first().price
-        return obj.room_type.base_price
-
-    def get_amenities(self, obj):
-        room_type_amenities = obj.room_type.amenities.all()
-        return [rta.amenity.name for rta in room_type_amenities]
+        fields = [
+            'id',
+            'admission',
+            'room_number',
+            'room_type',
+            'status',
+            'room_price',
+            'room_image',
+            'description',
+            'bed_size',
+            'pax',
+        ]
+        read_only_fields = ['room_number']
+        
+    def get_room_image(self, obj):
+        if obj.room_image:
+            return cloudinary_url(obj.room_image.public_id)[0]
+        return None
 
 class AreaSerializer(serializers.ModelSerializer):
     class Meta:
