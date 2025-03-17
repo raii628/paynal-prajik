@@ -34,6 +34,21 @@ const RoomList: FC = () => {
   });
 
   useEffect(() => {
+    gsap.fromTo(
+      cardRefs.current,
+      { opacity: 0, y: 50 },
+      {
+        opacity: 1,
+        y: 0,
+        stagger: 0.2,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 80%",
+        },
+      }
+    );
+  }, []);
     if (!isLoading && data?.data) {
       gsap.fromTo(
         cardRefs.current,
