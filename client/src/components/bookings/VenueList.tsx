@@ -1,4 +1,3 @@
-import AreaCard from "./AreaCard";
 import emerald_hall from "../../assets/emerald_hall.webp";
 import grand_ballroom from "../../assets/grand_ballroom.avif";
 import ruby_lounge from "../../assets/ruby_lounge.jpg";
@@ -6,8 +5,9 @@ import conference_hall from "../../assets/conference_hall.webp";
 import rooftop_garden from "../../assets/rooftop_garden.jpg";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import VenueCard from "./VenueCard";
 
-const AreaReservationList = () => {
+const VenueList = () => {
   const areas = [
     {
       title: "Grand Ballroom",
@@ -66,29 +66,31 @@ const AreaReservationList = () => {
   const [selectedArea, setSelectedArea] = useState<number | null>(null);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1 }}
-      className="container mx-auto p-6"
-    >
-      <h2 className="text-center text-3xl sm:text-4xl font-bold text-gray-800 mb-8">
-        Select Your Perfect Event Space
-      </h2>
+    <>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+        className="container mx-auto p-6"
+      >
+        <h2 className="text-center text-3xl sm:text-4xl font-bold text-gray-800 mb-8">
+          Select Your Perfect Event Space
+        </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {areas.map((area, index) => (
-          <div
-            key={index}
-            className="cursor-pointer"
-            onClick={() => setSelectedArea(selectedArea === index ? null : index)}
-          >
-            <AreaCard {...area} />
-          </div>
-        ))}
-      </div>
-    </motion.div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {areas.map((area, index) => (
+            <div
+              key={index}
+              className="cursor-pointer"
+              onClick={() => setSelectedArea(selectedArea === index ? null : index)}
+            >
+              <VenueCard {...area} />
+            </div>
+          ))}
+        </div>
+      </motion.div>
+    </>
   );
 };
 
-export default AreaReservationList;
+export default VenueList;

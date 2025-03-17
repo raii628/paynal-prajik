@@ -18,6 +18,7 @@ CREATE TABLE rooms (
     room_type_id INT NOT NULL,
     status ENUM('available', 'occupied', 'maintenance') DEFAULT 'available',
     notes TEXT,
+    room_image VARCHAR(255),
     FOREIGN KEY (room_type_id) REFERENCES room_types(id)
 );
 
@@ -53,6 +54,7 @@ CREATE TABLE areas (
     description TEXT,
     capacity INT NOT NULL,
     price_per_hour DECIMAL(10, 2) NOT NULL,
+    area_image VARCHAR(255),
     status ENUM('available', 'occupied', 'maintenance') DEFAULT 'available'
 );
 

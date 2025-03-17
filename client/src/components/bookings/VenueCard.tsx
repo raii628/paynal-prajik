@@ -16,7 +16,7 @@ interface AreaCardProps {
 
 const MAX_DESCRIPTION_LENGTH = 120;
 
-const AreaCard: FC<AreaCardProps> = ({
+const VenueCard: FC<AreaCardProps> = ({
   title,
   location,
   priceRange,
@@ -77,11 +77,13 @@ const AreaCard: FC<AreaCardProps> = ({
           </div>
         </div>
 
-        {/* Price & Booking */}
-        <div className="flex justify-between items-center mt-6">
-          <span className="font-bold text-lg">{priceRange}</span>
-          <Link to="/booking">
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+        {/* Price and Button */}
+        <div className="flex justify-between items-center mt-4">
+          <span className="font-bold text-lg font-montserrat">
+            {priceRange}
+          </span>
+          <Link to="/availability">
+            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg font-montserrat hover:bg-blue-700 transition">
               Book Now
             </button>
           </Link>
@@ -91,4 +93,4 @@ const AreaCard: FC<AreaCardProps> = ({
   );
 };
 
-export default AreaCard;
+export default VenueCard;

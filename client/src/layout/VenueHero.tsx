@@ -2,7 +2,7 @@ import Navbar from "./Navbar";
 import reservation_bg from "../assets/reservation_bg.jpg";
 import { motion } from "framer-motion";
 
-const ReservationHero = () => {
+const VenueHero = () => {
   return (
     <section
       className="h-screen bg-cover bg-center relative before:absolute before:inset-0 before:bg-black/60 before:z-0"
@@ -44,4 +44,4 @@ const ReservationHero = () => {
   );
 };
 
-export default ReservationHero;
+export default VenueHero;

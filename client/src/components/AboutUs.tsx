@@ -89,7 +89,7 @@ const AboutUs = () => {
             is a place where memories are made — whether you're on a romantic
             getaway, a family vacation, or a business trip.
           </p>
-          <Link to={"/booking"}>
+          <Link to={"/availability"}>
             <button className="mt-4 inline-block font-montserrat bg-blue-800 text-white px-6 py-3 rounded-full shadow hover:bg-blue-700 transition-all">
               Book with us &rarr;
             </button>

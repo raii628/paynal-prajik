@@ -1,12 +1,30 @@
-const AreaAvailable = ({ image, title, capacity, priceRange, available }) => {
+import { FC } from "react";
+
+interface VenueAvailableProps {
+  image: string;
+  title: string;
+  capacity: number;
+  price: number;
+  available: boolean;
+  onBookNow: () => void;
+}
+
+const VenueAvailable: FC<VenueAvailableProps> = ({
+  image,
+  title,
+  capacity,
+  price,
+  available,
+  onBookNow,
+}) => {
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 flex flex-col">
-      {/* Area Image */}
+      {/* Venue Image */}
       <img src={image} alt={title} className="h-44 w-full object-cover" />
 
-      {/* Area Details */}
+      {/* Venue Details */}
       <div className="p-4 space-y-3">
-        {/* Area Title */}
+        {/* Venue Title */}
         <h2 className="text-lg font-bold text-gray-800 font-playfair">
           {title}
         </h2>
@@ -34,13 +52,11 @@ const AreaAvailable = ({ image, title, capacity, priceRange, available }) => {
 
         {/* Price and Button */}
         <div className="flex justify-between items-center mt-2">
-          {/* Price */}
           <div className="text-lg font-bold text-gray-900 font-montserrat">
-            {priceRange}
+            ₱{price.toLocaleString()}
           </div>
-
-          {/* Reserve Now Button */}
           <button
+            onClick={onBookNow}
             className={`px-4 py-2 rounded-lg text-white font-semibold font-montserrat ${
               available
                 ? "bg-blue-600 hover:bg-blue-700"
@@ -48,7 +64,7 @@ const AreaAvailable = ({ image, title, capacity, priceRange, available }) => {
             }`}
             disabled={!available}
           >
-            {available ? "Reserve Now" : "Not Available"}
+            {available ? "Book Now" : "Unavailable"}
           </button>
         </div>
       </div>
@@ -56,4 +72,4 @@ const AreaAvailable = ({ image, title, capacity, priceRange, available }) => {
   );
 };
 
-export default AreaAvailable;
+export default VenueAvailable;

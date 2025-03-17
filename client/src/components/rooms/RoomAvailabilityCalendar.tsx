@@ -1,14 +1,7 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const RoomAvailabilityCalendar = () => {
-  const currentYear = new Date().getFullYear(); // Get current year dynamically
-
-  const defaultArrival = `${currentYear}-03-11`;
-  const lastDayOfYear = `${currentYear}-12-31`;
-
-  const [arrivalDate, setArrivalDate] = useState(defaultArrival);
-  const [departureDate, setDepartureDate] = useState(lastDayOfYear);
-
   return (
     <div className="bg-[#ffffffe6] px-5 mb-10 sm:mb-15 w-full shadow-md drop-shadow-md inset-shadow-md">
       <div className="py-3 font-montserrat">
@@ -29,12 +22,10 @@ const RoomAvailabilityCalendar = () => {
             {/* Arrival Date */}
             <div className="flex flex-col min-w-[150px] flex-grow bg-white px-4 py-2">
               <label htmlFor="arrival" className="text-xs tracking-tight mb-1">
-                Arrival Date <span className="text-gray-400">(DD/MM/YY)</span>
+                Arrival Date <span className="text-gray-400"></span>
               </label>
               <input
                 type="date"
-                value={arrivalDate}
-                onChange={(e) => setArrivalDate(e.target.value)}
                 className="border-b-2 outline-0 italic cursor-pointer"
               />
             </div>
@@ -45,21 +36,21 @@ const RoomAvailabilityCalendar = () => {
                 htmlFor="departure"
                 className="text-xs tracking-tight mb-1"
               >
-                Departure Date <span className="text-gray-400">(DD/MM/YY)</span>
+                Departure Date <span className="text-gray-400"></span>
               </label>
               <input
                 type="date"
-                value={departureDate}
-                onChange={(e) => setDepartureDate(e.target.value)}
                 className="border-b-2 outline-0 italic cursor-pointer"
               />
             </div>
 
             {/* Search Button */}
             <div className="flex flex-col min-w-[150px] flex-grow">
-              <button className="p-3 py-5 flex-1 bg-blue-600 font-medium transition duration-300 cursor-pointer text-sm text-white w-full">
-                Search
-              </button>
+              <Link to="/availability">
+                <button className="p-3 py-5 flex-1 bg-blue-600 font-medium transition duration-300 cursor-pointer text-sm text-white w-full">
+                  Check Availability
+                </button>
+              </Link>
             </div>
           </div>
         </div>
