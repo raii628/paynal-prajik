@@ -23,18 +23,14 @@ const ManageUsers = () => {
     const firstName = user.first_name?.toLowerCase() || "";
     const lastName = user.last_name?.toLowerCase() || "";
     const email = user.email?.toLowerCase() || "";
-    const guestType = user.guest_type?.toLowerCase() || "";
     const searchText = search.toLowerCase();
 
     const matchesSearch =
       firstName.includes(searchText) ||
       lastName.includes(searchText) ||
-      email.includes(searchText) ||
-      guestType.includes(searchText);
+      email.includes(searchText)
 
-    const matchesFilter = filter === "All" || guestType === filter.toLowerCase();
-
-    return matchesSearch && matchesFilter;
+    return matchesSearch;
   });
 
   return (
@@ -95,10 +91,10 @@ const ManageUsers = () => {
                   <td className="p-2 text-center">{user.gender}</td>
                   <td className="p-2 text-center font-semibold uppercase">{user.guest_type}</td>
                   <td className="p-2 text-center">
-                    <button className="bg-blue-500 text-white px-3 py-1 rounded mr-2">
+                    <button className="bg-blue-500 text-white px-3 py-1 rounded-md mr-2">
                       Edit
                     </button>
-                    <button className="bg-red-500 text-white px-3 py-1 rounded">
+                    <button className="bg-red-500 text-white px-3 py-1 rounded-md">
                       Delete
                     </button>
                   </td>

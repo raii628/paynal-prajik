@@ -56,7 +56,7 @@ const ManageAmenities = () => {
 
       {/* Main Content – Amenities Table */}
       <div className="overflow-x-auto">
-        <table className="w-full border-collapse">
+        <table className="w-full border-collapse table-fixed">
           <thead className="bg-gray-100">
             <tr>
               <th className="border p-2 text-left">Amenity Name</th>

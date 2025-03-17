@@ -7,6 +7,7 @@ import {
   faChartLine,
   faComment,
   faConciergeBell,
+  faCalendarCheck,
 } from "@fortawesome/free-solid-svg-icons";
 
 export const menuItems = [
@@ -15,20 +16,20 @@ export const menuItems = [
     label: "Dashboard",
     link: '/admin'
   },
-  // { 
-  //   icon: faCalendarCheck, 
-  //   label: "Guest Reservations",
-  //   link: '/admin/reservations'
-  // },
+  {
+    icon: faMapMarkerAlt,
+    label: "Reservations",
+    link: '/admin/reservations'
+  },
+  { 
+    icon: faCalendarCheck, 
+    label: "Manage Areas",
+    link: '/admin/areas'
+  },
   { 
     icon: faBed,
     label: "Manage Rooms",
     link: '/admin/rooms'
-  },
-  {
-    icon: faMapMarkerAlt,
-    label: "Area Reservations",
-    link: '/admin/areas'
   },
   {
     icon: faConciergeBell,

@@ -13,7 +13,6 @@ import About from "./pages/About";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AreaReservations from "./pages/admin/AreaReservations";
 import Comments from "./pages/admin/Comments";
-import GuestReservation from "./pages/admin/GuestReservation";
 import ManageAmenities from "./pages/admin/ManageAmenities";
 import ManageRooms from "./pages/admin/ManageRooms";
 import ManageUsers from "./pages/admin/ManageUsers";
@@ -26,6 +25,7 @@ import Homepage from "./pages/Homepage";
 import RegistrationFlow from "./pages/RegistrationFlow";
 import Reservations from "./pages/Reservations";
 import Rooms from "./pages/Rooms";
+import ManageAreas from "./pages/admin/ManageAreas";
 
 const App = () => {
   const { isAuthenticated, role, loading } = useUserContext();
@@ -63,9 +63,9 @@ const App = () => {
         <Route element={<ProtectedRoute requiredRole="admin" />}>
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
-            <Route path="reservations" element={<GuestReservation />} />
+            <Route path="areas" element={<ManageAreas />} />
             <Route path="rooms" element={<ManageRooms />} />
-            <Route path="areas" element={<AreaReservations />} />
+            <Route path="reservations" element={<AreaReservations />} />
             <Route path="amenities" element={<ManageAmenities />} />
             <Route path="comments" element={<Comments />} />
             <Route path="reports" element={<Reports />} />

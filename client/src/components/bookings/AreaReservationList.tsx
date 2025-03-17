@@ -78,16 +78,13 @@ const AreaReservationList = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {areas.map((area, index) => (
-          <motion.div
+          <div
             key={index}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 300 }}
             className="cursor-pointer"
             onClick={() => setSelectedArea(selectedArea === index ? null : index)}
           >
             <AreaCard {...area} />
-          </motion.div>
+          </div>
         ))}
       </div>
     </motion.div>

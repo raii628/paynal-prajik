@@ -81,13 +81,9 @@ const AreaCard: FC<AreaCardProps> = ({
         <div className="flex justify-between items-center mt-6">
           <span className="font-bold text-lg">{priceRange}</span>
           <Link to="/booking">
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-            >
+            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
               Book Now
-            </motion.button>
+            </button>
           </Link>
         </div>
       </div>
