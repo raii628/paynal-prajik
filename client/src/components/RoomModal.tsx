@@ -1,10 +1,23 @@
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import CustomerDetailsForm from "./bookings/CustomerDetailsForm"; // Adjust this path as needed
 
-const RoomModal = ({ isOpen, onClose, room }) => {
-  // Close modal on ESC key press
+interface RoomModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  room: {
+    id: string;
+    title: string;
+    image: string;
+    bedType: string;
+    capacity: number;
+    price: number;
+    available: boolean;
+  };
+}
+
+const RoomModal: FC<RoomModalProps> = ({ isOpen, onClose, room }) => {
   useEffect(() => {
-    const handleEsc = (event) => {
+    const handleEsc = (event: KeyboardEvent) => {
       if (event.key === "Escape") onClose();
     };
     window.addEventListener("keydown", handleEsc);

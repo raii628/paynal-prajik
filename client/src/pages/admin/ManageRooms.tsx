@@ -1,66 +1,39 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
-
-// Sample data for now
-const sampleRooms = [
-  {
-    id: 1,
-    roomNumber: '101',
-    roomType: 'Standard Room',
-    status: 'available',
-    amenities: ['WiFi', 'TV', 'Air Conditioning'],
-    price: 80.0,
-  },
-  {
-    id: 2,
-    roomNumber: '102',
-    roomType: 'Standard Room',
-    status: 'occupied',
-    amenities: ['WiFi', 'TV'],
-    price: 80.0,
-  },
-  {
-    id: 3,
-    roomNumber: '201',
-    roomType: 'Deluxe Room',
-    status: 'available',
-    amenities: ['WiFi', 'TV', 'Ocean View'],
-    price: 200.0,
-  },
-  {
-    id: 4,
-    roomNumber: '202',
-    roomType: 'Deluxe Room',
-    status: 'maintenance',
-    amenities: ['WiFi', 'TV', 'Ocean View'],
-    price: 200.0,
-  },
-  {
-    id: 5,
-    roomNumber: '301',
-    roomType: 'Executive Suite',
-    status: 'occupied',
-    amenities: ['WiFi', 'TV', 'Jacuzzi', 'Mini Bar'],
-    price: 350.0,
-  },
-];
+import { useQuery } from '@tanstack/react-query';
+import { fetchAllRooms } from '../../services/Room';
 
 const ManageRooms = () => {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [typeFilter, setTypeFilter] = useState('all');
 
-  const filteredRooms = sampleRooms.filter((room) => {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['rooms'], 
+    queryFn: fetchAllRooms,
+  });
+
+  if (isLoading) {
+    return <div>Loading rooms...</div>;
+  }
+
+  if (error) {
+    return <div>Error fetching rooms.</div>;
+  }
+
+  const roomsArray = Array.isArray(data?.data) ? data.data : [];
+
+  const filteredRooms = roomsArray.filter((room: any) => {
     const matchesSearch =
-      room.roomNumber.includes(search) ||
-      room.roomType.toLowerCase().includes(search.toLowerCase());
+      room.room_number.includes(search) ||
+      room.room_type.toLowerCase().includes(search.toLowerCase());
     const matchesStatus = statusFilter === 'all' ? true : room.status === statusFilter;
-    const matchesType = typeFilter === 'all' ? true : room.roomType === typeFilter;
+    const matchesType = typeFilter === 'all' ? true : room.room_type.toString() === typeFilter;
     return matchesSearch && matchesStatus && matchesType;
   });
 
   return (
     <div className="p-6">
-      {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
         <h1 className="text-3xl font-semibold mb-4 md:mb-0">Manage Rooms</h1>
         <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
@@ -102,7 +75,7 @@ const ManageRooms = () => {
 
       {/* Rooms Table */}
       <div className="overflow-x-auto">
-        <table className="w-full border-collapse">
+        <table className="w-full border-collapse table-fixed">
           <thead className="bg-gray-100">
             <tr>
               <th className="border p-2 text-left">Room Number</th>
@@ -114,16 +87,13 @@ const ManageRooms = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredRooms.map((room) => (
-              <tr
-                key={room.id}
-                className="hover:bg-gray-50"
-              >
-                <td className="border p-2">{room.roomNumber}</td>
-                <td className="border p-2">{room.roomType}</td>
+            {filteredRooms.map((room: any) => (
+              <tr key={room.id} className="hover:bg-gray-50">
+                <td className="border p-2">{room.room_number}</td>
+                <td className="border p-2">{room.room_type}</td>
                 <td className="border p-2 capitalize">{room.status}</td>
-                <td className="border p-2">{room.amenities.join(', ')}</td>
-                <td className="border p-2">{room.price.toFixed(2)}</td>
+                <td className="border p-2">{room.amenities ? room.amenities.join(", ") : 'N/A'}</td>
+                <td className="border p-2">$ {parseFloat(room.price).toFixed(2)}</td>
                 <td className="border p-2 space-x-2">
                   <button className="bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded">
                     Edit

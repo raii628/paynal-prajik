@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from .models import Reservations
-from .serializers import ReviewSerializer, ReservationSerializer
+from .serializers import ReservationSerializer
 from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
@@ -12,12 +12,12 @@ def reservation_list(request):
     try:
         if request.method == 'GET':
             reservations = Reservations.objects.all()
-            serializer = ReviewSerializer(reservations, many=True)
+            serializer = ReservationSerializer(reservations, many=True)
             return Response({
                 "data": serializer.data
             }, status=status.HTTP_200_OK)
         elif request.method == 'POST':
-            serializer = ReviewSerializer(data=request.data)
+            serializer = ReservationSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -35,10 +35,10 @@ def reservation_detail(request, reservation_id):
     except Reservations.DoesNotExist:
         return Response({"error": "Reservation not found"}, status=status.HTTP_404_NOT_FOUND)
     if request.method == 'GET':
-        serializer = ReviewSerializer(reservation)
+        serializer = ReservationSerializer(reservation)
         return Response(serializer.data)
     elif request.method == 'PUT':
-        serializer = ReviewSerializer(reservation, data=request.data)
+        serializer = ReservationSerializer(reservation, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

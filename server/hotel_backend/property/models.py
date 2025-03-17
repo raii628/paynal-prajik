@@ -1,4 +1,5 @@
 from django.db import models
+from cloudinary.models import CloudinaryField # type: ignore
 
 # Create your models here.
 class RoomTypes(models.Model):
@@ -31,7 +32,7 @@ class Rooms(models.Model):
         ('occupied', 'Occupied'),
         ('maintenance', 'Maintenance'),
     ]
-    
+
     room_number = models.CharField(max_length=10, unique=True, null=False)
     room_type = models.ForeignKey(RoomTypes, on_delete=models.CASCADE, related_name='rooms')
     status = models.CharField(
@@ -39,6 +40,7 @@ class Rooms(models.Model):
         choices=ROOM_STATUS_CHOICES,
         default='available',
     )
+    room_image = CloudinaryField('room_image', null=True, blank=True)
     notes = models.TextField(blank=True)
     
     class Meta:
@@ -60,6 +62,7 @@ class Areas(models.Model):
         choices=AREA_STATUS_CHOICES,
         default='available',
     )
+    area_image = CloudinaryField('room_image', null=True, blank=True)
     
     class Meta:
         db_table = 'areas'

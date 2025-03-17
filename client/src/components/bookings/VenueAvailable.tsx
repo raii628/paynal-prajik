@@ -1,9 +1,20 @@
-const VenueAvailable = ({
+import { FC } from "react";
+
+interface VenueAvailableProps {
+  image: string;
+  title: string;
+  capacity: number;
+  price: number;
+  available: boolean;
+  onBookNow: () => void;
+}
+
+const VenueAvailable: FC<VenueAvailableProps> = ({
   image,
   title,
   capacity,
   price,
-  available, // ✅ boolean value for availability
+  available,
   onBookNow,
 }) => {
   return (

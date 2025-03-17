@@ -20,3 +20,6 @@ chart.js
 lucide-react
 @gsap/react
 gsap
+locomotive-scroll
+swiper
+@mui/material @emotion/react @emotion/styled

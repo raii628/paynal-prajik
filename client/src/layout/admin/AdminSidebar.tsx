@@ -1,7 +1,7 @@
 import React, { Suspense, useState, useEffect, FC } from "react";
 import { fetchAdminProfile } from "../../services/Admin";
 import { menuItems } from "../../constants/AdminMenuSidebar";
-import AdminDetailSkeleton from "../../motions/AdminDetailSkeleton";
+import AdminDetailSkeleton from "../../motions/skeletons/AdminDetailSkeleton";
 import { useUserContext } from "../../contexts/AuthContext";
 import Modal from "../../components/Modal";
 import { logout } from "../../services/Auth";
@@ -60,7 +60,7 @@ const AdminSidebar: FC = () => {
 
   return (
     <>
-      <aside className="w-70 h-screen flex flex-col bg-white text-black z-0 shadow-lg">
+      <aside className="min-h-screen flex flex-col px-2 bg-white text-black z-0 shadow-lg">
         <div className="px-3 py-4">
           <Suspense fallback={<AdminDetailSkeleton />}>
             {admin ? <AdminProfile admin={admin} /> : <AdminDetailSkeleton />}
@@ -73,7 +73,7 @@ const AdminSidebar: FC = () => {
                 <NavLink
                   to={item.link}
                   end={item.link === "/admin"}
-                  className={({ isActive }) => `flex items-center space-x-2 p-2 justify-baseline rounded-md cursor-pointer ${isActive ? "border-r-3 border-blue-600 bg-blue-100/80 text-blue-700 font-bold" : "hover:bg-black/15"}`}
+                  className={({ isActive }) => `flex items-center space-x-1 justify-baseline rounded-md cursor-pointer ${isActive ? "border-r-3 border-blue-600 bg-blue-100/80 text-blue-700 font-bold" : "hover:bg-black/15"}`}
                 >
                   <FontAwesomeIcon icon={item.icon} className="text-2xl p-2 w-5 h-5 text-left" /> <span className="text-lg">{item.label}</span>
                 </NavLink>

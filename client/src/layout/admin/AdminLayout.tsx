@@ -7,7 +7,7 @@ const AdminLayout: FC = () => {
         <div className="flex flex-col min-h-screen">
             <div className="flex flex-1">
                 <AdminSidebar />
-                <main className="flex-grow p-4 bg-gray-50">
+                <main className="flex-grow p-2 bg-gray-50">
                     <Outlet />
                 </main>
             </div>

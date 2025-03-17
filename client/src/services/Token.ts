@@ -13,9 +13,6 @@ export const refreshUserToken = async () => {
     const refreshToken = localStorage.getItem("refresh_token");
     if (!refreshToken) return false;
     if (isTokenExpired(refreshToken)) {
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("refresh_token");
-        localStorage.removeItem("role");
         return false;
     }
 
@@ -25,7 +22,6 @@ export const refreshUserToken = async () => {
         });
 
         if (response.status === 200) {
-            localStorage.setItem("refresh_token", response.data.refresh);
             return true;
         }
         return false;

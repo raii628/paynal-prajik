@@ -109,14 +109,6 @@ const SignupModal: FC<SignupModalProps> = ({
 
   return (
     <>
-      {notification && (
-        <Notification
-          icon={notification.icon}
-          message={notification.message}
-          type={notification.type}
-          onClose={() => setNotification(null)}
-        />
-      )}
       <section className="relative z-20 min-h-screen flex items-center justify-center">
         <div className="relative z-30 w-full max-w-md bg-white rounded-md sm:max-w-md xl:p-2 dark:border-gray-700 shadow-2xl">
           <i
@@ -226,9 +218,8 @@ const SignupModal: FC<SignupModalProps> = ({
                 whileTap={{ scale: 0.95 }}
                 type="submit"
                 disabled={!email || !password || !confirmPassword}
-                className={`w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800 transition-colors duration-300 flex items-center justify-center ${
-                  loading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+                className={`w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800 transition-colors duration-300 flex items-center justify-center ${loading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
               >
                 {loading ? (
                   <>
@@ -256,6 +247,14 @@ const SignupModal: FC<SignupModalProps> = ({
           </div>
         </div>
       </section>
+      {notification && (
+        <Notification
+          icon={notification.icon}
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
+        />
+      )}
     </>
   );
 };

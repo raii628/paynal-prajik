@@ -13,7 +13,7 @@ import { getGuestDetails } from "../services/Guest";
 import DefaultImg from "../assets/Default_pfp.jpg";
 import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRightToBracket, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faCalendarCheck, faCircleUser, faRightToBracket, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import SlotNavButton from "../motions/CustomNavbar";
 
 const Navbar: FC = () => {
@@ -183,7 +183,7 @@ const Navbar: FC = () => {
               <Dropdown
                 options={[
                   {
-                    label: "Accounts",
+                    label: "Account",
                     onClick: () => {
                       if (userDetails && userDetails.id) {
                         navigate(`/guest/${userDetails.id}`);
@@ -191,10 +191,17 @@ const Navbar: FC = () => {
                         console.error("User details are not available");
                       }
                     },
+                    icon: <FontAwesomeIcon icon={faCircleUser} />
                   },
                   {
-                    label: "Logout",
+                    label: "My Bookings",
+                    onClick: () => navigate("/guest/bookings/:id"),
+                    icon: <FontAwesomeIcon icon={faCalendarCheck} />
+                  },
+                  {
+                    label: "Log Out",
                     onClick: () => setIsModalOpen(true),
+                    icon: <FontAwesomeIcon icon={faRightToBracket} />
                   },
                 ]}
                 position="bottom"

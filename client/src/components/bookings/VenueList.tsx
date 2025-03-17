@@ -3,6 +3,8 @@ import grand_ballroom from "../../assets/grand_ballroom.avif";
 import ruby_lounge from "../../assets/ruby_lounge.jpg";
 import conference_hall from "../../assets/conference_hall.webp";
 import rooftop_garden from "../../assets/rooftop_garden.jpg";
+import { useState } from "react";
+import { motion } from "framer-motion";
 import VenueCard from "./VenueCard";
 
 const VenueList = () => {
@@ -16,14 +18,6 @@ const VenueList = () => {
         "A luxurious venue for weddings, corporate events, and celebrations. Features high ceilings, chandeliers, dance floor, and modern lighting and sound systems for unforgettable experiences.",
       image: grand_ballroom,
       isFeatured: true,
-      includes: [
-        "Sound System",
-        "Stage",
-        "Lighting",
-        "Projector",
-        "Wi-Fi",
-        "Catering Service",
-      ], // ✅ Added includes
     },
     {
       title: "Emerald Hall",
@@ -34,13 +28,6 @@ const VenueList = () => {
         "An elegant venue ideal for weddings, receptions, and corporate events. Emerald Hall features stunning chandeliers, a bar and lounge area, and a spacious dance floor — perfect for any memorable celebration.",
       image: emerald_hall,
       isFeatured: false,
-      includes: [
-        "Chandeliers & Ambient Lighting",
-        "Bar and Lounge Area",
-        "Dance Floor",
-        "Sound System",
-        "Tables & Chairs",
-      ],
     },
 
     {
@@ -52,13 +39,6 @@ const VenueList = () => {
         "A modern and stylish lounge perfect for private parties, cocktails, and corporate events. Ruby Hall offers cozy seating, vibrant LED cube tables, and ambient lighting to create a fun and relaxed atmosphere.",
       image: ruby_lounge,
       isFeatured: false,
-      includes: [
-        "LED Cube Tables & Ambient Lighting",
-        "Comfortable Lounge Seats",
-        "Sound System",
-        "Bar Area",
-        "Tables & Chairs",
-      ],
     },
     {
       title: "Conference Room",
@@ -69,14 +49,6 @@ const VenueList = () => {
         "A fully-equipped conference room ideal for meetings, seminars, and corporate events. Designed with modern interiors, a large boardroom table, and ergonomic chairs for a professional and productive environment.",
       image: conference_hall,
       isFeatured: false,
-      includes: [
-        "Conference Table & Executive Chairs",
-        "Audio-Visual Equipment",
-        "Projector & Screen",
-        "LED TV for Presentations",
-        "Sound System",
-        "Wi-Fi Access",
-      ],
     },
 
     {
@@ -88,22 +60,36 @@ const VenueList = () => {
         "An open-air venue with stunning city views, perfect for weddings, private parties, and events. Features elegant lighting, lush greenery, cozy seating, and space for dining and entertainment.",
       image: rooftop_garden,
       isFeatured: false,
-      includes: [
-        "Garden Setup",
-        "Ambient Lighting",
-        "Dining Area",
-        "Wi-Fi Access",
-        "Stage Area",
-      ],
     },
   ];
 
+  const [selectedArea, setSelectedArea] = useState<number | null>(null);
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
-      {areas.map((area, index) => (
-        <VenueCard key={index} {...area} />
-      ))}
-    </div>
+    <>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+        className="container mx-auto p-6"
+      >
+        <h2 className="text-center text-3xl sm:text-4xl font-bold text-gray-800 mb-8">
+          Select Your Perfect Event Space
+        </h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {areas.map((area, index) => (
+            <div
+              key={index}
+              className="cursor-pointer"
+              onClick={() => setSelectedArea(selectedArea === index ? null : index)}
+            >
+              <VenueCard {...area} />
+            </div>
+          ))}
+        </div>
+      </motion.div>
+    </>
   );
 };
 
