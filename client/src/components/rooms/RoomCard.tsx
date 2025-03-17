@@ -1,9 +1,21 @@
+import { FC } from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+
 const RoomCard = ({ image, title, description, bedType, capacity, price }) => {
   const [isVenueDetailsOpen, setIsVenueDetailsOpen] = useState(false);
   const toggleModal = () => setIsVenueDetailsOpen(!isVenueDetailsOpen);
 
+interface RoomCardProps {
+  image: string;
+  title: string;
+  description: string;
+  bedType: string;
+  capacity: number;
+  price: number;
+}
+
+const RoomCard: FC<RoomCardProps> = ({ image, title, description, bedType, capacity, price }) => {
   return (
     <div className=" rounded-lg overflow-hidden shadow-sm bg-white flex flex-col">
       <img src={image} alt={title} className="h-48 w-full object-cover" />

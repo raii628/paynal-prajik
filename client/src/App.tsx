@@ -1,6 +1,6 @@
+import "./App.css";
 import { Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import "./App.css";
 import ScrollToTop from "./components/ScrollToTop";
 import { useUserContext } from "./contexts/AuthContext";
 import ProtectedRoute from "./contexts/ProtectedRoutes";

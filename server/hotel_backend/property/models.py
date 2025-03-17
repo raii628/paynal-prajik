@@ -2,15 +2,6 @@ from django.db import models
 from cloudinary.models import CloudinaryField # type: ignore
 
 # Create your models here.
-class RoomTypes(models.Model):
-    name = models.CharField(max_length=100, unique=False, null=False)
-    description = models.TextField(blank=True)
-    base_price = models.DecimalField(max_digits=10, decimal_places=2, null=False)
-    capacity = models.PositiveIntegerField()
-    
-    class Meta:
-        db_table = 'room_types'
-
 class Amenities(models.Model):
     name = models.CharField(max_length=100, unique=True, null=False)
     description = models.TextField(blank=True)
@@ -18,13 +9,11 @@ class Amenities(models.Model):
     class Meta:
         db_table = 'amenities'
 
-class RoomTypeAmenities(models.Model):
-    room_type = models.ForeignKey(RoomTypes, on_delete=models.CASCADE, related_name='amenities')
-    amenity = models.ForeignKey(Amenities, on_delete=models.CASCADE, related_name='room_types')
+class RoomAmenities(models.Model):
+    amenity = models.ForeignKey(Amenities, on_delete=models.CASCADE, related_name='amenities')
     
     class Meta:
-        unique_together = ('room_type', 'amenity')
-        db_table = 'room_type_amenities'
+        db_table = 'room_amenities'
 
 class Rooms(models.Model):
     ROOM_STATUS_CHOICES = [
@@ -32,16 +21,29 @@ class Rooms(models.Model):
         ('occupied', 'Occupied'),
         ('maintenance', 'Maintenance'),
     ]
-
+    
+    ADMISSION_CHOICES = [
+        ('regular', 'Regular'),
+        ('vip', 'VIP'),
+    ]
+    
+    admission = models.CharField(
+        max_length=20,
+        choices=ADMISSION_CHOICES,
+        default='regular',
+    )
     room_number = models.CharField(max_length=10, unique=True, null=False)
-    room_type = models.ForeignKey(RoomTypes, on_delete=models.CASCADE, related_name='rooms')
+    room_type = models.CharField(max_length=100, null=False)
     status = models.CharField(
         max_length=20,
         choices=ROOM_STATUS_CHOICES,
         default='available',
     )
-    room_image = CloudinaryField('room_image', null=True, blank=True)
-    notes = models.TextField(blank=True)
+    room_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    room_image = CloudinaryField('room_image')
+    description = models.TextField(blank=True)
+    bed_size = models.CharField(max_length=30, null=False)
+    pax = models.PositiveIntegerField(default=1)
     
     class Meta:
         db_table = 'rooms'
@@ -56,7 +58,7 @@ class Areas(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True)
     capacity = models.IntegerField()
-    price_per_hour = models.DecimalField(max_digits=10, decimal_places=2, null=False)
+    price_per_hour = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     status = models.CharField(
         max_length=20,
         choices=AREA_STATUS_CHOICES,
@@ -66,12 +68,3 @@ class Areas(models.Model):
     
     class Meta:
         db_table = 'areas'
-
-class RoomTypePrices(models.Model):
-    room_type = models.ForeignKey(RoomTypes, on_delete=models.CASCADE, related_name='prices')
-    valid_from = models.DateField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    
-    class Meta:
-        db_table = 'room_type_prices'
-        unique_together = ('room_type', 'valid_from')
