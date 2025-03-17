@@ -11,7 +11,6 @@ interface RoomModalProps {
     bedType: string;
     capacity: number;
     price: number;
-    available: boolean;
   };
 }
 
@@ -60,9 +59,6 @@ const RoomModal: FC<RoomModalProps> = ({ isOpen, onClose, room }) => {
             </p>
             <p className="text-gray-600 font-montserrat">
               <strong>Price:</strong> ₱{room.price.toLocaleString()}
-            </p>
-            <p className="text-gray-600 font-montserrat">
-              <strong>Available:</strong> {room.available ? "Yes" : "No"}
             </p>
           </div>
 

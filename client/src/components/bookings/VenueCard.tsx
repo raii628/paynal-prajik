@@ -72,7 +72,8 @@ const VenueCard: FC<AreaCardProps> = ({
           {/* Capacity Section */}
           <div className="flex justify-between items-center text-sm mt-4 text-gray-700">
             <span className="font-medium flex items-center gap-1">
-              <FontAwesomeIcon icon={faUsers} className="text-blue-500" /> {capacity} pax
+              <FontAwesomeIcon icon={faUsers} className="text-blue-500" />{" "}
+              {capacity} pax
             </span>
           </div>
         </div>
@@ -82,11 +83,17 @@ const VenueCard: FC<AreaCardProps> = ({
           <span className="font-bold text-lg font-montserrat">
             {priceRange}
           </span>
-          <Link to="/availability">
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg font-montserrat hover:bg-blue-700 transition">
-              Book Now
+          <div className="flex gap-3">
+            <button className="bg-blue-600 text-sm text-white px-4 py-2 rounded-lg font-montserrat hover:bg-blue-700 transition">
+              View Details
             </button>
-          </Link>
+
+            <Link to="/availability">
+              <button className="bg-blue-600 text-sm text-white px-4 py-2 rounded-lg font-montserrat hover:bg-blue-700 transition">
+                Reserve Now
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
