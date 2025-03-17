@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import DashboardSkeleton from "../../motions/skeletons/AdminDashboardSkeleton";
 import { fetchReservations } from "../../services/Booking";
-import DashboardSkeleton from "../../motions/DashboardSkeleton";
 import Error from "../_ErrorBoundary";
 
 const AreaReservations = () => {
   const [search, setSearch] = useState<string>('');
-  const [filter, setFilter] = useState<string>('All');
+  const [filter, setFilter] = useState<string>('all');
   const { data, isLoading, error } = useQuery({
     queryKey: ['area_reservations'],
     queryFn: fetchReservations,
@@ -17,13 +17,19 @@ const AreaReservations = () => {
   if (isLoading) return <DashboardSkeleton />;
   if (error) return <Error />
 
-  const reservationsArray = Array.isArray(data) ? data : [];
+  const reservationsArray = data?.data || [];
   const filteredReservations = reservationsArray.filter((reservation: any) => {
     return (
-      (filter === "all" || reservation.status === filter) &&
+      (filter === "all" || reservation.status.toLowerCase() === filter) &&
       (search === "" || reservation.guest_name.toLowerCase().includes(search.toLowerCase()))
     );
   });
+
+  // Helper function to format date in YYYY-MM-DD format
+  const formatDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    return date.toISOString().split("T")[0];
+  }
 
   return (
     <div className="p-6">
@@ -54,30 +60,30 @@ const AreaReservations = () => {
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full border-collapse">
+        <table className="w-full border-collapse table-fixed">
           <thead className="bg-gray-100">
             <tr>
-              <th className="border p-2 text-left">Res ID</th>
-              <th className="border p-2 text-left">Guest Name</th>
-              <th className="border p-2 text-left">Area Name</th>
-              <th className="border p-2 text-left">Start Time</th>
-              <th className="border p-2 text-left">End Time</th>
-              <th className="border p-2 text-left">Price ($)</th>
-              <th className="border p-2 text-left">Status</th>
-              <th className="border p-2 text-left">Actions</th>
+              <th className="p-1 text-left">Reservation ID</th>
+              <th className="p-1 text-left">Guest Name</th>
+              <th className="p-1 text-left">Area Name</th>
+              <th className="p-1 text-left">Start Date</th>
+              <th className="p-1 text-left">End Date</th>
+              <th className="p-1 text-left">Price ($)</th>
+              <th className="p-1 text-left">Status</th>
+              <th className="p-1 text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
             {filteredReservations.map((res: any) => (
               <tr key={res.id} className="hover:bg-gray-50">
-                <td className="border p-2">{res.id}</td>
-                <td className="border p-2">{res.guest_name}</td>
-                <td className="border p-2">{res.area_name}</td>
-                <td className="border p-2">{res.start_time}</td>
-                <td className="border p-2">{res.end_time}</td>
-                <td className="border p-2">${res.total_price}</td>
-                <td className="border p-2 capitalize text-blue-600">{res.status}</td>
-                <td className="border p-2 space-x-2">
+                <td className="p-1">{res.id}</td>
+                <td className="p-1">{res.guest_name}</td>
+                <td className="p-1">{res.area_name}</td>
+                <td className="p-1">{formatDate(res.start_time)}</td>
+                <td className="p-1">{formatDate(res.end_time)}</td>
+                <td className="p-1">$ {res.total_price}</td>
+                <td className="p-1 capitalize">{res.status}</td>
+                <td className="p-1 space-x-2">
                   <button className="bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded">
                     Edit
                   </button>
@@ -94,4 +100,4 @@ const AreaReservations = () => {
   )
 }
 
-export default AreaReservations
+export default AreaReservations;

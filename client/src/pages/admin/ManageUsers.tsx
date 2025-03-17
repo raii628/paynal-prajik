@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useQuery } from "@tanstack/react-query"
-import { useState } from "react"
-import { manageUsers } from "../../services/Admin"
-import DashboardSkeleton from "../../motions/DashboardSkeleton";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import DefaultImg from "../../assets/Default_pfp.jpg";
+import DashboardSkeleton from "../../motions/skeletons/AdminDashboardSkeleton";
+import { manageUsers } from "../../services/Admin";
 import Error from "../_ErrorBoundary";
 
 const ManageUsers = () => {
@@ -22,18 +23,14 @@ const ManageUsers = () => {
     const firstName = user.first_name?.toLowerCase() || "";
     const lastName = user.last_name?.toLowerCase() || "";
     const email = user.email?.toLowerCase() || "";
-    const guestType = user.guest_type?.toLowerCase() || "";
     const searchText = search.toLowerCase();
 
     const matchesSearch =
       firstName.includes(searchText) ||
       lastName.includes(searchText) ||
-      email.includes(searchText) ||
-      guestType.includes(searchText);
+      email.includes(searchText)
 
-    const matchesFilter = filter === "All" || guestType === filter.toLowerCase();
-
-    return matchesSearch && matchesFilter;
+    return matchesSearch;
   });
 
   return (
@@ -64,7 +61,7 @@ const ManageUsers = () => {
         </div>
       ) : (
         <div className="overflow-x-auto">
-          <table className="w-full border-collapse border border-gray-300">
+          <table className="w-full border-collapse table-fixed border-gray-300">
             <thead>
               <tr className="bg-gray-100">
                 <th className="border p-2">Profile</th>
@@ -72,6 +69,7 @@ const ManageUsers = () => {
                 <th className="border p-2">Last Name</th>
                 <th className="border p-2">Email</th>
                 <th className="border p-2">Age</th>
+                <th className="border p-2">Gender</th>
                 <th className="border p-2">Guest Type</th>
                 <th className="border p-2">Actions</th>
               </tr>
@@ -81,8 +79,8 @@ const ManageUsers = () => {
                 <tr key={user.id} className="border">
                   <td className="p-2 text-center">
                     <img
-                      src={user.profile_image}
-                      alt="Profile"
+                      src={user.profile_image || DefaultImg}
+                      alt={user.profile_image}
                       className="w-20 h-20 object-cover rounded-full mx-auto"
                     />
                   </td>
@@ -90,12 +88,13 @@ const ManageUsers = () => {
                   <td className="p-2 text-center">{user.last_name}</td>
                   <td className="p-2 text-center">{user.email}</td>
                   <td className="p-2 text-center">{user.age}</td>
-                  <td className="p-2 text-center capitalize">{user.guest_type}</td>
+                  <td className="p-2 text-center">{user.gender}</td>
+                  <td className="p-2 text-center font-semibold uppercase">{user.guest_type}</td>
                   <td className="p-2 text-center">
-                    <button className="bg-blue-500 text-white px-3 py-1 rounded mr-2">
+                    <button className="bg-blue-500 text-white px-3 py-1 rounded-md mr-2">
                       Edit
                     </button>
-                    <button className="bg-red-500 text-white px-3 py-1 rounded">
+                    <button className="bg-red-500 text-white px-3 py-1 rounded-md">
                       Delete
                     </button>
                   </td>

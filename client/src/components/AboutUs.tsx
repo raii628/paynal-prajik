@@ -76,7 +76,7 @@ const AboutUs = () => {
           variants={fadeInLeft}
           initial="hidden"
           animate={isPhilosophyInView ? "visible" : "hidden"}
-          className="space-y-4 order-2 md:order-1"
+          className="space-y-4"
         >
           <h3 className="text-blue-800 uppercase text-lg font-extralight font-montserrat tracking-widest flex items-center gap-2">
             <i className="fa fa-moon"></i> Our Philosophy

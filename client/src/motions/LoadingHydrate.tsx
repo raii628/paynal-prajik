@@ -32,7 +32,6 @@ const LoadingHydrate: FC = () => {
         </svg>
       </motion.div>
 
-      {/* Skeleton placeholders to mimic content layout */}
       <div className="w-full max-w-md">
         <Skeleton count={3} height={20} className="mb-4" />
         <Skeleton count={1} height={200} />

@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 interface NavBtn {
     to: string;
@@ -11,7 +11,7 @@ interface NavBtn {
 const SlotNavButton: FC<NavBtn> = ({ to, children, className }) => {
     return (
         <li className={`relative inline-block font-black ${className} transition-all duration-300`}>
-            <Link to={to}>
+            <NavLink to={to}>
                 <motion.div
                     className="relative overflow-hidden inline-block"
                     initial="rest"
@@ -39,7 +39,7 @@ const SlotNavButton: FC<NavBtn> = ({ to, children, className }) => {
                         {children}
                     </motion.div>
                 </motion.div>
-            </Link>
+            </NavLink>
         </li>
     );
 };

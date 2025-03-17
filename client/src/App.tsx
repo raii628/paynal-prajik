@@ -1,32 +1,31 @@
-import "./App.css";
-import { Navigate, Route, Routes } from "react-router-dom";
 import { Suspense } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+import "./App.css";
+import ScrollToTop from "./components/ScrollToTop";
 import { useUserContext } from "./contexts/AuthContext";
 import ProtectedRoute from "./contexts/ProtectedRoutes";
 import useTokenHandler from "./hooks/useTokenHandler";
-import NotFound from "./pages/_NotFound";
-import Homepage from "./pages/Homepage";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import LoadingHydrate from "./motions/LoadingHydrate";
-import GuestReservation from "./pages/admin/GuestReservation";
-import ManageRooms from "./pages/admin/ManageRooms";
 import AdminLayout from "./layout/admin/AdminLayout";
-import ForgotPassword from "./pages/ForgotPassword";
+import GuestProfile from "./layout/guest/GuestProfile";
+import LoadingHydrate from "./motions/LoadingHydrate";
+import NotFound from "./pages/_NotFound";
 import About from "./pages/About";
-import Rooms from "./pages/Rooms";
-import ManageUsers from "./pages/admin/ManageUsers";
-import UserStats from "./pages/admin/UserStats";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 import AreaReservations from "./pages/admin/AreaReservations";
-import ManageAmenities from "./pages/admin/ManageAmenities";
 import Comments from "./pages/admin/Comments";
+import ManageAmenities from "./pages/admin/ManageAmenities";
+import ManageRooms from "./pages/admin/ManageRooms";
+import ManageUsers from "./pages/admin/ManageUsers";
 import Reports from "./pages/admin/Reports";
-import RegistrationFlow from "./pages/RegistrationFlow";
+import UserStats from "./pages/admin/UserStats";
+import ForgotPassword from "./pages/ForgotPassword";
 import Gallery from "./pages/Gallery";
-import GuestProfile from "./pages/guests/GuestProfile";
+import Homepage from "./pages/Homepage";
+import RegistrationFlow from "./pages/RegistrationFlow";
+import Rooms from "./pages/Rooms";
+import ManageAreas from "./pages/admin/ManageAreas";
 import Availability from "./pages/Availability";
-import ScrollToTop from "./components/ScrollToTop";
 import Venue from "./pages/Venue";
-import Booking from "./pages/Booking";
 
 const App = () => {
   const { isAuthenticated, role, loading } = useUserContext();
@@ -64,9 +63,9 @@ const App = () => {
         <Route element={<ProtectedRoute requiredRole="admin" />}>
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
-            <Route path="reservations" element={<GuestReservation />} />
+            <Route path="areas" element={<ManageAreas />} />
             <Route path="rooms" element={<ManageRooms />} />
-            <Route path="areas" element={<AreaReservations />} />
+            <Route path="reservations" element={<AreaReservations />} />
             <Route path="amenities" element={<ManageAmenities />} />
             <Route path="comments" element={<Comments />} />
             <Route path="reports" element={<Reports />} />

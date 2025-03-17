@@ -10,8 +10,8 @@ import {
 } from "chart.js";
 import { Bar, Doughnut } from "react-chartjs-2";
 import StatCard from "../../components/admin/StatCard";
+import DashboardSkeleton from "../../motions/skeletons/AdminDashboardSkeleton";
 import { fetchStats } from "../../services/Admin";
-import DashboardSkeleton from "../../motions/DashboardSkeleton";
 import Error from "../_ErrorBoundary";
 
 Chart.register(BarElement, ArcElement, Tooltip, Legend, CategoryScale, LinearScale);
@@ -74,7 +74,7 @@ const AdminDashboard = () => {
         <StatCard title="Active Bookings" value={data.active_bookings} borderColor="border-blue-500" />
         <StatCard title="Available Rooms" value={data.available_rooms} borderColor="border-green-500" />
         <StatCard title="Upcoming Reservations" value={data.upcoming_reservations} borderColor="border-yellow-500" />
-        <StatCard title="Revenue This Month" value={`$${data.revenue}`} borderColor="border-orange-500" />
+        <StatCard title="Revenue This Month" value={`$ ${data.revenue}`} borderColor="border-orange-500" />
       </div>
 
       {/* Charts */}

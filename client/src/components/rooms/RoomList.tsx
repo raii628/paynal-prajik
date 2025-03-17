@@ -87,10 +87,13 @@ const RoomList = () => {
         },
       }
     );
-  }, [])
+  }, []);
 
   return (
-    <div ref={containerRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-15 p-6">
+    <div
+      ref={containerRef}
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-15 p-6"
+    >
       {rooms.map((room, index) => (
         <RoomCard key={index} {...room} />
       ))}
