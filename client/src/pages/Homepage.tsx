@@ -8,9 +8,7 @@ const Homepage = () => {
   return (
     <section>
       <Hero />
-      <AnimatedSection animationDelay={0.2}>
-        <AboutUs />
-      </AnimatedSection>
+      <AboutUs />
       <AnimatedSection animationDelay={0.4}>
         <Values />
       </AnimatedSection>
