@@ -17,7 +17,6 @@ const BookingCard: React.FC<BookingCardProps> = ({
   price,
   status,
 }) => {
-  // Define status styles
   const statusStyles: Record<string, string> = {
     pending: "bg-yellow-500 text-white",
     booked: "bg-green-500 text-white",

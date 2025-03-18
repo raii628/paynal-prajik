@@ -11,6 +11,8 @@ from user_roles.models import CustomUsers
 from property.models import Rooms
 from property.serializers import RoomSerializer
 from property.utils import generate_room_number
+from .validations.manage_rooms import validate_room_data
+from rest_framework.exceptions import ValidationError
 
 # Create your views here.
 @api_view(['GET'])
@@ -86,7 +88,11 @@ def fetch_rooms(request):
 @permission_classes([IsAuthenticated])
 def add_new_room(request):
     try:
-        serializer = RoomSerializer(data=request.data)
+        validated_data = validate_room_data(request.data)
+    except ValidationError as e:
+        return Response({"error": e.detail}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        serializer = RoomSerializer(data=validated_data)
         if serializer.is_valid():
             instance = serializer.save(room_number=generate_room_number())
             data = RoomSerializer(instance).data
@@ -106,7 +112,14 @@ def add_new_room(request):
 def edit_room(request, room_id):
     try:
         room = Rooms.objects.get(id=room_id)
-        serializer = RoomSerializer(room, data=request.data, partial=True)
+    except Rooms.DoesNotExist:
+        return Response({"error": "Room not found"}, status=status.HTTP_404_NOT_FOUND)
+    try:
+        validated_data = validate_room_data(request.data)
+    except ValidationError as err:
+        return Response({"error": err.detail}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        serializer = RoomSerializer(room, data=validated_data, partial=True)
         if serializer.is_valid():
             instance = serializer.save()
             data = RoomSerializer(instance).data
@@ -114,8 +127,10 @@ def edit_room(request, room_id):
                 "message": "Room updated successfully",
                 "data": data
             }, status=status.HTTP_200_OK)
-    except Rooms.DoesNotExist:
-        return Response({"error": "Room not found"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({
+                "error": serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 

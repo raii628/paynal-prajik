@@ -54,14 +54,14 @@ const Dropdown: FC<CustomDropdownProps> = ({
 
     return (
         <div className="relative inline-block" ref={dropdownRef}>
-            <div onClick={() => setIsOpen((prev) => !prev)} className="cursor-pointer">
+            <div onClick={() => setIsOpen((prev) => !prev)}>
                 {children}
             </div>
 
-            <AnimatePresence>
+            <AnimatePresence mode="wait">
                 {isOpen && (
                     <motion.div
-                        className={`${dropdownPositionClasses} w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50`}
+                        className={`${dropdownPositionClasses} w-40 rounded-md shadow-lg bg-white z-50`}
                         initial={{ opacity: 0, scale: 0.95, y: -10 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: -10 }}
@@ -76,7 +76,7 @@ const Dropdown: FC<CustomDropdownProps> = ({
                                         setIsOpen(false);
                                         item.onClick();
                                     }}
-                                    className="w-full text-left px-4 py-2 text-base text-gray-700 hover:bg-gray-100"
+                                    className="w-full text-left px-4 py-2 text-base text-gray-700 hover:bg-gray-100 cursor-pointer"
                                 >
                                     {item.icon} {item.label}
                                 </button>

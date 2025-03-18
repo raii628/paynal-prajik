@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { addNewRoom, deleteRoom, fetchRooms, editRoom } from "../../services/Admin";
 import EditRoomModal, { IRoom } from "../../components/admin/EditRoomModal";
 import Modal from "../../components/Modal";
 import DashboardSkeleton from "../../motions/skeletons/AdminDashboardSkeleton";
-import Error from "../_ErrorBoundary";
 import ManageRoomLoader from "../../motions/skeletons/ManageRoomLoader";
+import { addNewRoom, deleteRoom, editRoom, fetchRooms } from "../../services/Admin";
+import Error from "../_ErrorBoundary";
 
 interface AddRoomResponse {
   data: any;
@@ -18,6 +18,7 @@ const ManageRooms: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [deleteRoomId, setDeleteRoomId] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [loaderText, setLoaderText] = useState<string>("");
   const queryClient = useQueryClient();
 
   const { data: roomsData, isLoading, isError } = useQuery<{ data: any[] }>({
@@ -27,32 +28,50 @@ const ManageRooms: React.FC = () => {
 
   const addRoomMutation = useMutation<AddRoomResponse, unknown, FormData>({
     mutationFn: addNewRoom,
-    onMutate: () => setLoading(true),
+    onMutate: () => {
+      setLoading(true);
+      setLoaderText("Adding room...");
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["rooms"] });
       setShowFormModal(false);
     },
-    onSettled: () => setLoading(false),
+    onSettled: () => {
+      setLoading(false);
+      setLoaderText("");
+    },
   });
 
   const editRoomMutation = useMutation<AddRoomResponse, unknown, { roomId: number; formData: FormData }>({
     mutationFn: ({ roomId, formData }) => editRoom(roomId, formData),
-    onMutate: () => setLoading(true),
+    onMutate: () => {
+      setLoading(true);
+      setLoaderText("Updating room...");
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["rooms"] });
       setShowFormModal(false);
     },
-    onSettled: () => setLoading(false),
+    onSettled: () => {
+      setLoading(false);
+      setLoaderText("");
+    },
   });
 
   const deleteRoomMutation = useMutation<any, unknown, number>({
     mutationFn: deleteRoom,
-    onMutate: () => setLoading(true),
+    onMutate: () => {
+      setLoading(true);
+      setLoaderText("Deleting room...");
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["rooms"] });
       setShowModal(false);
     },
-    onSettled: () => setLoading(false),
+    onSettled: () => {
+      setLoading(false);
+      setLoaderText("");
+    },
   });
 
   const handleAddNew = () => {
@@ -66,6 +85,7 @@ const ManageRooms: React.FC = () => {
       roomName: room.room_name,
       roomImage: typeof room.room_image === "string" ? room.room_image : room.room_price,
       roomAdmission: room.admission === "vip" ? "VIP" : "Regular",
+      roomType: room.room_type,
       roomNumber: room.room_number,
       status:
         room.status === "maintenance"
@@ -82,14 +102,14 @@ const ManageRooms: React.FC = () => {
   };
 
   const handleDelete = (roomId: number) => {
-    setLoading(false);
     setDeleteRoomId(roomId);
     setShowModal(true);
   };
 
   const confirmDelete = () => {
-    if (deleteRoomId != null) deleteRoomMutation.mutate(deleteRoomId);
-    setLoading(false);
+    if (deleteRoomId != null) {
+      deleteRoomMutation.mutate(deleteRoomId);
+    }
   };
 
   const cancelDelete = () => {
@@ -97,11 +117,11 @@ const ManageRooms: React.FC = () => {
     setShowModal(false);
   };
 
-  const handleSave = (roomData: IRoom) => {
+  const handleSave = async (roomData: IRoom): Promise<void> => {
     const formData = new FormData();
     formData.append("room_name", roomData.roomName);
     formData.append("admission", roomData.roomAdmission === "VIP" ? "vip" : "regular");
-    formData.append("room_type", "Deluxe");
+    formData.append("room_type", roomData.roomType);
     formData.append("status", roomData.status.toLowerCase() || "available");
     formData.append("room_price", String(roomData.roomPrice || 0));
     formData.append("description", roomData.description || "");
@@ -110,9 +130,9 @@ const ManageRooms: React.FC = () => {
     if (roomData.roomImage instanceof File) formData.append("room_image", roomData.roomImage);
 
     if (!roomData.id) {
-      addRoomMutation.mutate(formData);
+      await addRoomMutation.mutateAsync(formData);
     } else {
-      editRoomMutation.mutate({ roomId: roomData.id, formData });
+      await editRoomMutation.mutateAsync({ roomId: roomData.id, formData });
     }
   };
 
@@ -125,13 +145,10 @@ const ManageRooms: React.FC = () => {
     <div className="relative">
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900/80 z-[500]">
-          <ManageRoomLoader
-            size="80px"
-            color="white"
-            text="Please wait while we process your request..."
-          />
+          <ManageRoomLoader size="80px" color="white" text={loaderText} />
         </div>
       )}
+
       <div className="max-h-[calc(100vh-25px)] overflow-y-auto p-3">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-gray-800">Manage Rooms</h1>
@@ -145,61 +162,90 @@ const ManageRooms: React.FC = () => {
 
         {/* Room Cards (Responsive Grid) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {rooms.map((room: any) => (
-            <div
-              key={room.id}
-              className="bg-white shadow-md rounded-md overflow-hidden flex flex-col"
-            >
-              {/* Image */}
-              <img
-                src={room.room_image}
-                alt="Room"
-                className="w-full h-48 object-cover"
-              />
+          {rooms.map((room: any) => {
+            let statusColor;
+            switch (room.status) {
+              case "maintenance":
+                statusColor = "bg-yellow-500";
+                break;
+              case "occupied":
+                statusColor = "bg-red-500";
+                break;
+              default:
+                statusColor = "bg-green-500";
+            }
 
-              {/* Card Content */}
-              <div className="p-4 flex flex-col flex-grow">
-                <h1 className="font-bold text-2xl mb-1">{room.room_name}</h1>
-                <h2 className="text-lg font-semibold mb-1">
-                  {room.bed_size} - {room.room_number}
-                </h2>
-                <p className="text-gray-500 text-sm mb-2">
-                  Admission:{" "}
-                  <span className="font-medium">
-                    {room.admission === "vip" ? "VIP" : "Regular"}
-                  </span>
-                </p>
-                <p className="text-gray-500 text-sm mb-2">
-                  Status: <span className="font-medium">{room.status}</span>
-                </p>
-                <p className="text-gray-500 text-sm mb-2">
-                  Price: ₱ {room.room_price?.toLocaleString()}
-                </p>
-                <p className="text-gray-500 text-sm mb-2">
-                  Pax: <span className="font-medium">{room.pax}</span>
-                </p>
-                <p className="text-gray-500 text-sm flex-grow overflow-hidden">
-                  {room.description}
-                </p>
+            let admissionColor;
+            switch (room.admission) {
+              case "vip":
+                admissionColor = "bg-violet-500";
+                break;
+              default:
+                admissionColor = "bg-blue-500";
+            }
 
-                {/* Action Buttons */}
-                <div className="flex justify-end mt-4 space-x-2">
-                  <button
-                    onClick={() => handleEdit(room)}
-                    className="px-3 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(room.id)}
-                    className="px-3 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700"
-                  >
-                    Delete
-                  </button>
+            return (
+              <div
+                key={room.id}
+                className="bg-white shadow-md rounded-md overflow-hidden flex flex-col"
+              >
+                <img
+                  src={room.room_image}
+                  alt="Room"
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-4 flex flex-col flex-grow">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h1 className="font-bold text-2xl mb-1">{room.room_name}</h1>
+                      <h2 className="text-lg font-semibold mb-1">
+                        {room.bed_size} - {room.room_number}
+                      </h2>
+                    </div>
+                    <div className="flex flex-col items-end space-y-1">
+                      <div className="flex items-center">
+                        <span
+                          className={`${statusColor} text-white px-2 py-1 rounded-full text-sm font-bold`}
+                        >
+                          {room.status.charAt(0).toUpperCase() + room.status.slice(1)}
+                        </span>
+                      </div>
+                      <div className="flex items-center">
+                        <span
+                          className={`${admissionColor} text-white px-2 py-1 rounded-full text-sm font-bold`}
+                        >
+                          {room.admission === "vip" ? "VIP" : "Regular"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-gray-500 text-sm mb-2">
+                    Price: ₱ {room.room_price?.toLocaleString()}
+                  </p>
+                  <p className="text-gray-500 text-sm mb-2">
+                    Pax: <span className="font-medium">{room.pax}</span>
+                  </p>
+                  <p className="text-gray-500 text-sm flex-grow overflow-hidden">
+                    {room.description}
+                  </p>
+                  <div className="flex justify-end mt-4 space-x-2">
+                    <button
+                      onClick={() => handleEdit(room)}
+                      className="px-3 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(room.id)}
+                      className="px-3 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {showFormModal && (

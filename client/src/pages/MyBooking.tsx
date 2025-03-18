@@ -1,4 +1,3 @@
-import React from "react";
 import Navbar from "../layout/Navbar";
 import Footer from "../layout/Footer";
 import BookingData from "../components/bookings/BookingData";
