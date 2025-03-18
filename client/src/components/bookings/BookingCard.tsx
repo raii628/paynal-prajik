@@ -26,9 +26,9 @@ const BookingCard: React.FC<BookingCardProps> = ({
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto bg-white shadow-md rounded-lg p-6 flex gap-6 mb-6">
+    <div className="w-full max-w-7xl mx-auto bg-white shadow-md rounded-lg p-6 flex flex-col md:flex-row gap-6 mb-6">
       {/* Room Image */}
-      <div className="w-56 h-36 flex items-center justify-center overflow-hidden rounded-lg bg-gray-200">
+      <div className="w-full md:w-56 h-36 flex items-center justify-center overflow-hidden rounded-lg bg-gray-200">
         <img
           src={imageUrl}
           alt={roomType}
@@ -47,7 +47,7 @@ const BookingCard: React.FC<BookingCardProps> = ({
           <p className="text-blue-600 font-semibold text-lg">
             PRICE: {price.toLocaleString()}
           </p>
-          <p className="text-gray-500 text-sm">
+          <p className="text-gray-500 text-sm mt-2">
             A Deluxe Room offers a spacious and elegant setting with modern
             amenities, featuring a comfortable king-sized bed, a luxurious
             en-suite bathroom, and stunning views.
@@ -55,16 +55,16 @@ const BookingCard: React.FC<BookingCardProps> = ({
         </div>
 
         {/* Footer: Status + Buttons */}
-        <div className="flex items-center justify-between mt-4">
+        <div className="flex items-end justify-between mt-4">
           {/* Status Badge */}
-          <div
-            className={`px-3 py-1 text-sm rounded-lg ${statusStyles[status]}`}
+          <span
+            className={`px-4 py-1 text-sm font-bold rounded-lg ${statusStyles[status]} min-w-[100px] text-center`}
           >
             {status.toUpperCase()}
-          </div>
+          </span>
 
           {/* Buttons */}
-          <div className="flex gap-3">
+          <div className="flex gap-3 ml-auto">
             {status === "booked" && (
               <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
                 Check Out
