@@ -6,11 +6,13 @@ import BookingData from "../components/bookings/BookingData";
 const MyBooking = () => {
   return (
     <>
-      <Navbar />
-      <div className="w-full my-20">
-        <BookingData />
+      <div className="bg-gray-50">
+        <Navbar />
+        <div className="w-full my-20">
+          <BookingData />
+        </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   );
 };
