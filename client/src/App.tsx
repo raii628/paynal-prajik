@@ -1,5 +1,6 @@
 import "./App.css";
-import { Suspense } from "react";
+import AOS from "aos";
+import { Suspense, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop";
 import { useUserContext } from "./contexts/AuthContext";
@@ -28,9 +29,17 @@ import Availability from "./pages/Availability";
 import Venue from "./pages/Venue";
 import MyBooking from "./pages/MyBooking";
 
+
 const App = () => {
   const { isAuthenticated, role, loading } = useUserContext();
   useTokenHandler();
+  
+  useEffect(() => {
+    AOS.init({
+      duration: 700,
+      easing: "ease-in-out",
+    });
+  }, []);
 
   if (loading) return <LoadingHydrate />;
 

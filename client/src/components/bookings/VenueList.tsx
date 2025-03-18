@@ -80,6 +80,7 @@ const VenueList = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {areas.map((area, index) => (
             <div
+              data-aos="fade-up"
               key={index}
               className="cursor-pointer"
               onClick={() => setSelectedArea(selectedArea === index ? null : index)}
