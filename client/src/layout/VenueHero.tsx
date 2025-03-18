@@ -5,19 +5,20 @@ import { motion } from "framer-motion";
 const VenueHero = () => {
   return (
     <section
-      className="h-screen bg-cover bg-center relative before:absolute before:inset-0 before:bg-black/60 before:z-0"
+      className="min-h-screen flex flex-col items-center justify-center bg-cover bg-center relative"
       style={{ backgroundImage: `url(${reservation_bg})` }}
     >
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-black/60 z-0"></div>
       <Navbar />
-
       {/* Hero Content */}
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="relative z-10 h-full flex flex-col justify-center items-center text-center px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 2xl:px-28"
+        className="relative z-10 flex flex-col items-center text-center px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 2xl:px-28"
       >
-        {/* Title with Motion */}
+        {/* Title */}
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -27,7 +28,7 @@ const VenueHero = () => {
           Reserve the Perfect Area for Your Event
         </motion.h1>
 
-        {/* Description with Motion */}
+        {/* Description */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

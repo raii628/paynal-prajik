@@ -1,10 +1,6 @@
 import { Link } from "react-router-dom";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
 import aboutUs_bg from "../assets/aboutUs_bg.jpg";
 import philosophy from "../assets/philosophy.jpg";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const AboutUs = () => {
   return (
