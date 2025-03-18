@@ -10,9 +10,11 @@ gsap.registerPlugin(ScrollTrigger);
 
 interface Room {
   id: number;
+  room_name: string;
   room_image: string;
   room_type: string;
   room_number: string;
+  admission: string;
   description: string;
   bed_size: string;
   pax: number;
@@ -34,21 +36,6 @@ const RoomList: FC = () => {
   });
 
   useEffect(() => {
-    gsap.fromTo(
-      cardRefs.current,
-      { opacity: 0, y: 50 },
-      {
-        opacity: 1,
-        y: 0,
-        stagger: 0.2,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 80%",
-        },
-      }
-    );
-  }, []);
     if (!isLoading && data?.data) {
       gsap.fromTo(
         cardRefs.current,
@@ -77,9 +64,11 @@ const RoomList: FC = () => {
 
   const rooms = data.data.map((room: any) => {
     return {
+      name: room.room_name,
       image: room.room_image,
       title: `${room.room_type} ( ${room.room_number} )`,
       description: room.description,
+      admission: room.admission,
       bedType: room.bed_size,
       capacity: room.pax,
       price: Number(room.room_price),

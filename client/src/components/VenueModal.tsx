@@ -45,19 +45,6 @@ const VenueModal = ({ isOpen, onClose, venue }) => {
             <p className="text-gray-600 font-montserrat">
               <strong>Price:</strong> ₱{venue.price.toLocaleString()}
             </p>
-            <p
-              className={`font-montserrat flex items-center gap-2 ${
-                venue.available ? "text-green-600" : "text-red-600"
-              }`}
-            >
-              <strong>Availability:</strong>
-              <i
-                className={`fa ${
-                  venue.available ? "fa-check-circle" : "fa-times-circle"
-                }`}
-              ></i>
-              {venue.available ? "Available" : "Not Available"}
-            </p>
           </div>
 
           {venue.available ? (

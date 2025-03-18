@@ -2,6 +2,7 @@ import { ChangeEvent, FC, useEffect, useState } from "react";
 
 export interface IRoom {
     id: number;
+    roomName: string; // New field for room_name
     roomImage: File | string;
     roomAdmission: "Regular" | "VIP";
     roomNumber: string;
@@ -18,13 +19,10 @@ interface IRoomFormModalProps {
     roomData: IRoom | null;
 }
 
-const EditRoomModal: FC<IRoomFormModalProps> = ({
-    onClose,
-    onSave,
-    roomData,
-}) => {
+const EditRoomModal: FC<IRoomFormModalProps> = ({ onClose, onSave, roomData }) => {
     const [formState, setFormState] = useState<IRoom>({
         id: roomData?.id || 0,
+        roomName: roomData?.roomName || "",
         roomImage: roomData?.roomImage || "",
         roomAdmission: roomData?.roomAdmission || "Regular",
         roomNumber: roomData?.roomNumber || "",
@@ -77,87 +75,102 @@ const EditRoomModal: FC<IRoomFormModalProps> = ({
                     {roomData ? "Edit Room" : "Add New Room"}
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    {/* Room Admission */}
                     <div>
-                        <label className="block text-sm font-medium mb-1">Room Admission</label>
-                        <select
-                            name="roomAdmission"
-                            value={formState.roomAdmission}
-                            onChange={handleChange}
-                            className="border border-gray-300 rounded w-full p-2"
-                        >
-                            <option value="Regular">Regular</option>
-                            <option value="VIP">VIP</option>
-                        </select>
-                    </div>
-
-                    {/* Room Number (Disabled if auto-gen on backend) */}
-                    <div>
-                        <label className="block text-sm font-medium mb-1">Room Number</label>
+                        <label className="block text-sm font-medium mb-1">Room Name</label>
                         <input
                             type="text"
-                            name="roomNumber"
-                            value={formState.roomNumber}
+                            name="roomName"
+                            value={formState.roomName}
                             onChange={handleChange}
-                            placeholder="Auto-generated or custom"
-                            className="border border-gray-300 rounded w-full p-2"
-                            disabled
-                        />
-                    </div>
-
-                    {/* Status */}
-                    <div>
-                        <label className="block text-sm font-medium mb-1">Status</label>
-                        <select
-                            name="status"
-                            value={formState.status}
-                            onChange={handleChange}
-                            className="border border-gray-300 rounded w-full p-2"
-                        >
-                            <option value="Available">Available</option>
-                            <option value="Occupied">Occupied</option>
-                            <option value="Maintenance">Maintenance</option>
-                        </select>
-                    </div>
-
-                    {/* Room Price */}
-                    <div>
-                        <label className="block text-sm font-medium mb-1">Room Price (₱)</label>
-                        <input
-                            type="number"
-                            name="roomPrice"
-                            value={formState.roomPrice}
-                            onChange={handleChange}
+                            placeholder="Enter Room Name"
                             className="border border-gray-300 rounded w-full p-2"
                         />
                     </div>
 
-                    {/* Bed Size */}
-                    <div>
-                        <label className="block text-sm font-medium mb-1">Bed Size</label>
-                        <input
-                            type="text"
-                            name="bedSize"
-                            value={formState.bedSize}
-                            onChange={handleChange}
-                            placeholder="e.g. Double Bed"
-                            className="border border-gray-300 rounded w-full p-2"
-                        />
+                    {/* Grid layout for primary fields */}
+                    <div className="grid grid-cols-2 gap-4">
+                        {/* Room Admission */}
+                        <div>
+                            <label className="block text-sm font-medium mb-1">Room Admission</label>
+                            <select
+                                name="roomAdmission"
+                                value={formState.roomAdmission}
+                                onChange={handleChange}
+                                className="border border-gray-300 rounded w-full p-2"
+                            >
+                                <option value="Regular">Regular</option>
+                                <option value="VIP">VIP</option>
+                            </select>
+                        </div>
+
+                        {/* Room Number (Disabled if auto-gen on backend) */}
+                        <div>
+                            <label className="block text-sm font-medium mb-1">Room Number</label>
+                            <input
+                                type="text"
+                                name="roomNumber"
+                                value={formState.roomNumber}
+                                onChange={handleChange}
+                                placeholder="Auto-generated or custom"
+                                className="border border-gray-300 rounded w-full p-2"
+                                disabled
+                            />
+                        </div>
+
+                        {/* Status */}
+                        <div>
+                            <label className="block text-sm font-medium mb-1">Status</label>
+                            <select
+                                name="status"
+                                value={formState.status}
+                                onChange={handleChange}
+                                className="border border-gray-300 rounded w-full p-2"
+                            >
+                                <option value="Available">Available</option>
+                                <option value="Occupied">Occupied</option>
+                                <option value="Maintenance">Maintenance</option>
+                            </select>
+                        </div>
+
+                        {/* Room Price */}
+                        <div>
+                            <label className="block text-sm font-medium mb-1">Room Price (₱)</label>
+                            <input
+                                type="number"
+                                name="roomPrice"
+                                value={formState.roomPrice}
+                                onChange={handleChange}
+                                className="border border-gray-300 rounded w-full p-2"
+                            />
+                        </div>
+
+                        {/* Bed Size */}
+                        <div>
+                            <label className="block text-sm font-medium mb-1">Bed Size</label>
+                            <input
+                                type="text"
+                                name="bedSize"
+                                value={formState.bedSize}
+                                onChange={handleChange}
+                                placeholder="e.g. Double Bed"
+                                className="border border-gray-300 rounded w-full p-2"
+                            />
+                        </div>
+
+                        {/* Pax */}
+                        <div>
+                            <label className="block text-sm font-medium mb-1">Pax</label>
+                            <input
+                                type="number"
+                                name="pax"
+                                value={formState.pax}
+                                onChange={handleChange}
+                                className="border border-gray-300 rounded w-full p-2"
+                            />
+                        </div>
                     </div>
 
-                    {/* Pax */}
-                    <div>
-                        <label className="block text-sm font-medium mb-1">Pax</label>
-                        <input
-                            type="number"
-                            name="pax"
-                            value={formState.pax}
-                            onChange={handleChange}
-                            className="border border-gray-300 rounded w-full p-2"
-                        />
-                    </div>
-
-                    {/* Description */}
+                    {/* Description (Full width) */}
                     <div>
                         <label className="block text-sm font-medium mb-1">Description</label>
                         <textarea
@@ -169,6 +182,7 @@ const EditRoomModal: FC<IRoomFormModalProps> = ({
                         />
                     </div>
 
+                    {/* Room Image (Full width with preview) */}
                     <div>
                         <label className="block text-sm font-medium mb-1">Room Image</label>
                         <input
@@ -181,7 +195,7 @@ const EditRoomModal: FC<IRoomFormModalProps> = ({
                             <img
                                 src={previewUrl}
                                 alt="Preview"
-                                className="w-full h-48 object-cover border border-gray-200"
+                                className="w-full h-48 object-cover border border-gray-200 mt-2"
                             />
                         )}
                     </div>

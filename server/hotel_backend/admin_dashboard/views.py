@@ -101,6 +101,24 @@ def add_new_room(request):
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def edit_room(request, room_id):
+    try:
+        room = Rooms.objects.get(id=room_id)
+        serializer = RoomSerializer(room, data=request.data, partial=True)
+        if serializer.is_valid():
+            instance = serializer.save()
+            data = RoomSerializer(instance).data
+            return Response({
+                "message": "Room updated successfully",
+                "data": data
+            }, status=status.HTTP_200_OK)
+    except Rooms.DoesNotExist:
+        return Response({"error": "Room not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def delete_room(request, room_id):

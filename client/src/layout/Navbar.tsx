@@ -13,7 +13,12 @@ import { getGuestDetails } from "../services/Guest";
 import DefaultImg from "../assets/Default_pfp.jpg";
 import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendarCheck, faCircleUser, faRightToBracket, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCalendarCheck,
+  faCircleUser,
+  faRightToBracket,
+  faSpinner,
+} from "@fortawesome/free-solid-svg-icons";
 import SlotNavButton from "../motions/CustomNavbar";
 
 const Navbar: FC = () => {
@@ -25,7 +30,7 @@ const Navbar: FC = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const location = useLocation();
   const isAvailabilityPage = location.pathname === "/availability";
-  const isBookingPage = location.pathname === "/booking";
+  const isMyBookingPage = location.pathname === "/mybooking";
 
   const [notification, setNotification] = useState<{
     message: string;
@@ -126,7 +131,7 @@ const Navbar: FC = () => {
 
       <nav
         className={`fixed top-0 left-0 w-full px-10 py-4 z-40 transition-all duration-75 ${
-          isScrolled || isAvailabilityPage
+          isScrolled || isAvailabilityPage || isMyBookingPage
             ? "bg-gray-200 shadow-lg text-black"
             : "bg-transparent text-white"
         }`}
@@ -151,12 +156,12 @@ const Navbar: FC = () => {
                   key={index}
                   to={link.link}
                   className={`${
-                    isScrolled || isAvailabilityPage || isBookingPage
+                    isScrolled || isAvailabilityPage || isMyBookingPage
                       ? "text-black hover:text-purple-600"
                       : "bg-transparent text-white hover:text-purple-600"
                   }`}
                 >
-                  {link.text}
+                  <i className={link.icon}></i> {link.text}
                 </SlotNavButton>
               ))}
             </ul>
@@ -191,17 +196,17 @@ const Navbar: FC = () => {
                         console.error("User details are not available");
                       }
                     },
-                    icon: <FontAwesomeIcon icon={faCircleUser} />
+                    icon: <FontAwesomeIcon icon={faCircleUser} />,
                   },
                   {
                     label: "My Bookings",
                     onClick: () => navigate("/guest/bookings/:id"),
-                    icon: <FontAwesomeIcon icon={faCalendarCheck} />
+                    icon: <FontAwesomeIcon icon={faCalendarCheck} />,
                   },
                   {
                     label: "Log Out",
                     onClick: () => setIsModalOpen(true),
-                    icon: <FontAwesomeIcon icon={faRightToBracket} />
+                    icon: <FontAwesomeIcon icon={faRightToBracket} />,
                   },
                 ]}
                 position="bottom"
