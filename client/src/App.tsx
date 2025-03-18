@@ -11,7 +11,7 @@ import LoadingHydrate from "./motions/LoadingHydrate";
 import NotFound from "./pages/_NotFound";
 import About from "./pages/About";
 import AdminDashboard from "./pages/admin/AdminDashboard";
-import AreaReservations from "./pages/admin/AreaReservations";
+import Reservations from "./pages/admin/AreaReservations";
 import Comments from "./pages/admin/Comments";
 import ManageAmenities from "./pages/admin/ManageAmenities";
 import ManageRooms from "./pages/admin/ManageRooms";
@@ -65,7 +65,7 @@ const App = () => {
             <Route index element={<AdminDashboard />} />
             <Route path="areas" element={<ManageAreas />} />
             <Route path="rooms" element={<ManageRooms />} />
-            <Route path="reservations" element={<AreaReservations />} />
+            <Route path="reservations" element={<Reservations />} />
             <Route path="amenities" element={<ManageAmenities />} />
             <Route path="comments" element={<Comments />} />
             <Route path="reports" element={<Reports />} />

@@ -8,13 +8,14 @@ class AmenitySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class RoomSerializer(serializers.ModelSerializer):
-    room_image = serializers.SerializerMethodField()
+    # room_image = serializers.ImageField()
     
     class Meta:
         model = Rooms
         fields = [
             'id',
             'admission',
+            'room_name',
             'room_number',
             'room_type',
             'status',
@@ -26,10 +27,10 @@ class RoomSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['room_number']
         
-    def get_room_image(self, obj):
-        if obj.room_image:
-            return cloudinary_url(obj.room_image.public_id)[0]
-        return None
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['room_image'] = instance.room_image.url if instance.room_image else None
+        return representation
 
 class AreaSerializer(serializers.ModelSerializer):
     class Meta:

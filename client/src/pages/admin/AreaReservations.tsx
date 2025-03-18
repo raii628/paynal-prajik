@@ -5,7 +5,7 @@ import DashboardSkeleton from "../../motions/skeletons/AdminDashboardSkeleton";
 import { fetchReservations } from "../../services/Booking";
 import Error from "../_ErrorBoundary";
 
-const AreaReservations = () => {
+const Reservations = () => {
   const [search, setSearch] = useState<string>('');
   const [filter, setFilter] = useState<string>('all');
   const { data, isLoading, error } = useQuery({
@@ -34,7 +34,7 @@ const AreaReservations = () => {
   return (
     <div className="p-6">
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-        <h1 className="text-3xl font-semibold">Area Reservations</h1>
+        <h1 className="text-3xl font-semibold">Reservations</h1>
         <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
           Add New Reservation
         </button>
@@ -100,4 +100,4 @@ const AreaReservations = () => {
   )
 }
 
-export default AreaReservations;
+export default Reservations;

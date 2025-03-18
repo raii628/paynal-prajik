@@ -76,6 +76,21 @@ export const addNewRoom = async (payload: FormData): Promise<{ data: any }> => {
     }
 };
 
+export const editRoom = async (roomId: number, payload: FormData): Promise<{ data: any }> => {
+    try {
+        const response = await ADMIN.put(`/edit_room/${roomId}`, payload, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            withCredentials: true,
+        });
+        return response.data;
+    } catch (error) {
+        console.error(`Failed to edit room: ${error}`);
+        throw error;
+    }
+}
+
 export const deleteRoom = async (roomId: number) => {
     try {
         const response = await ADMIN.delete(`/delete_room/${roomId}`, {

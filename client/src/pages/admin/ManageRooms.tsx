@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { fetchRooms, addNewRoom, deleteRoom } from "../../services/Admin";
+import { addNewRoom, deleteRoom, fetchRooms, editRoom } from "../../services/Admin";
 import EditRoomModal, { IRoom } from "../../components/admin/EditRoomModal";
 import Modal from "../../components/Modal";
+import DashboardSkeleton from "../../motions/skeletons/AdminDashboardSkeleton";
+import Error from "../_ErrorBoundary";
 
 interface AddRoomResponse {
   data: any;
@@ -11,23 +13,27 @@ interface AddRoomResponse {
 
 const ManageRooms: React.FC = () => {
   const [showFormModal, setShowFormModal] = useState(false);
-  const [editRoom, setEditRoom] = useState<IRoom | null>(null);
+  const [editRoomData, setEditRoomData] = useState<IRoom | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [deleteRoomId, setDeleteRoomId] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const queryClient = useQueryClient();
 
-  const {
-    data: roomsData,
-    isLoading,
-    isError,
-  } = useQuery<{ data: any[] }>({
+  const { data: roomsData, isLoading, isError } = useQuery<{ data: any[] }>({
     queryKey: ["rooms"],
     queryFn: fetchRooms,
   });
 
   const addRoomMutation = useMutation<AddRoomResponse, unknown, FormData>({
     mutationFn: addNewRoom,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["rooms"] });
+      setShowFormModal(false);
+    },
+  });
+
+  const editRoomMutation = useMutation<AddRoomResponse, unknown, { roomId: number; formData: FormData }>({
+    mutationFn: ({ roomId, formData }) => editRoom(roomId, formData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["rooms"] });
       setShowFormModal(false);
@@ -41,16 +47,16 @@ const ManageRooms: React.FC = () => {
       setShowModal(false);
     },
   });
-  
 
   const handleAddNew = () => {
-    setEditRoom(null);
+    setEditRoomData(null);
     setShowFormModal(true);
   };
 
   const handleEdit = (room: any) => {
-    setEditRoom({
+    setEditRoomData({
       id: room.id,
+      roomName: room.room_name,
       roomImage: typeof room.room_image === "string" ? room.room_image : room.room_price,
       roomAdmission: room.admission === "vip" ? "VIP" : "Regular",
       roomNumber: room.room_number,
@@ -75,9 +81,7 @@ const ManageRooms: React.FC = () => {
   };
 
   const confirmDelete = () => {
-    if (deleteRoomId != null) {
-      deleteRoomMutation.mutate(deleteRoomId);
-    }
+    if (deleteRoomId != null) deleteRoomMutation.mutate(deleteRoomId);
     setLoading(false);
   };
 
@@ -87,51 +91,33 @@ const ManageRooms: React.FC = () => {
   };
 
   const handleSave = (roomData: IRoom) => {
-    if (!roomData.id) {
-      if (roomData.roomImage instanceof File) {
-        const formData = new FormData();
-        formData.append(
-          "admission",
-          roomData.roomAdmission === "VIP" ? "vip" : "regular"
-        );
-        formData.append("room_type", "Deluxe");
-        formData.append("status", roomData.status?.toLowerCase() || "available");
-        formData.append("room_price", String(roomData.roomPrice || 0));
-        formData.append("description", roomData.description || "");
-        formData.append("bed_size", roomData.bedSize || "");
-        formData.append("pax", String(roomData.pax || 1));
-        formData.append("room_image", roomData.roomImage);
+    const formData = new FormData();
+    formData.append("room_name", roomData.roomName);
+    formData.append("admission", roomData.roomAdmission === "VIP" ? "vip" : "regular");
+    formData.append("room_type", "Deluxe");
+    formData.append("status", roomData.status.toLowerCase() || "available");
+    formData.append("room_price", String(roomData.roomPrice || 0));
+    formData.append("description", roomData.description || "");
+    formData.append("bed_size", roomData.bedSize || "");
+    formData.append("pax", String(roomData.pax || 1));
+    if (roomData.roomImage instanceof File) formData.append("room_image", roomData.roomImage);
 
-        addRoomMutation.mutate(formData);
-      } else {
-        const formData = new FormData();
-        formData.append(
-          "admission",
-          roomData.roomAdmission === "VIP" ? "vip" : "regular"
-        );
-        formData.append("room_type", "Deluxe");
-        formData.append("status", roomData.status?.toLowerCase() || "available");
-        formData.append("room_price", String(roomData.roomPrice || 0));
-        formData.append("description", roomData.description || "");
-        formData.append("bed_size", roomData.bedSize || "");
-        formData.append("pax", String(roomData.pax || 1));
-        formData.append("room_image", roomData.roomImage || "");
-        addRoomMutation.mutate(formData);
-      }
+    if (!roomData.id) {
+      addRoomMutation.mutate(formData);
     } else {
-      alert("Update functionality not implemented yet!");
+      editRoomMutation.mutate({ roomId: roomData.id, formData });
     }
   };
 
-  if (isLoading) return <div>Loading rooms...</div>;
-  if (isError) return <div>Error fetching rooms!</div>;
+  if (isLoading) return <DashboardSkeleton />;
+  if (isError) return <Error />;
 
   const rooms = roomsData?.data || [];
 
   return (
-    <div className="p-6">
+    <div className="max-h-[calc(100vh-25px)] overflow-y-auto p-3">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-700">Manage Rooms</h1>
+        <h1 className="text-2xl font-bold text-gray-800">Manage Rooms</h1>
         <button
           onClick={handleAddNew}
           className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
@@ -145,7 +131,7 @@ const ManageRooms: React.FC = () => {
         {rooms.map((room: any) => (
           <div
             key={room.id}
-            className="bg-white shadow-md rounded overflow-hidden flex flex-col h-[480px]"
+            className="bg-white shadow-md rounded overflow-hidden flex flex-col"
           >
             {/* Image */}
             <img
@@ -156,6 +142,7 @@ const ManageRooms: React.FC = () => {
 
             {/* Card Content */}
             <div className="p-4 flex flex-col flex-grow">
+              <h1 className="font-bold text-2xl mb-1">{room.room_name}</h1>
               <h2 className="text-lg font-semibold mb-1">
                 {room.bed_size} - {room.room_number}
               </h2>
@@ -198,25 +185,23 @@ const ManageRooms: React.FC = () => {
         ))}
       </div>
 
-      {/* Modal for Add/Edit Room */}
       {showFormModal && (
         <EditRoomModal
           onClose={() => setShowFormModal(false)}
           onSave={handleSave}
-          roomData={editRoom}
+          roomData={editRoomData}
         />
       )}
 
-      {/* Confirmation Modal for Delete */}
       <Modal
+        isOpen={showModal}
         title="Delete Room?"
         description="Are you sure you want to delete this room?"
         cancel={cancelDelete}
         onConfirm={confirmDelete}
         className="px-4 py-2 bg-red-600 text-white rounded-md uppercase font-bold hover:bg-red-700 transition-all duration-300"
-        confirmText={loading ? "Deleting..." : "Yes, Delete"}
         cancelText="No"
-        isOpen={showModal}
+        confirmText={loading ? "Deleting..." : "Yes, Delete"}
       />
     </div>
   );

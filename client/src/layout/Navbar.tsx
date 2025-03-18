@@ -156,7 +156,7 @@ const Navbar: FC = () => {
                       : "bg-transparent text-white hover:text-purple-600"
                   }`}
                 >
-                  {link.text}
+                  <i className={link.icon}></i> {link.text}
                 </SlotNavButton>
               ))}
             </ul>

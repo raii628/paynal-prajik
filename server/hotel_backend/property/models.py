@@ -32,6 +32,7 @@ class Rooms(models.Model):
         choices=ADMISSION_CHOICES,
         default='regular',
     )
+    room_name = models.CharField(max_length=100, null=False, default="Room")
     room_number = models.CharField(max_length=10, unique=True, null=False)
     room_type = models.CharField(max_length=100, null=False)
     status = models.CharField(
@@ -40,7 +41,7 @@ class Rooms(models.Model):
         default='available',
     )
     room_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    room_image = CloudinaryField('room_image')
+    room_image = CloudinaryField('room_image', null=False, blank=False)
     description = models.TextField(blank=True)
     bed_size = models.CharField(max_length=30, null=False)
     pax = models.PositiveIntegerField(default=1)
