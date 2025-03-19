@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, FC } from "react";
 import EditRoomModal, { IRoom } from "../../components/admin/EditRoomModal";
 import Modal from "../../components/Modal";
 import DashboardSkeleton from "../../motions/skeletons/AdminDashboardSkeleton";
@@ -12,7 +12,7 @@ interface AddRoomResponse {
   data: any;
 }
 
-const ManageRooms: React.FC = () => {
+const ManageRooms: FC = () => {
   const [showFormModal, setShowFormModal] = useState(false);
   const [editRoomData, setEditRoomData] = useState<IRoom | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
