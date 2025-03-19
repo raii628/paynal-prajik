@@ -39,14 +39,22 @@ const Promotion = () => {
     }),
   };
 
+  const imageVariants = {
+    hidden: { opacity: 0, x: 50 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+  }
+
   return (
     <>
-      <div className="flex flex-col md:flex-row items-center my-5 bg-gray-50 p-8 rounded-2xl">
+      <div className="flex flex-col md:flex-row items-center p-8">
         <div className="md:w-1/2 w-full flex justify-center">
-          <img
-            data-aos="fade-right"
+          <motion.img
             src={resort}
             alt="Luxury Hotel Experience"
+            variants={imageVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ amount: 0.2 }}
             className="rounded-lg shadow-md w-full md:w-[90%]"
           />
         </div>

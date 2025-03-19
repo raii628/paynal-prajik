@@ -12,7 +12,7 @@ import LoadingHydrate from "./motions/loaders/LoadingHydrate";
 import NotFound from "./pages/_NotFound";
 import About from "./pages/About";
 import AdminDashboard from "./pages/admin/AdminDashboard";
-import Reservations from "./pages/admin/AreaReservations";
+import Reservations from "./pages/admin/Reservations";
 import Comments from "./pages/admin/Comments";
 import ManageAmenities from "./pages/admin/ManageAmenities";
 import ManageAreas from "./pages/admin/ManageAreas";
