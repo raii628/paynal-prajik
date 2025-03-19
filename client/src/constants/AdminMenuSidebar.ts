@@ -1,6 +1,6 @@
 import { 
-  faGauge, 
-  // faCalendarCheck, 
+  faGauge,
+  faBookBookmark,
   faBed, 
   faUsers, 
   faMapMarkerAlt,
@@ -11,13 +11,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export const menuItems = [
-  { 
+  {
     icon: faGauge, 
     label: "Dashboard",
     link: '/admin'
   },
   {
-    icon: faMapMarkerAlt,
+    icon: faBookBookmark,
     label: "Bookings",
     link: '/admin/bookings'
   },
@@ -26,12 +26,12 @@ export const menuItems = [
     label: "Reservations",
     link: '/admin/reservations'
   },
-  { 
+  {
     icon: faCalendarCheck, 
     label: "Manage Areas",
     link: '/admin/areas'
   },
-  { 
+  {
     icon: faBed,
     label: "Manage Rooms",
     link: '/admin/rooms'
