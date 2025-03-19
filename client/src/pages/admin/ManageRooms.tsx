@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState, FC } from "react";
+import { FC, useState } from "react";
 import EditRoomModal, { IRoom } from "../../components/admin/EditRoomModal";
 import Modal from "../../components/Modal";
 import DashboardSkeleton from "../../motions/skeletons/AdminDashboardSkeleton";
@@ -125,7 +125,8 @@ const ManageRooms: FC = () => {
     formData.append("status", roomData.status.toLowerCase() || "available");
     formData.append("room_price", String(roomData.roomPrice || 0));
     formData.append("description", roomData.description || "");
-    formData.append("bed_size", roomData.bedSize || "");
+    formData.append("bed_size", String(roomData.bedSize || ""));
+    formData.append("room_number", roomData.roomNumber || "");
     formData.append("pax", String(roomData.pax || 1));
     if (roomData.roomImage instanceof File) formData.append("room_image", roomData.roomImage);
 
@@ -142,16 +143,16 @@ const ManageRooms: FC = () => {
   const rooms = roomsData?.data || [];
 
   return (
-    <div className="relative">
-      {loading && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-900/80 z-[500]">
-          <ManageRoomLoader size="80px" color="white" text={loaderText} />
-        </div>
-      )}
+    <div className="overflow-y-auto h-[calc(100vh-25px)]">
+      <div className="p-3 container mx-auto">
+        {loading && (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-900/80 z-[500]">
+            <ManageRoomLoader size="80px" color="white" text={loaderText} />
+          </div>
+        )}
 
-      <div className="max-h-[calc(100vh-25px)] overflow-y-auto p-3">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Manage Rooms</h1>
+        <div className="flex flex-row md:flex-row items-center mb-5 justify-between">
+          <h1 className="text-3xl font-semibold">Manage Rooms</h1>
           <button
             onClick={handleAddNew}
             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
@@ -268,6 +269,7 @@ const ManageRooms: FC = () => {
           cancelText="No"
           confirmText={"Delete Room"}
         />
+
       </div>
     </div>
   );
