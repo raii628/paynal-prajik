@@ -18,6 +18,11 @@ export const menuItems = [
   },
   {
     icon: faMapMarkerAlt,
+    label: "Bookings",
+    link: '/admin/bookings'
+  },
+  {
+    icon: faMapMarkerAlt,
     label: "Reservations",
     link: '/admin/reservations'
   },
