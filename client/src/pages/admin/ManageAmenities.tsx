@@ -24,7 +24,7 @@ const ManageAmenities = () => {
   });
 
   return (
-    <div className="p-6">
+    <div className="h-[calc(100vh-25px)] p-3 overflow-y-auto container mx-auto">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
         <h1 className="text-3xl font-semibold">Manage Amenities</h1>
