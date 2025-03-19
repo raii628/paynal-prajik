@@ -12,6 +12,7 @@ const Promotion = () => {
     hidden: {},
     visible: {
       transition: {
+        delayChildren: 0.5,
         staggerChildren: 0.1,
       },
     }
@@ -43,6 +44,7 @@ const Promotion = () => {
       <div className="flex flex-col md:flex-row items-center my-5 bg-gray-50 p-8 rounded-2xl">
         <div className="md:w-1/2 w-full flex justify-center">
           <img
+            data-aos="fade-right"
             src={resort}
             alt="Luxury Hotel Experience"
             className="rounded-lg shadow-md w-full md:w-[90%]"
