@@ -27,7 +27,8 @@ import MyBooking from "./pages/MyBooking";
 import RegistrationFlow from "./pages/RegistrationFlow";
 import Rooms from "./pages/Rooms";
 import Venue from "./pages/Venue";
-
+import MyBooking from "./pages/MyBooking";
+import Promotion from "./components/Promotion";
 
 const App = () => {
   const { isAuthenticated, role, loading } = useUserContext();
@@ -61,6 +62,7 @@ const App = () => {
           }
         />
         <Route path="/guest/:id" element={<GuestProfile />} />
+
         <Route path="/registration" element={<RegistrationFlow />} />
         <Route path="/about" element={<About />} />
         <Route path="/venues" element={<Venue />} />
