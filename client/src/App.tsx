@@ -67,7 +67,7 @@ const App = () => {
         <Route path="/venues" element={<Venue />} />
         <Route path="/rooms" element={<Rooms />} />
         <Route path="/availability" element={<Availability />} />
-        <Route path="/booking" element={<MyBooking />} />
+        <Route path="/mybooking" element={<MyBooking />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
         {/* Protected admin routes */}
         <Route element={<ProtectedRoute requiredRole="admin" />}>
