@@ -28,7 +28,7 @@ const ManageAreas = () => {
     <div className="h-[calc(100vh-25px)] p-3 overflow-y-auto container mx-auto">
       <div className="flex items-center justify-between mb-5">
         <h1 className="text-3xl font-semibold">Manage Areas</h1>
-        <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+        <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-semibold transition-colors duration-300">
           + Add New Area
         </button>
       </div>

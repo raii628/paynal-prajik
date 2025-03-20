@@ -61,4 +61,12 @@ export const area = axios.create({
         'Content-Type': 'application/json',
     },
     withCredentials: true
-})
+});
+
+export const amenity = axios.create({
+    baseURL: `${import.meta.env.VITE_API_URL}/property`,
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    withCredentials: true
+});

@@ -8,11 +8,11 @@ import ProtectedRoute from "./contexts/ProtectedRoutes";
 import useTokenHandler from "./hooks/useTokenHandler";
 import AdminLayout from "./layout/admin/AdminLayout";
 import GuestProfile from "./layout/guest/GuestProfile";
-import LoadingHydrate from "./motions/LoadingHydrate";
+import LoadingHydrate from "./motions/loaders/LoadingHydrate";
 import NotFound from "./pages/_NotFound";
 import About from "./pages/About";
 import AdminDashboard from "./pages/admin/AdminDashboard";
-import Reservations from "./pages/admin/AreaReservations";
+import Reservations from "./pages/admin/Reservations";
 import Comments from "./pages/admin/Comments";
 import ManageAmenities from "./pages/admin/ManageAmenities";
 import ManageAreas from "./pages/admin/ManageAreas";
@@ -60,7 +60,6 @@ const App = () => {
           }
         />
         <Route path="/guest/:id" element={<GuestProfile />} />
-
         <Route path="/registration" element={<RegistrationFlow />} />
         <Route path="/about" element={<About />} />
         <Route path="/venues" element={<Venue />} />

@@ -333,7 +333,7 @@ const EditRoomModal: FC<IRoomFormModalProps> = ({
                                             type="file"
                                             accept="image/*"
                                             onChange={handleImageChange}
-                                            className="mb-2"
+                                            className="mb-2 ring-1 rounded-sm p-2"
                                         />
                                         {previewUrl && (
                                             <img
