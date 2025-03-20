@@ -1,22 +1,30 @@
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import aboutUs_bg from "../assets/aboutUs_bg.jpg";
 import philosophy from "../assets/philosophy.jpg";
 
+const variantFromLeft = {
+  hidden: { opacity: 0, x: -50 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+};
+
+const variantFromRight = {
+  hidden: { opacity: 0, x: 50 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+};
+
 const AboutUs = () => {
   return (
     <section className="py-12 px-6 bg-white">
-      <div
-        data-aos="fade-left"
-        className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-12"
-      >
-        <div>
-          <img
-            src={aboutUs_bg}
-            alt="About Us"
-            className="w-full h-auto rounded-2xl shadow-md"
-          />
-        </div>
-        <div className="space-y-4">
+      {/* First Section */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-12">
+        <motion.div
+          variants={variantFromLeft}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ amount: 0.2 }}
+          className="space-y-4"
+        >
           <h3 className="text-blue-800 uppercase text-lg font-extralight font-montserrat tracking-widest flex items-center gap-2">
             <i className="fa fa-moon"></i> About Us
           </h3>
@@ -32,14 +40,43 @@ const AboutUs = () => {
           <button className="mt-4 inline-block font-montserrat bg-blue-800 text-white px-6 py-3 rounded-full shadow hover:bg-blue-700 transition-all">
             More about us &rarr;
           </button>
-        </div>
+        </motion.div>
+        <motion.div
+          variants={variantFromRight}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ amount: 0.2 }}
+        >
+          <img
+            src={aboutUs_bg}
+            alt="About Us"
+            className="w-full h-auto rounded-2xl shadow-md"
+          />
+        </motion.div>
       </div>
 
-      <div
-        data-aos="fade-right"
-        className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center"
-      >
-        <div className="space-y-4">
+      {/* Second Section */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <motion.div
+          variants={variantFromLeft}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ amount: 0.2 }}
+
+        >
+          <img
+            src={philosophy}
+            alt="Our Philosophy"
+            className="w-full h-auto rounded-2xl shadow-md"
+          />
+        </motion.div>
+        <motion.div
+          variants={variantFromRight}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ amount: 0.2 }}
+          className="space-y-4"
+        >
           <h3 className="text-blue-800 uppercase text-lg font-extralight font-montserrat tracking-widest flex items-center gap-2">
             <i className="fa fa-moon"></i> Our Philosophy
           </h3>
@@ -56,15 +93,7 @@ const AboutUs = () => {
               Book with us &rarr;
             </button>
           </Link>
-        </div>
-
-        <div className="order-1 md:order-2">
-          <img
-            src={philosophy}
-            alt="Our Philosophy"
-            className="w-full h-auto rounded-2xl shadow-md"
-          />
-        </div>
+        </motion.div>
       </div>
     </section>
   );

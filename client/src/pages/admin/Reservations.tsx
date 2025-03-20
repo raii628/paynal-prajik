@@ -35,9 +35,6 @@ const Reservations = () => {
     <div className="h-[calc(100vh-25px)] p-3 overflow-y-auto container mx-auto">
       <div className="flex flex-col md:flex-row justify-between items-center">
         <h1 className="text-3xl font-semibold mb-6">Reservations</h1>
-        <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
-          Add New Reservation
-        </button>
       </div>
 
       <div className="flex flex-col md:flex-row gap-4 mb-6">

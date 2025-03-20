@@ -3,7 +3,7 @@ import {
   faBookBookmark,
   faBed, 
   faUsers, 
-  faMapMarkerAlt,
+  // faMapMarkerAlt,
   faChartLine,
   faComment,
   faConciergeBell,
@@ -18,14 +18,14 @@ export const menuItems = [
   },
   {
     icon: faBookBookmark,
-    label: "Bookings",
+    label: "Manage Bookings",
     link: '/admin/bookings'
   },
-  {
-    icon: faMapMarkerAlt,
-    label: "Reservations",
-    link: '/admin/reservations'
-  },
+  // {
+  //   icon: faMapMarkerAlt,
+  //   label: "Reservations",
+  //   link: '/admin/reservations'
+  // },
   {
     icon: faCalendarCheck, 
     label: "Manage Areas",
