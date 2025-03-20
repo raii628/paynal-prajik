@@ -8,8 +8,8 @@ from rest_framework.permissions import IsAuthenticated
 from booking.models import *
 from user_roles.serializers import CustomUserSerializer
 from user_roles.models import CustomUsers
-from property.models import Rooms
-from property.serializers import RoomSerializer
+from property.models import Rooms, Amenities, Areas
+from property.serializers import RoomSerializer, AmenitySerializer, AreaSerializer
 from property.utils import generate_room_number
 from .validations.manage_rooms import validate_room_data
 from rest_framework.exceptions import ValidationError
@@ -72,6 +72,7 @@ def area_reservations(request):
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+# Rooms
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def fetch_rooms(request):
@@ -147,6 +148,51 @@ def delete_room(request, room_id):
         return Response({"error": "Room not found"}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+# Areas
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def fetch_areas(request):
+    try:
+        areas = Areas.objects.all()
+        serializer = AreaSerializer(areas, many=True)
+        return Response({
+            "data": serializer.data
+        }, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({
+            "error": str(e)
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+# def add_area(request):
+#     try:
+        
+#     except Exception as e:
+#         return Response({
+#             "error": str(e)
+#         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# @api_view(['PUT'])
+# @permission_classes([IsAuthenticated])
+# def edit_room(request):
+#     try:
+        
+#     except Exception as e:
+#         return Response({
+#             "error": str(e)
+#         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# @api_view(['DELETE'])
+# @permission_classes([IsAuthenticated])
+# def delete_area(request):
+#     try:
+        
+#     except Exception as e:
+#         return Response({
+#             "error": str(e)
+#         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
