@@ -2,23 +2,22 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { ImageUp } from "lucide-react";
 import { ChangeEvent, FC } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../contexts/AuthContext";
 import LoadingHydrate from "../../motions/loaders/LoadingHydrate";
 import Error from "../../pages/_ErrorBoundary";
 import { getGuestDetails, updateProfileImage } from "../../services/Guest";
 
 const GuestProfile: FC = () => {
-  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-
-  const { profileImage } = useUserContext();
+  const { user, profileImage } = useUserContext();
+  const userId = user?.id;
 
   const { data: profile, isLoading, error } = useQuery({
-    queryKey: ["guestProfile", id],
-    queryFn: () => getGuestDetails(id!),
-    enabled: !!id,
+    queryKey: ["guest"],
+    queryFn: getGuestDetails,
+    enabled: !!userId,
   });
 
   const mutation = useMutation({
@@ -28,7 +27,7 @@ const GuestProfile: FC = () => {
       return updateProfileImage(formData);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["guestProfile", id] });
+      queryClient.invalidateQueries({ queryKey: ["guest"] });
     },
   });
 
@@ -40,6 +39,8 @@ const GuestProfile: FC = () => {
 
   if (isLoading) return <LoadingHydrate />;
   if (error) return <Error />;
+
+  console.log(user);
 
   return (
     <motion.div
@@ -96,7 +97,9 @@ const GuestProfile: FC = () => {
         </div>
 
         {mutation.isPending && (
-          <p className="mt-4 text-blue-600 font-semibold text-center">Updating profile picture...</p>
+          <p className="mt-4 text-blue-600 font-semibold text-center">
+            Updating profile picture...
+          </p>
         )}
       </div>
     </motion.div>

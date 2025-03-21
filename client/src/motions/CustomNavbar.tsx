@@ -10,7 +10,7 @@ interface NavBtn {
 
 const SlotNavButton: FC<NavBtn> = ({ to, children, className }) => {
     return (
-        <li className={`relative inline-block font-black ${className} transition-all duration-300`}>
+        <li className={`relative inline-block text-2xl font-black ${className} transition-all duration-300`}>
             <NavLink to={to}>
                 <motion.div
                     className="relative overflow-hidden inline-block"

@@ -23,3 +23,17 @@ export const fetchReservations = async () => {
         throw error;
     }
 };
+
+export const fetchAvailability = async (arrival: string, departure: string) => {
+    try {
+        const response = await booking.get('/availability', {
+            params: { arrival, departure },
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true
+        });
+        return response.data;
+    } catch (error) {
+        console.error(`Failed to fetch availability: ${error}`);
+        throw error;
+    }
+};

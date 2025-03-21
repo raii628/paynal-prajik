@@ -105,7 +105,7 @@ const Navbar: FC = () => {
       if (isAuthenticated && userDetails?.id) {
         setImageLoading(true);
         try {
-          const data = await getGuestDetails(userDetails.id);
+          const data = await getGuestDetails();
           setProfileImage(data.user.profile_image);
         } catch (err) {
           console.error(`Failed to fetch user profile for Navbar: ${err}`);
@@ -129,10 +129,11 @@ const Navbar: FC = () => {
       )}
 
       <nav
-        className={`fixed top-0 left-0 w-full px-10 py-4 z-40 transition-all duration-75 ${isScrolled || isAvailabilityPage || isMyBookingPage
-          ? "bg-gray-200 shadow-lg text-black"
-          : "bg-transparent text-white"
-          }`}
+        className={`fixed top-0 left-0 w-full px-10 py-7 z-40 transition-all duration-75  ${
+          isScrolled || isAvailabilityPage || isMyBookingPage
+            ? "bg-gray-200 shadow-lg text-black"
+            : "bg-transparent text-white"
+        }`}
       >
         <div className="max-w-7xl mx-auto flex items-center">
           {/* Left Section */}
@@ -141,7 +142,7 @@ const Navbar: FC = () => {
               <img
                 src={hotelLogo}
                 alt="Hotel Logo"
-                className="h-9 w-auto cursor-pointer"
+                className="h-12 w-auto cursor-pointer"
               />
             </Link>
           </div>
@@ -153,10 +154,11 @@ const Navbar: FC = () => {
                 <SlotNavButton
                   key={index}
                   to={link.link}
-                  className={`${isScrolled || isAvailabilityPage || isMyBookingPage
-                    ? "text-black hover:text-purple-600"
-                    : "bg-transparent text-white hover:text-purple-600"
-                    }`}
+                  className={`${
+                    isScrolled || isAvailabilityPage || isMyBookingPage
+                      ? "text-black hover:text-purple-600"
+                      : "bg-transparent text-white hover:text-purple-600"
+                  }`}
                 >
                   <i className={link.icon}></i> {link.text}
                 </SlotNavButton>
@@ -169,13 +171,13 @@ const Navbar: FC = () => {
             {!isAuthenticated ? (
               <>
                 <button
-                  className="px-4 py-2 text-base font-bold border rounded-md hover:bg-gradient-to-r from-[#7300FF] to-[#08D3FC] transition duration-300"
+                  className="px-4 py-2 text-lg font-bold border rounded-md hover:bg-gradient-to-r from-[#7300FF] to-[#08D3FC] transition duration-300"
                   onClick={toggleLoginModal}
                 >
                   <FontAwesomeIcon icon={faRightToBracket} /> Login
                 </button>
                 <button
-                  className="ml-4 px-4 py-2 text-base font-bold border rounded-md hover:bg-gradient-to-r from-[#7300FF] to-[#08D3FC] transition duration-300"
+                  className="ml-8 px-4 py-2 text-lg font-bold border rounded-md hover:bg-gradient-to-r from-[#7300FF] to-[#08D3FC] transition duration-300"
                   onClick={toggleRegisterModal}
                 >
                   Sign Up
@@ -239,16 +241,16 @@ const Navbar: FC = () => {
             onClick={() => setMenuOpen(false)}
           ></div>
           <ul className="fixed top-0 right-0 w-full h-screen md:w-3/5 sm:w-4/5 bg-white shadow-md text-black z-50 flex flex-col">
-            <div className="flex justify-between items-center p-3.75 sm:p-5.25 md:p-5.25 bg-gray-200">
+            <div className="flex justify-between items-center p-7 sm:p-9 md:p-9 bg-gray-200">
               <Link to="/">
                 <img
                   src={hotelLogo}
                   alt="Hotel Logo"
-                  className="h-9 w-auto cursor-pointer block sm:hidden md:hidden"
+                  className="h-12 w-auto cursor-pointer block sm:hidden md:hidden"
                 />
               </Link>
               <button onClick={() => setMenuOpen(false)}>
-                <i className="fa fa-times text-2xl mr-6"></i>
+                <i className="fa fa-times text-3xl mr-3 sm:mr-0"></i>
               </button>
             </div>
             <li className="p-4 text-black/70">
@@ -304,8 +306,9 @@ const Navbar: FC = () => {
         description="Are you sure you want to log out?"
         cancel={() => setIsModalOpen(!isModalOpen)}
         onConfirm={handleLogout}
-        className={`bg-red-600 text-white active:bg-red-700 font-bold uppercase px-4 py-2 cursor-pointer rounded-md shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 transition-all duration-150 ${loading ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+        className={`bg-red-600 text-white active:bg-red-700 font-bold uppercase px-4 py-2 cursor-pointer rounded-md shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 transition-all duration-150 ${
+          loading ? "opacity-50 cursor-not-allowed" : ""
+        }`}
         loading={loading}
         confirmText={
           loading ? (

@@ -2,10 +2,47 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from .models import Reservations, Bookings
+from property.models import Rooms, Areas
+from property.serializers import RoomSerializer, AreaSerializer
 from .serializers import ReservationSerializer, BookingSerializer
 from rest_framework.permissions import IsAuthenticated
+from datetime import datetime
 
 # Create your views here.
+@api_view(['GET'])
+def fetch_availability(request):
+    arrival_date = request.query_params.get('arrival') or request.data.get('arrival')
+    departure_date = request.query_params.get('departure') or request.data.get('departure')
+    
+    if not arrival_date or not departure_date:
+        return Response({
+            "error": "Please provide both arrival and departure dates"
+        }, status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        arrival = datetime.strptime(arrival_date, "%Y-%m-%d")
+        departure = datetime.strptime(departure_date, "%Y-%m-%d")
+    except ValueError:
+        return Response({
+            "error": "Invalid date format. Use YYYY-MM-DD"
+        }, status=status.HTTP_400_BAD_REQUEST)
+    
+    if departure <= arrival:
+        return Response({
+            'error': "Departure date should be greater than arrival date"
+        }, status=status.HTTP_400_BAD_REQUEST)
+        
+    available_rooms = Rooms.objects.filter(status='available')
+    available_areas = Areas.objects.filter(status='available')
+    
+    room_serializer = RoomSerializer(available_rooms, many=True)
+    area_serializer = AreaSerializer(available_areas, many=True)
+    
+    return Response({
+        "rooms": room_serializer.data,
+        "areas": area_serializer.data
+    }, status=status.HTTP_200_OK)
+
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def bookings_list(request):

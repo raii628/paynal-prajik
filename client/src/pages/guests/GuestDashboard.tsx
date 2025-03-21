@@ -1,8 +1,10 @@
 
 const GuestDashboard = () => {
   return (
-    <div>Hello Guest</div>
-  )
-}
+    <>
+      <h1>Hello Guest</h1>
+    </>
+  );
+};
 
-export default GuestDashboard
+export default GuestDashboard;

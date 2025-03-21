@@ -4,6 +4,7 @@ from . import views
 # /property/** routes
 urlpatterns = [
     path('rooms/', views.fetch_rooms, name='fetch_rooms'),
+    path('rooms/<int:id>/', views.fetch_room_detail, name='fetch_room_detail'),
     path('areas/', views.fetch_areas, name='fetch_areas'),
     path('amenities/', views.fetch_amenities, name='fetch_amenities'),
 ]

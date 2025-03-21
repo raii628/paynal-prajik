@@ -15,10 +15,10 @@ const Footer = () => {
         <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 py-2">
           {footerSections.map((section, index) => (
             <div key={index}>
-              <h1 className="text-sm font-semibold">{section.title}</h1>
+              <h1 className="text-base font-semibold">{section.title}</h1>
               <ul className="pt-2">
                 {section.links.map((link, linkIndex) => (
-                  <li key={linkIndex} className="text-xs pt-2">
+                  <li key={linkIndex} className="text-sm pt-2">
                     <a
                       href="#"
                       className="text-blue-600 hover:underline transition-all duration-300"

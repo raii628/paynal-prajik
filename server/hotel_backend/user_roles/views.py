@@ -502,12 +502,11 @@ def user_auth(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def user_details(request, user_id):
+def user_details(request):
     try:
-        user = CustomUsers.objects.get(id=user_id)
-        
+        user = request.user
         serializer = CustomUserSerializer(user)
-        return Response({'user': serializer.data}, status=status.HTTP_200_OK)
+        return Response({'data': serializer.data}, status=status.HTTP_200_OK)
     except CustomUsers.DoesNotExist:
         return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
