@@ -13,7 +13,17 @@ interface RoomCardProps {
   price: number;
 }
 
-const RoomCard: FC<RoomCardProps> = ({ id, name, image, title, description, bedType, capacity, price, admission }) => {
+const RoomCard: FC<RoomCardProps> = ({
+  id,
+  name,
+  image,
+  title,
+  description,
+  bedType,
+  capacity,
+  price,
+  admission,
+}) => {
   const navigate = useNavigate();
 
   return (
@@ -22,7 +32,9 @@ const RoomCard: FC<RoomCardProps> = ({ id, name, image, title, description, bedT
       <div className="p-4 flex flex-col justify-between flex-1">
         <div>
           <h1 className="text-xl font-bold mb-2 font-playfair">{name}</h1>
-          <h3 className="text-sm font-semibold mb-2 font-playfair">{title} | {admission.toUpperCase()}</h3>
+          <h3 className="text-sm font-semibold mb-2 font-playfair">
+            {title} | {admission.toUpperCase()}
+          </h3>
           <p className="text-gray-600 text-sm mb-4 font-montserrat">
             {description}
           </p>

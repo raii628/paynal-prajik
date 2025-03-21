@@ -23,10 +23,10 @@ const Hero = () => {
             >
               <div className="flex flex-col justify-center items-center h-screen z-10 relative text-center px-6 sm:px-12 md:px-20">
                 <div className="text-white max-w-4xl">
-                  <h1 className="font-playfair mb-4 text-[clamp(1.75rem,3.5vw,3rem)] leading-tight">
+                  <h1 className="font-playfair mb-4 text-[clamp(2rem,4vw,3.5rem)] leading-tight">
                     {slide.heading}
                   </h1>
-                  <p className="font-montserrat text-[clamp(0.9rem,1.3vw,1.25rem)] leading-relaxed">
+                  <p className="font-montserrat text-[clamp(1.1rem,1.4vw,1.3rem)] leading-relaxed">
                     {slide.description}
                   </p>
                 </div>
