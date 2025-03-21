@@ -7,7 +7,6 @@ import { useUserContext } from "./contexts/AuthContext";
 import ProtectedRoute from "./contexts/ProtectedRoutes";
 import useTokenHandler from "./hooks/useTokenHandler";
 import AdminLayout from "./layout/admin/AdminLayout";
-import GuestProfile from "./layout/guest/GuestProfile";
 import LoadingHydrate from "./motions/loaders/LoadingHydrate";
 import NotFound from "./pages/_NotFound";
 import About from "./pages/About";
@@ -27,6 +26,7 @@ import MyBooking from "./pages/MyBooking";
 import RegistrationFlow from "./pages/RegistrationFlow";
 import Rooms from "./pages/Rooms";
 import Venue from "./pages/Venue";
+import GuestDashboard from "./pages/guests/GuestDashboard";
 
 const App = () => {
   const { isAuthenticated, role, loading } = useUserContext();
@@ -52,14 +52,13 @@ const App = () => {
               role === "admin" ? (
                 <Navigate to="/admin" replace />
               ) : (
-                <Homepage />
+                <GuestDashboard />
               )
             ) : (
               <Homepage />
             )
           }
         />
-        <Route path="/guest/:id" element={<GuestProfile />} />
         <Route path="/registration" element={<RegistrationFlow />} />
         <Route path="/about" element={<About />} />
         <Route path="/venues" element={<Venue />} />

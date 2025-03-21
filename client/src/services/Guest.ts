@@ -1,8 +1,8 @@
 import { guest } from "./_axios";
 
-export const getGuestDetails = async (id: string) => {
+export const getGuestDetails = async () => {
     try {
-        const { data } = await guest.get(`/${id}`, {
+        const { data } = await guest.get('/', {
             withCredentials: true
         });
         return data;

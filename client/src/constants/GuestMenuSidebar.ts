@@ -7,7 +7,6 @@ import {
   faFileAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
-// Sample guest menu items for the sidebar
 export const guestMenuItems = [
   {
     icon: faHouseUser,
@@ -16,7 +15,7 @@ export const guestMenuItems = [
   },
   {
     icon: faCalendarCheck,
-    label: "Bookings",
+    label: "Book Room",
     link: "/guest/bookings",
   },
   {
