@@ -3,6 +3,7 @@ from . import views
 
 # /booking/** routes
 urlpatterns = [
+    path('availability', views.fetch_availability, name='fetch_availability'),
     path('bookings', views.bookings_list, name='bookings_list'),
     path("bookings/<int:booking_id>", views.booking_detail, name='booking_detail'),
     path('reservation', views.reservation_list, name='reservation_list'),

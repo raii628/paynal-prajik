@@ -1,5 +1,5 @@
 import AOS from "aos";
-import { Suspense, useEffect } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import ScrollToTop from "./components/ScrollToTop";
@@ -7,7 +7,6 @@ import { useUserContext } from "./contexts/AuthContext";
 import ProtectedRoute from "./contexts/ProtectedRoutes";
 import useTokenHandler from "./hooks/useTokenHandler";
 import AdminLayout from "./layout/admin/AdminLayout";
-import LoadingHydrate from "./motions/loaders/LoadingHydrate";
 import NotFound from "./pages/_NotFound";
 import About from "./pages/About";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -19,7 +18,6 @@ import ManageBookings from "./pages/admin/ManageBookings";
 import ManageRooms from "./pages/admin/ManageRooms";
 import ManageUsers from "./pages/admin/ManageUsers";
 import Reports from "./pages/admin/Reports";
-import Availability from "./pages/Availability";
 import ForgotPassword from "./pages/ForgotPassword";
 import Homepage from "./pages/Homepage";
 import MyBooking from "./pages/MyBooking";
@@ -28,9 +26,14 @@ import Rooms from "./pages/Rooms";
 import Venue from "./pages/Venue";
 import GuestDashboard from "./pages/guests/GuestDashboard";
 import GuestLayout from "./layout/guest/GuestLayout";
+import RoomDetails from "./pages/RoomDetails";
+import AvailabilityResults from "./pages/AvailabilityResults";
+import GuestProfile from "./layout/guest/GuestProfile";
+
+const LoadingHydrate = lazy(() => import("./motions/loaders/LoadingHydrate"));
 
 const App = () => {
-  const { isAuthenticated, role, loading } = useUserContext();
+  const { isAuthenticated, role } = useUserContext();
   useTokenHandler();
 
   useEffect(() => {
@@ -39,8 +42,6 @@ const App = () => {
       easing: "ease-in-out",
     });
   }, []);
-
-  if (loading) return <LoadingHydrate />;
 
   return (
     <Suspense fallback={<LoadingHydrate />}>
@@ -53,7 +54,7 @@ const App = () => {
               role === "admin" ? (
                 <Navigate to="/admin" replace />
               ) : (
-                <Navigate to='/guest' replace />
+                <Homepage />
               )
             ) : (
               <Homepage />
@@ -70,9 +71,11 @@ const App = () => {
 
         <Route path="/registration" element={<RegistrationFlow />} />
         <Route path="/about" element={<About />} />
+        <Route path="/guest/:userId" element={<GuestProfile />} />
         <Route path="/venues" element={<Venue />} />
         <Route path="/rooms" element={<Rooms />} />
-        <Route path="/availability" element={<Availability />} />
+        <Route path="/rooms/:id" element={<RoomDetails />} />
+        <Route path="/availability" element={<AvailabilityResults />} />
         <Route path="/mybooking" element={<MyBooking />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
         {/* Protected admin routes */}

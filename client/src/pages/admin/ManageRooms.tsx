@@ -4,7 +4,7 @@ import { FC, useState } from "react";
 import EditRoomModal, { IRoom } from "../../components/admin/EditRoomModal";
 import Modal from "../../components/Modal";
 import DashboardSkeleton from "../../motions/skeletons/AdminDashboardSkeleton";
-import ManageRoomLoader from "../../motions/skeletons/ManageRoomLoader";
+import ManageRoomLoader from "../../motions/loaders/ManageRoomLoader";
 import { addNewRoom, deleteRoom, editRoom, fetchRooms } from "../../services/Admin";
 import Error from "../_ErrorBoundary";
 

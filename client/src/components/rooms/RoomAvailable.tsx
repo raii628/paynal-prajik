@@ -1,11 +1,23 @@
-const RoomAvailable = ({
+import { FC } from "react";
+
+interface RoomAvailableProps {
+  image: string;
+  title: string;
+  bedType: string;
+  capacity: number;
+  price: number;
+  availableRooms: number;
+  onBookNow: () => void;
+}
+
+const RoomAvailable: FC<RoomAvailableProps> = ({
   image,
   title,
   bedType,
   capacity,
   price,
   availableRooms,
-  onBookNow, // Function passed from parent
+  onBookNow,
 }) => {
   const soldOut = availableRooms <= 0;
 
