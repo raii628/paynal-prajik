@@ -36,6 +36,7 @@ const RoomList: FC = () => {
 
   const rooms = data.data.map((room: any) => {
     return {
+      id: room.id,
       name: room.room_name,
       image: room.room_image,
       title: `${room.room_type} ( ${room.room_number} )`,
@@ -52,7 +53,7 @@ const RoomList: FC = () => {
       className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-15 p-6"
     >
       {rooms.map((room, index) => (
-        <div data-aos="fade-up" key={index}>
+        <div key={index}>
           <RoomCard {...room} />
         </div>
       ))}
