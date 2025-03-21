@@ -1,9 +1,8 @@
-import GuestSidebar from "../../layout/guest/GuestSidebar";
 
 const GuestDashboard = () => {
   return (
     <>
-      <GuestSidebar />
+      <h1>Hello Guest</h1>
     </>
   );
 };

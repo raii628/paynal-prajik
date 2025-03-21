@@ -27,6 +27,7 @@ import RegistrationFlow from "./pages/RegistrationFlow";
 import Rooms from "./pages/Rooms";
 import Venue from "./pages/Venue";
 import GuestDashboard from "./pages/guests/GuestDashboard";
+import GuestLayout from "./layout/guest/GuestLayout";
 
 const App = () => {
   const { isAuthenticated, role, loading } = useUserContext();
@@ -52,13 +53,21 @@ const App = () => {
               role === "admin" ? (
                 <Navigate to="/admin" replace />
               ) : (
-                <GuestDashboard />
+                <Navigate to='/guest' replace />
               )
             ) : (
               <Homepage />
             )
           }
         />
+
+        <Route element={<ProtectedRoute requiredRole="guest" />}>
+          <Route path="/guest" element={<GuestLayout />} >
+            <Route index element={<GuestDashboard />} />
+            <Route path="book-room" element={<Navigate to="/registration" />} />
+          </Route>
+        </Route>
+
         <Route path="/registration" element={<RegistrationFlow />} />
         <Route path="/about" element={<About />} />
         <Route path="/venues" element={<Venue />} />
