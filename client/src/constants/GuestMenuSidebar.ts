@@ -2,9 +2,9 @@ import {
   faHouseUser,
   faCalendarCheck,
   faMapMarkerAlt,
-  faWindowClose,
-  faComment,
-  faFileAlt,
+  faUser,
+  faFileInvoiceDollar,
+  faHeadset,
 } from "@fortawesome/free-solid-svg-icons";
 
 export const guestMenuItems = [
@@ -15,27 +15,27 @@ export const guestMenuItems = [
   },
   {
     icon: faCalendarCheck,
-    label: "Book Room",
+    label: "My Bookings",
     link: "/guest/bookings",
   },
   {
     icon: faMapMarkerAlt,
-    label: "Area Reservation",
+    label: "Area Reservations",
     link: "/guest/areas",
   },
   {
-    icon: faWindowClose,
-    label: "Cancellation",
+    icon: faUser,
+    label: "My Profile",
     link: "/guest/cancellation",
   },
   {
-    icon: faComment,
-    label: "Reviews",
+    icon: faFileInvoiceDollar,
+    label: "Payments & Invoices",
     link: "/guest/reviews",
   },
   {
-    icon: faFileAlt,
-    label: "Reports",
+    icon: faHeadset,
+    label: "Customer Support",
     link: "/guest/reports",
   },
 ];
