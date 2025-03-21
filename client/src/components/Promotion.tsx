@@ -1,5 +1,5 @@
-import resort from "../assets/resort.jpg";
 import { motion } from "framer-motion";
+import resort from "../assets/resort.jpg";
 
 const Promotion = () => {
   const headingText = "Unparalleled luxury, timeless comfort";
@@ -15,7 +15,7 @@ const Promotion = () => {
         delayChildren: 0.5,
         staggerChildren: 0.1,
       },
-    }
+    },
   };
 
   const wordVariants = {
@@ -27,7 +27,7 @@ const Promotion = () => {
       opacity: 1,
       x: 0,
       transition: { duration: 0.5 },
-    }
+    },
   };
 
   const paragraphVariants = {
@@ -42,7 +42,7 @@ const Promotion = () => {
   const imageVariants = {
     hidden: { opacity: 0, x: 50 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
-  }
+  };
 
   return (
     <>
@@ -61,8 +61,8 @@ const Promotion = () => {
 
         <div className="md:w-1/2 w-full text-center md:text-left">
           <div className="py-10">
-            <motion.h2 
-              className="text-9xl text-gray-900 mb-10 font-playfair font-medium"
+            <motion.h2
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl xl:text-9xl text-gray-900 mb-10 font-playfair font-medium"
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
@@ -79,8 +79,8 @@ const Promotion = () => {
                 </motion.span>
               ))}
             </motion.h2>
-            <motion.p 
-              className="text-gray-500 text-lg font-montserrat font-medium"
+            <motion.p
+              className="text-base sm:text-lg md:text-xl text-gray-500 font-montserrat font-medium"
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
