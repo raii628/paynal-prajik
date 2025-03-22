@@ -1,22 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useState, useContext, ReactNode, FC } from "react";
+import { createContext, useState, useContext, ReactNode, FC, useEffect } from "react";
+import { authenticateUser } from "../services/Auth";
 
-interface UserDetails {
+interface User {
     id: number;
     username: string;
     email: string;
+    profile_image?: string;
 }
 
 interface UserContextType {
     isAuthenticated: boolean;
-    userDetails: UserDetails | null;
+    userDetails: User | null;
     sessionExpired: boolean;
     role?: string;
     loading: boolean;
     profileImage?: string;
     setIsAuthenticated: (value: boolean) => void;
-    setUserDetails: (value: UserDetails) => void;
+    setUserDetails: (value: User) => void;
     setSessionExpired: (value: boolean) => void;
     setRole: (value: string) => void;
     setLoading: (value: boolean) => void;
@@ -27,12 +29,33 @@ const UserContext = createContext<UserContextType | any>(null);
 
 export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-    const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
+    const [userDetails, setUserDetails] = useState<User | null>(null);
     const [sessionExpired, setSessionExpired] = useState<boolean>(false);
     const [role, setRole] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(true);
     const [profileImage, setProfileImage] = useState<string>("");
-    
+
+    useEffect(() => {
+        const checkAuth = async () => {
+            try {
+                const res = await authenticateUser();
+                setIsAuthenticated(true);
+                setUserDetails(res.data.user);
+                setProfileImage(res.data.user.profile_image || "");
+                setRole(res.data.role || "");
+            } catch {
+                setIsAuthenticated(false);
+                setUserDetails(null);
+                setProfileImage("");
+                setRole("");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        checkAuth();
+    }, []);
+
     const contextValue: UserContextType = {
         isAuthenticated,
         userDetails,

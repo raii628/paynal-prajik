@@ -1,25 +1,27 @@
 import Navbar from "./Navbar";
 import room_bg from "../assets/room_bg.jpg";
+
 const RoomHero = () => {
   return (
-    <section
-      className=" h-screen bg-cover bg-center relative before:absolute before:inset-0 before:bg-black/50 before:z-0"
-      style={{ backgroundImage: `url(${room_bg})` }}
-    >
+    <>
       <Navbar />
-      <div className="relative z-10 h-full flex flex-col justify-center items-center px-8 sm:px-15 md:px-20 lg:px-24 xl:px-30 2xl:px-35">
-        <div className="flex flex-row items-center mb-7 w-full max-w-6xl px-5">
-          <div className="border-t border-gray-300 flex-1"></div>
-          <h1 className="text-white/90 [font-size:clamp(1.5rem,3vw,2.5rem)] font-extralight mx-3 whitespace-nowrap">
-            Azurea
+      <section
+        className="h-screen bg-cover bg-center relative before:absolute before:inset-0 before:bg-black/60 before:z-0"
+        style={{ backgroundImage: `url(${room_bg})` }}
+      >
+        <div className="relative z-10 h-full flex flex-col justify-center items-center text-center px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 2xl:px-28">
+          <h1 className="text-white text-[clamp(2rem,4vw,3.5rem)] font-bold leading-tight drop-shadow-md font-playfair">
+            Discover Your Perfect Stay
           </h1>
-          <div className="border-t border-gray-300 flex-1"></div>
+          <p className="text-white mt-4  text-[clamp(1.1rem,1.4vw,1.3rem)] max-w-3xl leading-relaxed drop-shadow-sm font-montserrat">
+            Experience a blend of elegance and comfort in our beautifully
+            designed rooms. Whether for a relaxing getaway or a business trip,
+            our suites offer an unforgettable experience filled with style and
+            modern amenities.
+          </p>
         </div>
-        <h1 className="text-white [font-size:clamp(3rem,8vw,6rem)] font-bold text-center leading-tight">
-          Our Rooms
-        </h1>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, ReactNode, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface ModalProps {
@@ -8,9 +8,10 @@ interface ModalProps {
   cancel: () => void;
   onConfirm: () => void;
   className?: string;
-  confirmText?: string;
+  confirmText?: ReactNode;
   cancelText?: string;
   isOpen: boolean;
+  loading?: boolean;
 }
 
 const Modal: FC<ModalProps> = ({
@@ -23,9 +24,21 @@ const Modal: FC<ModalProps> = ({
   confirmText,
   cancelText,
   isOpen,
+  loading = false
 }) => {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        cancel();
+      }
+    }
+
+    if (isOpen) window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [cancel, isOpen]);
+
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {isOpen && (
         <motion.div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/65"
@@ -70,6 +83,7 @@ const Modal: FC<ModalProps> = ({
                 type="button"
                 onClick={onConfirm}
                 className={className}
+                disabled={loading}
               >
                 {confirmText}
               </button>

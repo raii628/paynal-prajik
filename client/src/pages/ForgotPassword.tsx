@@ -1,11 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FC, useState } from "react"
+import { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  forgotPassword,
-  verifyResetOtp,
-  resetPassword
-} from '../services/Auth';
+import { forgotPassword, verifyResetOtp, resetPassword } from '../services/Auth';
 import { useUserContext } from "../contexts/AuthContext";
 
 type Step = 'email' | 'otp' | 'newPassword';
@@ -83,15 +79,46 @@ const ForgotPassword: FC = () => {
     }
   };
 
+  // Resend OTP function for user convenience.
+  const resendOtp = async () => {
+    if (!email.trim()) {
+      setError('Email is required to resend OTP.');
+      return;
+    }
+    setLoading(true);
+    try {
+      const response = await forgotPassword(email);
+      console.log("OTP resent:", response.data.message);
+      setError(null);
+    } catch (err: any) {
+      setError(err.response?.data?.error || 'Failed to resend OTP.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      <div className="bg-white p-6 rounded shadow-md w-full max-w-md">
+    <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100 p-4">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        {/* Step Progress Indicator */}
+        <div className="flex justify-between mb-6">
+          <div className={`flex-1 text-center ${step === 'email' ? 'text-blue-600 font-semibold' : 'text-gray-400'}`}>
+            Email
+          </div>
+          <div className={`flex-1 text-center ${step === 'otp' ? 'text-blue-600 font-semibold' : 'text-gray-400'}`}>
+            OTP
+          </div>
+          <div className={`flex-1 text-center ${step === 'newPassword' ? 'text-blue-600 font-semibold' : 'text-gray-400'}`}>
+            Reset
+          </div>
+        </div>
+
         {step === 'email' && (
-          <form onSubmit={handleEmailSubmit}>
+          <form onSubmit={handleEmailSubmit} className="transition duration-500 ease-in-out">
             <h2 className="text-2xl font-bold mb-4 text-center">Forgot Password</h2>
-            {error && <div className="mb-2 text-red-600">{error}</div>}
+            {error && <div className="mb-4 p-2 bg-red-100 text-red-600 rounded">{error}</div>}
             <div className="mb-4">
-              <label htmlFor="email" className="block text-gray-700">Email Address</label>
+              <label htmlFor="email" className="block text-gray-700 mb-1">Email Address</label>
               <input
                 type="email"
                 id="email"
@@ -99,7 +126,7 @@ const ForgotPassword: FC = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="mt-1 p-2 w-full border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
               />
             </div>
             <button
@@ -113,11 +140,20 @@ const ForgotPassword: FC = () => {
         )}
 
         {step === 'otp' && (
-          <form onSubmit={handleOtpSubmit}>
-            <h2 className="text-2xl font-bold mb-4 text-center">Enter OTP</h2>
-            {error && <div className="mb-2 text-red-600">{error}</div>}
+          <form onSubmit={handleOtpSubmit} className="transition duration-500 ease-in-out">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold">Enter OTP</h2>
+              <button
+                type="button"
+                onClick={() => setStep('email')}
+                className="text-sm text-blue-500 hover:underline"
+              >
+                Back
+              </button>
+            </div>
+            {error && <div className="mb-4 p-2 bg-red-100 text-red-600 rounded">{error}</div>}
             <div className="mb-4">
-              <label htmlFor="otp" className="block text-gray-700">One-Time Password</label>
+              <label htmlFor="otp" className="block text-gray-700 mb-1">One-Time Password</label>
               <input
                 type="text"
                 id="otp"
@@ -125,8 +161,18 @@ const ForgotPassword: FC = () => {
                 onChange={(e) => setOtp(e.target.value)}
                 placeholder="Enter OTP"
                 required
-                className="mt-1 p-2 w-full border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
               />
+            </div>
+            <div className="flex justify-between items-center mb-4">
+              <button
+                type="button"
+                onClick={resendOtp}
+                disabled={loading}
+                className="text-sm text-blue-500 hover:underline"
+              >
+                Resend OTP
+              </button>
             </div>
             <button
               type="submit"
@@ -139,11 +185,20 @@ const ForgotPassword: FC = () => {
         )}
 
         {step === 'newPassword' && (
-          <form onSubmit={handleNewPasswordSubmit}>
-            <h2 className="text-2xl font-bold mb-4 text-center">Reset Password</h2>
-            {error && <div className="mb-2 text-red-600">{error}</div>}
+          <form onSubmit={handleNewPasswordSubmit} className="transition duration-500 ease-in-out">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold">Reset Password</h2>
+              <button
+                type="button"
+                onClick={() => setStep('otp')}
+                className="text-sm text-blue-500 hover:underline"
+              >
+                Back
+              </button>
+            </div>
+            {error && <div className="mb-4 p-2 bg-red-100 text-red-600 rounded">{error}</div>}
             <div className="mb-4">
-              <label htmlFor="newPassword" className="block text-gray-700">New Password</label>
+              <label htmlFor="newPassword" className="block text-gray-700 mb-1">New Password</label>
               <input
                 type="password"
                 id="newPassword"
@@ -151,11 +206,11 @@ const ForgotPassword: FC = () => {
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="Enter new password"
                 required
-                className="mt-1 p-2 w-full border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="confirmPassword" className="block text-gray-700">Confirm Password</label>
+              <label htmlFor="confirmPassword" className="block text-gray-700 mb-1">Confirm Password</label>
               <input
                 type="password"
                 id="confirmPassword"
@@ -163,7 +218,7 @@ const ForgotPassword: FC = () => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Confirm new password"
                 required
-                className="mt-1 p-2 w-full border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
               />
             </div>
             <button
@@ -177,7 +232,7 @@ const ForgotPassword: FC = () => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default ForgotPassword;

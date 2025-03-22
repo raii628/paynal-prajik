@@ -1,34 +1,40 @@
 import { 
-  faTachometerAlt, 
-  faCalendarCheck, 
+  faGauge,
+  faBookBookmark,
   faBed, 
   faUsers, 
-  faMapMarkerAlt,
+  // faMapMarkerAlt,
   faChartLine,
   faComment,
   faConciergeBell,
+  faCalendarCheck,
 } from "@fortawesome/free-solid-svg-icons";
 
 export const menuItems = [
-  { 
-    icon: faTachometerAlt, 
+  {
+    icon: faGauge, 
     label: "Dashboard",
-    link: '/admin' 
-  },
-  { 
-    icon: faCalendarCheck, 
-    label: "Reservations/Bookings",
-    link: '/admin/reservations' 
-  },
-  { 
-    icon: faBed,
-    label: "Manage Rooms",
-    link: '/admin/rooms' 
+    link: '/admin'
   },
   {
-    icon: faMapMarkerAlt,
-    label: "Area Reservations",
+    icon: faBookBookmark,
+    label: "Manage Bookings",
+    link: '/admin/bookings'
+  },
+  // {
+  //   icon: faMapMarkerAlt,
+  //   label: "Reservations",
+  //   link: '/admin/reservations'
+  // },
+  {
+    icon: faCalendarCheck, 
+    label: "Manage Areas",
     link: '/admin/areas'
+  },
+  {
+    icon: faBed,
+    label: "Manage Rooms",
+    link: '/admin/rooms'
   },
   {
     icon: faConciergeBell,

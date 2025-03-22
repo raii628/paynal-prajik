@@ -6,3 +6,6 @@ class AdminDetails(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
     profile_pic = CloudinaryField('profile_pic')
+    
+    class Meta:
+        db_table = 'admin_details'

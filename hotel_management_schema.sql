@@ -1,14 +1,14 @@
--- Guests
-CREATE TABLE guests (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-    first_name VARCHAR(200) NOT NULL,
-    last_name VARCHAR(200) NOT NULL,
-    email VARCHAR(200) UNIQUE NOT NULL,
-    address TEXT NOT NULL,
-    contact_number VARCHAR(25) UNIQUE NOT NULL,
-	role ENUM('regular', 'vip') NOT NULL,
-    created_at DATETIME DEFAULT	CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT	CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+-- User Roles
+CREATE TABLE users (
+	id INT NOT NULL PRIMARY KEY,
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    age INT NOT NULL,
+    email VARCHAR(255) UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    is_admin BOOLEAN,
+    guest_type ENUM('regular', 'vip') DEFAULT 'regular',
+    profile_image VARCHAR(255)
 );
 
 -- Rooms
@@ -18,6 +18,7 @@ CREATE TABLE rooms (
     room_type_id INT NOT NULL,
     status ENUM('available', 'occupied', 'maintenance') DEFAULT 'available',
     notes TEXT,
+    room_image VARCHAR(255),
     FOREIGN KEY (room_type_id) REFERENCES room_types(id)
 );
 
@@ -53,13 +54,14 @@ CREATE TABLE areas (
     description TEXT,
     capacity INT NOT NULL,
     price_per_hour DECIMAL(10, 2) NOT NULL,
+    area_image VARCHAR(255),
     status ENUM('available', 'occupied', 'maintenance') DEFAULT 'available'
 );
 
 -- Bookings (Rooms)
 CREATE TABLE bookings (
 	id INT PRIMARY KEY AUTO_INCREMENT,
-    guest_id INT NOT NULL,
+    user_id INT NOT NULL,
     room_id INT NOT NULL,
     check_in_date DATE NOT NULL,
     check_out_date DATE NOT NULL,
@@ -68,14 +70,14 @@ CREATE TABLE bookings (
 	cancellation_reason TEXT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (guest_id) REFERENCES guests(id),
+    FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (room_id) REFERENCES rooms(id)
 );
 
 -- Reservations (Areas)
 CREATE TABLE reservations (
 	id INT PRIMARY KEY AUTO_INCREMENT,
-    guest_id INT NOT NULL,
+    user_id INT NOT NULL,
     area_id INT NOT NULL,
     start_time DATETIME NOT NULL,
     end_time DATETIME NOT NULL,
@@ -83,7 +85,7 @@ CREATE TABLE reservations (
     status ENUM('confirmed', 'cancelled'),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (guest_id) REFERENCES guests(id),
+    FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (area_id) REFERENCES areas(id)
 );
 
@@ -101,14 +103,14 @@ CREATE TABLE transactions (
 	id INT PRIMARY KEY AUTO_INCREMENT,
     booking_id INT,
     reservation_id INT,
-    guest_id INT NOT NULL,
+    user_id INT NOT NULL,
     transaction_type ENUM('booking', 'reservation', 'cancellation_refund') NOT NULL,
     amount DECIMAL(10, 2) NOT NULL,
 	transaction_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     status ENUM('completed', 'pending', 'failed') DEFAULT 'pending',
     FOREIGN KEY (booking_id) REFERENCES bookings(id),
     FOREIGN KEY (reservation_id) REFERENCES reservations(id),
-    FOREIGN KEY (guest_id) REFERENCES guests(id),
+    FOREIGN KEY (user_id) REFERENCES users(id),
     CHECK (booking_id IS NOT NULL OR reservation_id IS NOT NULL)
 );
 
@@ -116,10 +118,10 @@ CREATE TABLE transactions (
 CREATE TABLE reviews (
 	id INT PRIMARY KEY AUTO_INCREMENT,
     booking_id INT NOT NULL,
-    guest_id INT NOT NULL,
+    user_id INT NOT NULL,
     review_text TEXT,
     rating INT CHECK (rating BETWEEN 1 AND 5),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (booking_id) REFERENCES bookings(id),
-    FOREIGN KEY (guest_id) REFERENCES guests(id)
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );

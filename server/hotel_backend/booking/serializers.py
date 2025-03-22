@@ -1,10 +1,5 @@
 from rest_framework import serializers
-from .models import Guests, Bookings, Reservations, Transactions, Reviews
-
-class GuestSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Guests
-        fields = '__all__'
+from .models import Bookings, Reservations, Transactions, Reviews
 
 class BookingSerializer(serializers.ModelSerializer):
     class Meta:
@@ -12,11 +7,22 @@ class BookingSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ReservationSerializer(serializers.ModelSerializer):
+    guest_name = serializers.SerializerMethodField()
+    area_name = serializers.SerializerMethodField()
+    
     class Meta:
         model = Reservations
         fields = '__all__'
+    
+    def get_guest_name(self, obj):
+        return obj.user.first_name + " " + obj.user.last_name if obj.user else "Unknown Guest"
+    
+    def get_area_name(self, obj):
+        return obj.area.name if obj.area else "Unknown Area"
 
 class TransactionSerializer(serializers.ModelSerializer):
+    user_email = serializers.EmailField(source='user.email', read_only=True)
+    
     class Meta:
         model = Transactions
         fields = '__all__'

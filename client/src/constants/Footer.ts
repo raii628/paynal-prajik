@@ -1,7 +1,7 @@
 export const footerSections = [
   {
     title: "Navigation",
-    links: ["Home", "Rooms", "Booking", "Services", "Contact"],
+    links: ["Home", "About", "Book Now", "Rooms & Suites", "Gallery"],
   },
   {
     title: "Reservations",
@@ -28,7 +28,7 @@ export const footerSections = [
     links: [
       "Hotel Address",
       "Phone: 098-765-4321",
-      "Email: support@azureahotel.com",
+      "Email: azureahotel@gmail.com",
       "Social Media",
     ],
   },

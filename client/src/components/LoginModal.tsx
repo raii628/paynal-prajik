@@ -38,10 +38,8 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
 
   const togglePassword = () => setPasswordVisible(!passwordVisible);
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setEmail(e.target.value);
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setPassword(e.target.value);
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
 
   const loginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,7 +50,6 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
       const response = await login(email, password);
       if (response.status === 200) {
         const { user } = response.data;
-        console.log(`Logged in as ${user}`);
         setUserDetails(user);
         setProfileImage(user.profile_image || "");
         setIsAuthenticated(true);
@@ -90,14 +87,6 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
 
   return (
     <>
-      {notification && (
-        <Notification
-          icon={notification.icon}
-          message={notification.message}
-          type={notification.type}
-          onClose={() => setNotification(null)}
-        />
-      )}
       <section className="relative z-20 min-h-screen flex items-center justify-center">
         <div className="relative z-30 w-full max-w-md bg-white rounded-md sm:max-w-md xl:p-2 dark:border-gray-700 shadow-2xl">
           <i
@@ -105,7 +94,7 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
             onClick={toggleLoginModal}
           ></i>
           <div className="p-7 space-y-4 md:space-y-6 sm:p-9">
-            <h1 className="text-4xl text-center font-bold text-gray-800 mb-2 tracking-wide">
+            <h1 className="text-3xl text-center font-bold text-gray-800 mb-2 tracking-wide">
               Welcome to <span className="text-blue-600">Azurea</span>
             </h1>
             <h3 className="text-normal text-center text-gray-500 tracking-wide mb-4">
@@ -128,7 +117,7 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
                     type="email"
                     id="email"
                     value={email}
-                    placeholder="Email@gmail.com"
+                    placeholder="email@gmail.com"
                     onChange={handleEmailChange}
                     className="bg-gray-50 border border-gray-300 text-sm text-gray-900 rounded-sm mt-1 focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 pl-9"
                     required
@@ -166,21 +155,22 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
                 {errors.password && (
                   <p className="text-red-600 text-sm">{errors.password}</p>
                 )}
-                <Link
-                  to="/forgot-password"
-                  className="text-md font-semibold text-blue-500 underline tracking-tighter"
-                >
-                  Forgot password?
-                </Link>
+                <div className="py-2">
+                  <Link
+                    to="/forgot-password"
+                    className="text-md font-semibold text-blue-500 underline tracking-tighter"
+                  >
+                    Forgot password?
+                  </Link>
+                </div>
               </div>
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.95 }}
                 type="submit"
                 disabled={!email || !password || loading}
-                className={`w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800 transition-colors duration-300 flex items-center justify-center ${
-                  loading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+                className={`w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800 transition-colors duration-300 flex items-center justify-center ${loading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
               >
                 {loading ? (
                   <>
@@ -207,6 +197,14 @@ const LoginModal: FC<LoginProps> = ({ toggleLoginModal, openSignupModal }) => {
           </div>
         </div>
       </section>
+      {notification && (
+        <Notification
+          icon={notification.icon}
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
+        />
+      )}
     </>
   );
 };

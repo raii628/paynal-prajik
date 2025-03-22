@@ -9,10 +9,14 @@ tailwindcss @tailwindcss/vite
 framer-motion@latest
 motion@latest
 react-loading-skeleton
-remarkable
 @fortawesome/free-solid-svg-icons
 @fortawesome/free-brands-svg-icons
 @fortawesome
 @tanstack/react-query
 jwt-decode
-universal-cookie
+chart.js
+lucide-react
+swiper
+aos
+--save @types/aos
+react-datepicker

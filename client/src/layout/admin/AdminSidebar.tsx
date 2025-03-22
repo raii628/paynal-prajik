@@ -1,12 +1,13 @@
 import React, { Suspense, useState, useEffect, FC } from "react";
 import { fetchAdminProfile } from "../../services/Admin";
 import { menuItems } from "../../constants/AdminMenuSidebar";
-import AdminDetailSkeleton from "../../motions/AdminDetailSkeleton";
+import AdminDetailSkeleton from "../../motions/skeletons/AdminDetailSkeleton";
 import { useUserContext } from "../../contexts/AuthContext";
 import Modal from "../../components/Modal";
 import { logout } from "../../services/Auth";
 import { useNavigate, NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 const AdminProfile = React.lazy(() => import("./AdminProfile"));
 
@@ -59,22 +60,22 @@ const AdminSidebar: FC = () => {
 
   return (
     <>
-      <aside className="w-70 h-screen flex flex-col bg-white text-black z-0 shadow-lg">
+      <aside className="min-h-screen flex flex-col px-2 bg-white text-black z-0 shadow-lg">
         <div className="px-3 py-4">
           <Suspense fallback={<AdminDetailSkeleton />}>
             {admin ? <AdminProfile admin={admin} /> : <AdminDetailSkeleton />}
           </Suspense>
         </div>
-        <div className="flex-grow overflow-y-auto px-3">
+        <div className="flex-grow overflow-y-auto p-2">
           <ul className="space-y-4">
             {menuItems.map((item, index) => (
               <li key={index}>
                 <NavLink
                   to={item.link}
                   end={item.link === "/admin"}
-                  className={({ isActive }) => `flex items-start space-x-3 py-2 px-3 rounded-md cursor-pointer ${isActive ? "border-r-3 border-blue-600 bg-blue-100 text-blue-700 font-bold" : "hover:bg-black/15"}`}
+                  className={({ isActive }) => `flex items-center space-x-1 justify-baseline rounded-md cursor-pointer ${isActive ? "border-r-3 border-blue-600 bg-blue-100/80 text-blue-700 font-bold" : "hover:bg-black/15"}`}
                 >
-                  <FontAwesomeIcon icon={item.icon} className="text-2xl" /> <span>{item.label}</span>
+                  <FontAwesomeIcon icon={item.icon} className="text-2xl p-2 w-5 h-5 text-left" /> <span className="text-lg">{item.label}</span>
                 </NavLink>
               </li>
             ))}
@@ -97,9 +98,17 @@ const AdminSidebar: FC = () => {
         description="Are you sure you want to log out?"
         cancel={modalCancel}
         onConfirm={handleLogout}
-        className={`bg-red-600 text-white hover:bg-red-700 font-bold uppercase text-sm px-6 py-3 rounded-md shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-300 cursor-pointer ${loading ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-        confirmText={loading ? "Logging out..." : "Log Out"}
+        loading={loading}
+        className={`bg-red-600 text-white hover:bg-red-700 font-bold uppercase text-sm px-6 py-3 rounded-md shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-300 cursor-pointer ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+        confirmText={
+          loading ? (
+            <>
+              <FontAwesomeIcon icon={faSpinner} spin className="mr-2" /> Logging out...
+            </>
+          ) : (
+            "Log Out"
+          )
+        }
         cancelText="Cancel"
       />
     </>
