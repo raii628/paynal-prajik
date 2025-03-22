@@ -8,6 +8,13 @@ const RoomAvailabilityCalendar = () => {
   const [arrivalDate, setArrivalDate] = useState<Date | null>(null);
   const [departureDate, setDepartureDate] = useState<Date | null>(null);
 
+  const formatLocalDate = (date: Date) => {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
   const handleCheckAvailability = () => {
     // Basic validation
     if (!arrivalDate || !departureDate) {
@@ -20,8 +27,8 @@ const RoomAvailabilityCalendar = () => {
     }
 
     // Convert to YYYY-MM-DD
-    const arrivalStr = arrivalDate.toISOString().split("T")[0];
-    const departureStr = departureDate.toISOString().split("T")[0];
+    const arrivalStr = formatLocalDate(arrivalDate);
+    const departureStr = formatLocalDate(departureDate);
 
     // Redirect to /availability with query params
     navigate(`/availability?arrival=${arrivalStr}&departure=${departureStr}`);
